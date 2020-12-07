@@ -3,9 +3,10 @@ package it.unical.demacs.inf.asd.ProgettoAgile8.entities;
 import javax.persistence.*;
 import java.util.List;
 
+
 @Entity
-@Table(name = "PAZIENTE")
-public class Paziente {
+@Table(name = "DOTTORE")
+public class Dottore {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,24 +18,29 @@ public class Paziente {
     @Column(name = "cognome", length = 50, nullable = false)
     private String cognome;
 
-    @Column(name = "codice_fiscale", length = 16, nullable = true)
+    @Column(name = "codice_fiscale", length = 16, nullable = false)
     private String codice_fiscale;
 
-    @Column(name="numero_telefono", length = 10, nullable = true)
+    @Column(name="numero_telefono", length = 10, nullable = false)
     private String numero_telefono;
 
-    @Column(name = "email", length = 50, nullable = true)
+    @Column(name = "email", length = 50, nullable = false)
     private String email;
 
-    @Column(name = "password", length = 50, nullable = true)
+    @Column(name = "password", length = 50, nullable = false)
     private String password;
 
-    @Column(name = "animale", length = 50, nullable = true)
-    private String animale;
+    @Column(name= "codice_identificativo", length=20, nullable=false )
+    private String codice_identificativo;
 
-    @OneToMany(mappedBy = "paziente", fetch = FetchType.EAGER)
+    @Column(name="indirizzo", length=50, nullable=false)
+    private String indirizzo;
+
+    @Column(name="descrizione", length=500)
+    private String descrizione;
+
+    @OneToMany(mappedBy = "dottore", fetch = FetchType.EAGER)
     private List<Prenotazione> prenotazioni;
-
 
     public List<Prenotazione> getPrenotazioni() {
         return prenotazioni;
@@ -100,11 +106,27 @@ public class Paziente {
         this.password = password;
     }
 
-    public String getAnimale() {
-        return animale;
+    public String getCodice_identificativo() {
+        return codice_identificativo;
     }
 
-    public void setAnimale(String animale) {
-        this.animale = animale;
+    public void setCodice_identificativo(String codice_identificativo) {
+        this.codice_identificativo = codice_identificativo;
+    }
+
+    public String getIndirizzo() {
+        return indirizzo;
+    }
+
+    public void setIndirizzo(String indirizzo) {
+        this.indirizzo = indirizzo;
+    }
+
+    public String getDescrizione() {
+        return descrizione;
+    }
+
+    public void setDescrizione(String descrizione) {
+        this.descrizione = descrizione;
     }
 }

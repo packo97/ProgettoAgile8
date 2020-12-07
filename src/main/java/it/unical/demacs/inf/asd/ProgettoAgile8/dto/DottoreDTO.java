@@ -1,48 +1,28 @@
-package it.unical.demacs.inf.asd.ProgettoAgile8.entities;
+package it.unical.demacs.inf.asd.ProgettoAgile8.dto;
 
-import javax.persistence.*;
-import java.util.List;
+import java.io.Serializable;
 
-@Entity
-@Table(name = "PAZIENTE")
-public class Paziente {
+public class DottoreDTO implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "nome", length = 50, nullable = false)
     private String nome;
 
-    @Column(name = "cognome", length = 50, nullable = false)
     private String cognome;
 
-    @Column(name = "codice_fiscale", length = 16, nullable = true)
     private String codice_fiscale;
 
-    @Column(name="numero_telefono", length = 10, nullable = true)
     private String numero_telefono;
 
-    @Column(name = "email", length = 50, nullable = true)
     private String email;
 
-    @Column(name = "password", length = 50, nullable = true)
     private String password;
 
-    @Column(name = "animale", length = 50, nullable = true)
-    private String animale;
+    private String codice_identificativo;
 
-    @OneToMany(mappedBy = "paziente", fetch = FetchType.EAGER)
-    private List<Prenotazione> prenotazioni;
+    private String indirizzo;
 
-
-    public List<Prenotazione> getPrenotazioni() {
-        return prenotazioni;
-    }
-
-    public void setPrenotazioni(List<Prenotazione> prenotazioni) {
-        this.prenotazioni = prenotazioni;
-    }
+    private String descrizione;
 
     public Long getId() {
         return id;
@@ -100,11 +80,27 @@ public class Paziente {
         this.password = password;
     }
 
-    public String getAnimale() {
-        return animale;
+    public String getCodice_identificativo() {
+        return codice_identificativo;
     }
 
-    public void setAnimale(String animale) {
-        this.animale = animale;
+    public void setCodice_identificativo(String codice_identificativo) {
+        this.codice_identificativo = codice_identificativo;
+    }
+
+    public String getIndirizzo() {
+        return indirizzo;
+    }
+
+    public void setIndirizzo(String indirizzo) {
+        this.indirizzo = indirizzo;
+    }
+
+    public String getDescrizione() {
+        return descrizione;
+    }
+
+    public void setDescrizione(String descrizione) {
+        this.descrizione = descrizione;
     }
 }
