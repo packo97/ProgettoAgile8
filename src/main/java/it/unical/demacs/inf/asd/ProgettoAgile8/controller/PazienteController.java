@@ -23,5 +23,9 @@ public class PazienteController {
     PazienteDTO p = pazienteService.addPaziente(paziente);
     return ResponseEntity.ok(p);
   }
-
+  @PostMapping(path = "/loginPaziente")
+  public ResponseEntity<Boolean> get(@RequestBody String email, @RequestBody String password) {
+    Boolean p = pazienteService.login(email, password);
+    return ResponseEntity.ok(p);
+  }
   }

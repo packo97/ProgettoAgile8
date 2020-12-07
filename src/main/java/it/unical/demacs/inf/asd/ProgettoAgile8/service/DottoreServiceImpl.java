@@ -28,4 +28,13 @@ public class DottoreServiceImpl  implements DottoreService{
         Dottore saved = dottoreDAO.save(dottore);
         return modelMapper.map(saved, DottoreDTO.class);
     }
+    @Override
+    public Boolean login(String email, String password) {
+        System.out.println("login Paziente");
+        //Paziente paziente = modelMapper.map(dto, Paziente.class);
+        Dottore p = dottoreDAO.findAllByEmailAndPassword(email,password);
+        if(p==null)
+            return false;
+        else return true;
+    }
 }
