@@ -16,19 +16,82 @@ public class Paziente {
     @Column(name = "cognome", length = 50, nullable = false)
     private String cognome;
 
-    @Column(name = "codice_fiscale", length = 16, nullable = false)
+    @Column(name = "codice_fiscale", length = 16, nullable = true)
     private String codice_fiscale;
 
-    @Column(name="numero_telefono", length = 10, nullable = false)
+    @Column(name="numero_telefono", length = 10, nullable = true)
     private String numero_telefono;
 
-    @Column(name = "email", length = 50, nullable = false)
+    @Column(name = "email", length = 50, nullable = true)
     private String email;
 
-    @Column(name = "password", length = 50, nullable = false)
+    @Column(name = "password", length = 50, nullable = true)
     private String password;
 
-    @Column(name = "animale", length = 50, nullable = false)
+    @Column(name = "animale", length = 50, nullable = true)
     private String animale;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getCognome() {
+        return cognome;
+    }
+
+    public void setCognome(String cognome) {
+        this.cognome = cognome;
+    }
+
+    public String getCodice_fiscale() {
+        return codice_fiscale;
+    }
+
+    public void setCodice_fiscale(String codice_fiscale) {
+        this.codice_fiscale = codice_fiscale;
+    }
+
+    public String getNumero_telefono() {
+        return numero_telefono;
+    }
+
+    public void setNumero_telefono(String numero_telefono) {
+        this.numero_telefono = numero_telefono;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getAnimale() {
+        return animale;
+    }
+
+    public void setAnimale(String animale) {
+        this.animale = animale;
+    }
 }
