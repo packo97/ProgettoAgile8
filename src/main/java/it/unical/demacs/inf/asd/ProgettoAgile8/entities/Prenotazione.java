@@ -24,4 +24,44 @@ public class Prenotazione {
     @ManyToOne
     @JoinColumn(name="DOTTORE_ID",referencedColumnName = "ID")
     private Dottore dottore;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public LocalDateTime getData_visita() {
+        return data_visita;
+    }
+
+    public void setData_visita(LocalDateTime data_visita) {
+        this.data_visita = data_visita;
+    }
+
+    public String getDescrizione() {
+        return descrizione;
+    }
+
+    public void setDescrizione(String descrizione) {
+        this.descrizione = descrizione;
+    }
+
+    public Paziente getPaziente() {
+        return paziente;
+    }
+
+    public void setPaziente(Paziente paziente) {
+        this.paziente = paziente;
+    }
+
+    public Dottore getDottore() {
+        return dottore;
+    }
+
+    public void setDottore(Dottore dottore) {
+        this.dottore = dottore;
+    }
 }

@@ -107,4 +107,6 @@ public class Paziente {
     public void setAnimale(String animale) {
         this.animale = animale;
     }
+
+
 }

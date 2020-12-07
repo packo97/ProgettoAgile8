@@ -1,0 +1,11 @@
+/*C51*/SET SCHEMA PUBLIC
+create table dottore (id bigint not null, codice_fiscale varchar(16) not null, codice_identificativo varchar(20) not null, cognome varchar(50) not null, descrizione varchar(500), email varchar(50) not null, indirizzo varchar(50) not null, nome varchar(50) not null, numero_telefono varchar(10) not null, password varchar(50) not null, primary key (id))
+create table prenotazione (id bigint not null, data_visita timestamp, descrizione varchar(500) not null, dottore_id bigint, paziente_id bigint, primary key (id))
+alter table prenotazione add constraint FKix3fku0uiw4r2eka5mw3oroik foreign key (dottore_id) references dottore
+alter table prenotazione add constraint FKjb7inpyymkv4ag3kj893aad5t foreign key (paziente_id) references paziente
+INSERT INTO PAZIENTE VALUES(13,NULL,'csdcds','sdcsdc','cfdc','cdcs','3333','dedef')
+ALTER SEQUENCE PUBLIC.HIBERNATE_SEQUENCE RESTART WITH 14
+COMMIT
+INSERT INTO DOTTORE VALUES(15,'cdfvfd','1234','Oliviero','','ddfvfd','Corso Giovanni Nicotera','Tiziana','234443','dfvdf')
+ALTER SEQUENCE PUBLIC.HIBERNATE_SEQUENCE RESTART WITH 16
+COMMIT

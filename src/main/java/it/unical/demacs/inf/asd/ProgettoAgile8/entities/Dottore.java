@@ -129,4 +129,21 @@ public class Dottore {
     public void setDescrizione(String descrizione) {
         this.descrizione = descrizione;
     }
+
+    @Override
+    public String toString() {
+        return "Dottore{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", cognome='" + cognome + '\'' +
+                ", codice_fiscale='" + codice_fiscale + '\'' +
+                ", numero_telefono='" + numero_telefono + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", codice_identificativo='" + codice_identificativo + '\'' +
+                ", indirizzo='" + indirizzo + '\'' +
+                ", descrizione='" + descrizione + '\'' +
+                ", prenotazioni=" + prenotazioni +
+                '}';
+    }
 }

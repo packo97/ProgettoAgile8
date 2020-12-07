@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/restex")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-public class RegistrazioneController {
+public class PazienteController {
 
   // CHANGE TO USE DTO
   @Autowired
@@ -20,16 +20,8 @@ public class RegistrazioneController {
   // usare dto nel response e anche nel requestbody
   @PostMapping(path = "/paziente")
   public ResponseEntity<PazienteDTO> add(@RequestBody PazienteDTO paziente) {
-    //usare dto
-    System.out.println("controller " + paziente.getNome() + paziente.getCognome());
     PazienteDTO p = pazienteService.addPaziente(paziente);
     return ResponseEntity.ok(p);
   }
-/*
-  @GetMapping("/paziente")
-  public ResponseEntity<String> get() {
-    System.out.println("controller");
-    return ResponseEntity.ok(String.format("Hellooooo %s!!!", "a"));
-  }
-*/
+
   }
