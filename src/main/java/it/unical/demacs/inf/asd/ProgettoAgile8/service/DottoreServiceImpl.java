@@ -30,10 +30,8 @@ public class DottoreServiceImpl  implements DottoreService{
     }
     @Override
     public Boolean login(String email, String password) {
-        System.out.println("login Paziente");
-        //Paziente paziente = modelMapper.map(dto, Paziente.class);
-        Dottore p = dottoreDAO.findAllByEmailAndPassword(email,password);
-        if(p==null)
+        Dottore d = dottoreDAO.findAllByEmailAndPassword(email,password);
+        if(d==null)
             return false;
         else return true;
     }

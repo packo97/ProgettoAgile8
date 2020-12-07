@@ -29,8 +29,6 @@ public class PazienteServiceImpl implements PazienteService{
 
     @Override
     public Boolean login(String email, String password) {
-        System.out.println("login Paziente");
-        //Paziente paziente = modelMapper.map(dto, Paziente.class);
         Paziente p = pazienteDAO.findAllByEmailAndPassword(email,password);
         if(p==null)
             return false;

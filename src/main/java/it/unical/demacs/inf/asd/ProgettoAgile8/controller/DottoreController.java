@@ -3,6 +3,7 @@ package it.unical.demacs.inf.asd.ProgettoAgile8.controller;
 
 
 
+import it.unical.demacs.inf.asd.ProgettoAgile8.core.DatiLogin;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.DottoreDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.service.DottoreService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,4 +26,10 @@ public class DottoreController {
     return ResponseEntity.ok(d);
   }
 
+  @PostMapping(path = "/loginDottore")
+  public ResponseEntity<Boolean> login(@RequestBody DatiLogin datiLogin) {
+    Boolean p = dottoreService.login(datiLogin.getEmail(), datiLogin.getPassword());
+    return ResponseEntity.ok(p);
   }
+
+}

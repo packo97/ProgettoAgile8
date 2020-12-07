@@ -1,8 +1,10 @@
 package it.unical.demacs.inf.asd.ProgettoAgile8.controller;
 
 
+import it.unical.demacs.inf.asd.ProgettoAgile8.core.DatiLogin;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PazienteDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.service.PazienteService;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +26,8 @@ public class PazienteController {
     return ResponseEntity.ok(p);
   }
   @PostMapping(path = "/loginPaziente")
-  public ResponseEntity<Boolean> get(@RequestBody String email, @RequestBody String password) {
-    Boolean p = pazienteService.login(email, password);
+  public ResponseEntity<Boolean> login(@RequestBody DatiLogin datiLogin) {
+    Boolean p = pazienteService.login(datiLogin.getEmail(), datiLogin.getPassword());
     return ResponseEntity.ok(p);
   }
   }
