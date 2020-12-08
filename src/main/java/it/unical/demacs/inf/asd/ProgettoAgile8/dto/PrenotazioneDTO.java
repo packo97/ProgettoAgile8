@@ -18,6 +18,26 @@ public class PrenotazioneDTO implements Serializable {
 
     private Dottore dottore;
 
+    private boolean urgente;
+
+    private boolean confermato;
+
+    public boolean isConfermato() {
+        return confermato;
+    }
+
+    public void setConfermato(boolean confermato) {
+        this.confermato = confermato;
+    }
+
+    public boolean isUrgente() {
+        return urgente;
+    }
+
+    public void setUrgente(boolean urgente) {
+        this.urgente = urgente;
+    }
+
     public Long getId() {
         return id;
     }
