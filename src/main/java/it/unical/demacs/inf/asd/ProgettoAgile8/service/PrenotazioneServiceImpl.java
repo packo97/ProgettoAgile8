@@ -12,7 +12,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PrenotazioneServiceImpl implements PrenotazioneService{
@@ -30,5 +34,14 @@ public class PrenotazioneServiceImpl implements PrenotazioneService{
         Prenotazione saved = prenotazioneDAO.save(prenotazione);
         return modelMapper.map(saved, PrenotazioneDTO.class);
 
+    }
+
+    @Override
+    public List<PrenotazioneDTO> getUrgentiNonConfermate(){
+       // ArrayList<PrenotazioneDTO> lista = (ArrayList<PrenotazioneDTO>) prenotazioneDAO.getUrgentiNonConfermate(LocalDateTime.now());
+        //return lista;
+
+
+        return prenotazioneDAO.getUrgentiNonConfermate(LocalDateTime.now()).stream().map(prenotazione -> modelMapper.map(prenotazione, PrenotazioneDTO.class)).collect(Collectors.toList());
     }
 }
