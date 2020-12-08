@@ -42,6 +42,11 @@ public class Dottore {
     @OneToMany(mappedBy = "dottore", fetch = FetchType.EAGER)
     private List<Prenotazione> prenotazioni;
 
+    @OneToOne
+    @JoinColumn(name = "segretaria", referencedColumnName = "id")
+    private Segretaria segretaria;
+
+
     public List<Prenotazione> getPrenotazioni() {
         return prenotazioni;
     }
@@ -128,6 +133,14 @@ public class Dottore {
 
     public void setDescrizione(String descrizione) {
         this.descrizione = descrizione;
+    }
+
+    public Segretaria getSegretaria() {
+        return segretaria;
+    }
+
+    public void setSegretaria(Segretaria segretaria) {
+        this.segretaria = segretaria;
     }
 
     @Override
