@@ -24,6 +24,16 @@ public class DottoreDTO implements Serializable {
 
     private String descrizione;
 
+    private String salt;
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
     public Long getId() {
         return id;
     }

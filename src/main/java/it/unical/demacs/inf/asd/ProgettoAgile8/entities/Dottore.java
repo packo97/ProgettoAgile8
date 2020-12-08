@@ -27,7 +27,7 @@ public class Dottore {
     @Column(name = "email", length = 50, nullable = false)
     private String email;
 
-    @Column(name = "password", length = 50, nullable = false)
+    @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name= "codice_identificativo", length=20, nullable=false )
@@ -45,6 +45,17 @@ public class Dottore {
     @OneToOne
     @JoinColumn(name = "segretaria", referencedColumnName = "id")
     private Segretaria segretaria;
+
+    @Column(name = "salt", nullable = true)
+    private String salt;
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
 
 
     public List<Prenotazione> getPrenotazioni() {

@@ -25,11 +25,22 @@ public class Segretaria {
     @Column(name = "email", length = 50, nullable = false)
     private String email;
 
-    @Column(name = "password", length = 50, nullable = false)
+    @Column(name = "password", nullable = false)
     private String password;
 
     @OneToOne(mappedBy = "segretaria")
     private Dottore dottore;
+
+    @Column(name = "salt", nullable = true)
+    private String salt;
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
 
     public Long getId() {
         return id;

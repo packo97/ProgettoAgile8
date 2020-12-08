@@ -10,4 +10,6 @@ public interface SegretariaDAO extends JpaRepository<Segretaria, Long> {
 
 
     Segretaria findAllByEmailAndPassword(String email, String password);
+
+    Segretaria findAllByEmail(String email);
 }

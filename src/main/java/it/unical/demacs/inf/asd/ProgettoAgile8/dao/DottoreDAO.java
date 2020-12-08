@@ -13,4 +13,5 @@ public interface DottoreDAO extends JpaRepository<Dottore, Long>, JpaSpecificati
 
     Dottore findAllByEmailAndPassword(String email, String password);
 
+    Dottore findAllByEmail(String email);
 }

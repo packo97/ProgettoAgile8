@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.NoSuchAlgorithmException;
+
 @RestController
 @RequestMapping("/restex")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -20,7 +22,7 @@ public class SegretariaController {
 
     // usare dto nel response e anche nel requestbody
     @PostMapping(path = "/segretaria")
-    public ResponseEntity<SegretariaDTO> add(@RequestBody SegretariaDTO paziente) {
+    public ResponseEntity<SegretariaDTO> add(@RequestBody SegretariaDTO paziente) throws NoSuchAlgorithmException {
         SegretariaDTO p = segretariaService.addSegretaria(paziente);
         return ResponseEntity.ok(p);
     }

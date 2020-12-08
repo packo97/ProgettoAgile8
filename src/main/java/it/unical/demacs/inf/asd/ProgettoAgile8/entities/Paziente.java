@@ -26,7 +26,7 @@ public class Paziente {
     @Column(name = "email", length = 50, nullable = true)
     private String email;
 
-    @Column(name = "password", length = 50, nullable = true)
+    @Column(name = "password", nullable = true)
     private String password;
 
     @Column(name = "animale", length = 50, nullable = true)
@@ -34,6 +34,17 @@ public class Paziente {
 
     @OneToMany(mappedBy = "paziente", fetch = FetchType.EAGER)
     private List<Prenotazione> prenotazioni;
+
+    @Column(name = "salt", nullable = true)
+    private String salt;
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
 
 
     public List<Prenotazione> getPrenotazioni() {
