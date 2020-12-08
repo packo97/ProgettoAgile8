@@ -25,11 +25,6 @@ public class DottoreController {
     DottoreDTO d = dottoreService.addDottore(dottore);
     return ResponseEntity.ok(d);
   }
-  @PostMapping(path = "/loginDottore")
-  public ResponseEntity<Boolean> get(@RequestBody String email, @RequestBody String password) {
-    Boolean p = dottoreService.login(email, password);
-    return ResponseEntity.ok(p);
-  }
 
   @PostMapping(path = "/loginDottore")
   public ResponseEntity<Boolean> login(@RequestBody DatiLogin datiLogin) {

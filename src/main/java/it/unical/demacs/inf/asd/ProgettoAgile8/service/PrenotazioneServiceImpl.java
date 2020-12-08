@@ -10,9 +10,11 @@ import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Paziente;
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Prenotazione;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
 public class PrenotazioneServiceImpl implements PrenotazioneService{
 
     @Autowired
