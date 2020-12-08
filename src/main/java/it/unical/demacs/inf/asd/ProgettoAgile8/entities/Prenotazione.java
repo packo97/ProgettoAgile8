@@ -17,6 +17,12 @@ public class Prenotazione {
     @Column(name="descrizione", length=500, nullable = false)
     private String descrizione;
 
+    @Column(name="urgente", nullable = false)
+    private boolean urgente;
+
+    @Column(name="confermato", nullable = false)
+    private boolean confermato;
+
     @ManyToOne
     @JoinColumn(name="PAZIENTE_ID",referencedColumnName = "ID")
     private Paziente paziente;
@@ -24,6 +30,22 @@ public class Prenotazione {
     @ManyToOne
     @JoinColumn(name="DOTTORE_ID",referencedColumnName = "ID")
     private Dottore dottore;
+
+    public boolean isConfermato() {
+        return confermato;
+    }
+
+    public void setConfermato(boolean confermato) {
+        this.confermato = confermato;
+    }
+
+    public boolean isUrgente() {
+        return urgente;
+    }
+
+    public void setUrgente(boolean urgenza) {
+        this.urgente = urgenza;
+    }
 
     public Long getId() {
         return id;
