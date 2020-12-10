@@ -33,9 +33,6 @@ public class Dottore {
     @Column(name= "codice_identificativo", length=20, nullable=false )
     private String codice_identificativo;
 
-    @Column(name="indirizzo", length=50, nullable=false)
-    private String indirizzo;
-
     @Column(name="descrizione", length=500)
     private String descrizione;
 
@@ -130,14 +127,6 @@ public class Dottore {
         this.codice_identificativo = codice_identificativo;
     }
 
-    public String getIndirizzo() {
-        return indirizzo;
-    }
-
-    public void setIndirizzo(String indirizzo) {
-        this.indirizzo = indirizzo;
-    }
-
     public String getDescrizione() {
         return descrizione;
     }
@@ -165,7 +154,6 @@ public class Dottore {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", codice_identificativo='" + codice_identificativo + '\'' +
-                ", indirizzo='" + indirizzo + '\'' +
                 ", descrizione='" + descrizione + '\'' +
                 ", prenotazioni=" + prenotazioni +
                 '}';

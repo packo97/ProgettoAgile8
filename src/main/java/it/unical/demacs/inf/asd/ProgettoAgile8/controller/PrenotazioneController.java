@@ -27,5 +27,20 @@ public class PrenotazioneController {
         return ResponseEntity.ok(lista);
     }
 
+    @GetMapping(path = "/inAttesa")
+    public ResponseEntity<List<PrenotazioneDTO>> getInAttesa(){
+        List<PrenotazioneDTO> lista = prenotazioneService.getInAttesa();
+        return ResponseEntity.ok(lista);
+    }
+
+    @PostMapping(path = "/prenotazione")
+    public ResponseEntity<PrenotazioneDTO> add(@RequestBody PrenotazioneDTO prenotazione){
+        System.out.println(prenotazione);
+        PrenotazioneDTO p = prenotazioneService.addPrenotazione(prenotazione);
+        return ResponseEntity.ok(p);
+    }
+
+
+
 
 }

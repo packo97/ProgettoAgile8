@@ -20,8 +20,6 @@ public class DottoreDTO implements Serializable {
 
     private String codice_identificativo;
 
-    private String indirizzo;
-
     private String descrizione;
 
     private String salt;
@@ -96,14 +94,6 @@ public class DottoreDTO implements Serializable {
 
     public void setCodice_identificativo(String codice_identificativo) {
         this.codice_identificativo = codice_identificativo;
-    }
-
-    public String getIndirizzo() {
-        return indirizzo;
-    }
-
-    public void setIndirizzo(String indirizzo) {
-        this.indirizzo = indirizzo;
     }
 
     public String getDescrizione() {

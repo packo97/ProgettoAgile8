@@ -13,17 +13,18 @@ import java.util.List;
 @Repository
 public interface PrenotazioneDAO extends JpaRepository<Prenotazione, Long> {
 
-    @Query("select p from Prenotazione p where p.confermato=true and p.urgente=true and p.data_visita>=:data order by p.data_visita")
+    @Query("select p from Prenotazione p where p.confermato=true and p.urgente=true order by p.data_visita")
     List<Prenotazione> getUrgentiConfermate(@Param("data") LocalDateTime data);
 
-    @Query("select p from Prenotazione p where p.confermato=false and p.urgente=true and p.data_visita>=:data order by p.data_visita")
+    @Query("select p from Prenotazione p where p.confermato=false and p.urgente=true  order by p.data_visita")
     List<Prenotazione> getUrgentiNonConfermate(@Param("data") LocalDateTime data);
 
-    @Query("select p from Prenotazione p where p.confermato=true and p.urgente=false and p.data_visita>=:data order by p.data_visita")
+    @Query("select p from Prenotazione p where p.confermato=true and p.urgente=false  order by p.data_visita")
     List<Prenotazione> getConfermate(@Param("data") LocalDateTime data);
 
-    @Query("select p from Prenotazione p where p.confermato=false and p.urgente=false and p.data_visita>=:data order by p.data_visita")
+    @Query("select p from Prenotazione p where p.confermato=false and p.urgente=false order by p.data_visita")
     List<Prenotazione> getNonConfermate(@Param("data") LocalDateTime data);
+
 
     //List<Prenotazione> findByConfermatoTrueAndUrgenteFalseAndData_visitaGreaterThan(LocalDate current);
 

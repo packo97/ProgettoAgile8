@@ -31,6 +31,7 @@ public class PrenotazioneServiceImpl implements PrenotazioneService{
     public PrenotazioneDTO addPrenotazione(PrenotazioneDTO dto) {
         System.out.println("Aggiunta Prenotazione");
         Prenotazione prenotazione = modelMapper.map(dto, Prenotazione.class);
+        System.out.println(prenotazione);
         Prenotazione saved = prenotazioneDAO.save(prenotazione);
         return modelMapper.map(saved, PrenotazioneDTO.class);
 
@@ -38,10 +39,11 @@ public class PrenotazioneServiceImpl implements PrenotazioneService{
 
     @Override
     public List<PrenotazioneDTO> getUrgentiNonConfermate(){
-       // ArrayList<PrenotazioneDTO> lista = (ArrayList<PrenotazioneDTO>) prenotazioneDAO.getUrgentiNonConfermate(LocalDateTime.now());
-        //return lista;
-
-
         return prenotazioneDAO.getUrgentiNonConfermate(LocalDateTime.now()).stream().map(prenotazione -> modelMapper.map(prenotazione, PrenotazioneDTO.class)).collect(Collectors.toList());
     }
+    @Override
+    public List<PrenotazioneDTO> getInAttesa(){
+        return prenotazioneDAO.getNonConfermate(LocalDateTime.now()).stream().map(prenotazione -> modelMapper.map(prenotazione, PrenotazioneDTO.class)).collect(Collectors.toList());
+    }
+
 }

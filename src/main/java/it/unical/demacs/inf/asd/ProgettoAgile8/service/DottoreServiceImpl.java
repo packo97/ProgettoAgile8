@@ -4,6 +4,7 @@ import it.unical.demacs.inf.asd.ProgettoAgile8.dao.DottoreDAO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dao.PazienteDAO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.DottoreDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PazienteDTO;
+import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PrenotazioneDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Dottore;
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Paziente;
 import it.unical.demacs.inf.asd.ProgettoAgile8.utility.Sicurezza;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class DottoreServiceImpl  implements DottoreService{
@@ -46,5 +49,10 @@ public class DottoreServiceImpl  implements DottoreService{
         if(d==null)
             return false;
         else return true;
+    }
+
+    @Override
+    public List<DottoreDTO> getAll() {
+        return dottoreDAO.findAll().stream().map(dottore -> modelMapper.map(dottore, DottoreDTO.class)).collect(Collectors.toList());
     }
 }

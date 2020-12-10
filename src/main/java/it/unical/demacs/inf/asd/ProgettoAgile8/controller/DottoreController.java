@@ -5,12 +5,14 @@ package it.unical.demacs.inf.asd.ProgettoAgile8.controller;
 
 import it.unical.demacs.inf.asd.ProgettoAgile8.core.DatiLogin;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.DottoreDTO;
+import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PrenotazioneDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.service.DottoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/restex")
@@ -27,6 +29,13 @@ public class DottoreController {
     DottoreDTO d = dottoreService.addDottore(dottore);
     return ResponseEntity.ok(d);
   }
+
+  @GetMapping(path = "/dottore")
+  public ResponseEntity<List<DottoreDTO>> get(){
+    List<DottoreDTO> lista = dottoreService.getAll();
+    return ResponseEntity.ok(lista);
+  }
+
 
   @PostMapping(path = "/loginDottore")
   public ResponseEntity<Boolean> login(@RequestBody DatiLogin datiLogin) {

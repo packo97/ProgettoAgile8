@@ -77,4 +77,17 @@ public class PrenotazioneDTO implements Serializable {
     public void setDottore(Dottore dottore) {
         this.dottore = dottore;
     }
+
+    @Override
+    public String toString() {
+        return "PrenotazioneDTO{" +
+                "id=" + id +
+                ", data_visita=" + data_visita +
+                ", descrizione='" + descrizione + '\'' +
+                ", paziente=" + paziente +
+                ", dottore=" + dottore +
+                ", urgente=" + urgente +
+                ", confermato=" + confermato +
+                '}';
+    }
 }
