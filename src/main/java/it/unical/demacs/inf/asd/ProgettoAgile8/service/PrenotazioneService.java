@@ -11,5 +11,8 @@ public interface PrenotazioneService {
     PrenotazioneDTO addPrenotazione(PrenotazioneDTO prenotazione);
 
     List<PrenotazioneDTO> getUrgentiNonConfermate();
+    List<PrenotazioneDTO> getAccettate();
     List<PrenotazioneDTO> getInAttesa();
+
+    void deletePrenotazione(/*PrenotazioneDTO prenotazione*/ Long id);
 }

@@ -38,12 +38,29 @@ public class PrenotazioneServiceImpl implements PrenotazioneService{
     }
 
     @Override
+    public void deletePrenotazione(/*PrenotazioneDTO dto,*/ Long id) {
+        //Prenotazione p = modelMapper.map(dto, Prenotazione.class);
+        prenotazioneDAO.deleteById(id);
+        //prenotazioneDAO.delete(p);
+    }
+
+
+    @Override
     public List<PrenotazioneDTO> getUrgentiNonConfermate(){
         return prenotazioneDAO.getUrgentiNonConfermate(LocalDateTime.now()).stream().map(prenotazione -> modelMapper.map(prenotazione, PrenotazioneDTO.class)).collect(Collectors.toList());
     }
+
+    @Override
+    public List<PrenotazioneDTO> getAccettate() {
+        return prenotazioneDAO.getConfermate(LocalDateTime.now()).stream().map(prenotazione -> modelMapper.map(prenotazione, PrenotazioneDTO.class)).collect(Collectors.toList());
+    }
+
     @Override
     public List<PrenotazioneDTO> getInAttesa(){
         return prenotazioneDAO.getNonConfermate(LocalDateTime.now()).stream().map(prenotazione -> modelMapper.map(prenotazione, PrenotazioneDTO.class)).collect(Collectors.toList());
     }
+
+
+
 
 }

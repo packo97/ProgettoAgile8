@@ -6,6 +6,7 @@ import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PrenotazioneDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Prenotazione;
 import it.unical.demacs.inf.asd.ProgettoAgile8.service.PrenotazioneService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,11 +34,24 @@ public class PrenotazioneController {
         return ResponseEntity.ok(lista);
     }
 
+    @GetMapping(path = "/accettati")
+    public ResponseEntity<List<PrenotazioneDTO>> getAccettati(){
+        List<PrenotazioneDTO> lista = prenotazioneService.getAccettate();
+        return ResponseEntity.ok(lista);
+    }
+
     @PostMapping(path = "/prenotazione")
     public ResponseEntity<PrenotazioneDTO> add(@RequestBody PrenotazioneDTO prenotazione){
         System.out.println(prenotazione);
         PrenotazioneDTO p = prenotazioneService.addPrenotazione(prenotazione);
         return ResponseEntity.ok(p);
+    }
+
+    @DeleteMapping(path = "/prenotazione/{id}")
+    public HttpStatus delete(/*@RequestBody PrenotazioneDTO prenotazione*/@PathVariable Long id){
+        System.out.println("deleete prenotazione");
+        prenotazioneService.deletePrenotazione(id);
+        return HttpStatus.OK;
     }
 
 

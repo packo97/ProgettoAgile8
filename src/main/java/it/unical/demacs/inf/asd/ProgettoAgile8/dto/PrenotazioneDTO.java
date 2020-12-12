@@ -14,9 +14,9 @@ public class PrenotazioneDTO implements Serializable {
 
     private String descrizione;
 
-    private Paziente paziente;
+    private PazienteDTO paziente;
 
-    private Dottore dottore;
+    private DottoreDTO dottore;
 
     private boolean urgente;
 
@@ -62,19 +62,19 @@ public class PrenotazioneDTO implements Serializable {
         this.descrizione = descrizione;
     }
 
-    public Paziente getPaziente() {
+    public PazienteDTO getPaziente() {
         return paziente;
     }
 
-    public void setPaziente(Paziente paziente) {
+    public void setPaziente(PazienteDTO paziente) {
         this.paziente = paziente;
     }
 
-    public Dottore getDottore() {
+    public DottoreDTO getDottore() {
         return dottore;
     }
 
-    public void setDottore(Dottore dottore) {
+    public void setDottore(DottoreDTO dottore) {
         this.dottore = dottore;
     }
 
