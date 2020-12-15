@@ -2,6 +2,7 @@ package it.unical.demacs.inf.asd.ProgettoAgile8.controller;
 
 
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.DottoreDTO;
+import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PazienteDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PrenotazioneDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Prenotazione;
 import it.unical.demacs.inf.asd.ProgettoAgile8.service.PrenotazioneService;
@@ -21,6 +22,25 @@ public class PrenotazioneController {
 
     @Autowired
     private PrenotazioneService prenotazioneService;
+
+    @PostMapping(path = "/prenotazioniByPaziente")
+    public ResponseEntity<List<PrenotazioneDTO>> getPrenotazioniByPaziente(@RequestBody PazienteDTO paziente){
+        List<PrenotazioneDTO> lista = prenotazioneService.getPrenotazioniByPaziente(paziente);
+        return ResponseEntity.ok(lista);
+    }
+
+    @PostMapping(path = "/prenotazioniByDoctor")
+    public ResponseEntity<List<PrenotazioneDTO>> getPrenotazioniByDoctor(@RequestBody DottoreDTO dottore){
+        List<PrenotazioneDTO> lista = prenotazioneService.getPrenotazioniByDoctor(dottore, true);
+        return ResponseEntity.ok(lista);
+    }
+
+    @PostMapping(path = "/richiesteByDoctor")
+    public ResponseEntity<List<PrenotazioneDTO>> getRichiesteByDoctor(@RequestBody DottoreDTO dottore){
+        List<PrenotazioneDTO> lista = prenotazioneService.getPrenotazioniByDoctor(dottore, false);
+        return ResponseEntity.ok(lista);
+    }
+
 
     @GetMapping(path = "/urgentiNonAccettati")
     public ResponseEntity<List<PrenotazioneDTO>> getUrgentiNonConfermate(){

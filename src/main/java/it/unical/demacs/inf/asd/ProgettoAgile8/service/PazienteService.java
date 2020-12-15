@@ -10,4 +10,5 @@ public interface PazienteService {
 
     PazienteDTO addPaziente(PazienteDTO paziente) throws NoSuchAlgorithmException;
     Boolean login(String email, String password);
+    PazienteDTO getPazienteByEmail(String email);
 }

@@ -49,4 +49,10 @@ public class PazienteServiceImpl implements PazienteService{
             return false;
         else return true;
     }
+
+    @Override
+    public PazienteDTO getPazienteByEmail(String email) {
+        Paziente paziente = pazienteDAO.findAllByEmail(email);
+        return modelMapper.map(paziente, PazienteDTO.class);
+    }
 }

@@ -21,7 +21,13 @@ public class PazienteController {
   @Autowired
   private PazienteService pazienteService;
 
-  // usare dto nel response e anche nel requestbody
+  @GetMapping("/paziente/{email}")
+  public ResponseEntity<PazienteDTO> get(@PathVariable("email") String email) {
+    System.out.println("Get paziente by Email");
+    return ResponseEntity.ok(pazienteService.getPazienteByEmail(email));
+  }
+
+
   @PostMapping(path = "/paziente")
   public ResponseEntity<PazienteDTO> add(@RequestBody PazienteDTO paziente) throws NoSuchAlgorithmException {
     PazienteDTO p = pazienteService.addPaziente(paziente);

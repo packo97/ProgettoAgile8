@@ -3,6 +3,7 @@ package it.unical.demacs.inf.asd.ProgettoAgile8.service;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dao.DottoreDAO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dao.PazienteDAO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dao.PrenotazioneDAO;
+import it.unical.demacs.inf.asd.ProgettoAgile8.dto.DottoreDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PazienteDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PrenotazioneDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Dottore;
@@ -60,7 +61,19 @@ public class PrenotazioneServiceImpl implements PrenotazioneService{
         return prenotazioneDAO.getNonConfermate(LocalDateTime.now()).stream().map(prenotazione -> modelMapper.map(prenotazione, PrenotazioneDTO.class)).collect(Collectors.toList());
     }
 
+    //è corretto utilizzare due volte il model mapper
+    @Override
+    public List<PrenotazioneDTO> getPrenotazioniByPaziente(PazienteDTO dto) {
+        Paziente paziente= modelMapper.map(dto, Paziente.class);
+        return prenotazioneDAO.findAllByPaziente(paziente).stream().map(prenotazione -> modelMapper.map(prenotazione, PrenotazioneDTO.class)).collect(Collectors.toList());
 
+    }
+
+    @Override
+    public List<PrenotazioneDTO> getPrenotazioniByDoctor(DottoreDTO dto, Boolean confermato) {
+        Dottore dottore = modelMapper.map(dto, Dottore.class);
+        return prenotazioneDAO.findAllByDottoreAndConfermato(dottore, confermato).stream().map(prenotazione -> modelMapper.map(prenotazione, PrenotazioneDTO.class)).collect(Collectors.toList());
+    }
 
 
 }
