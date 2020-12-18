@@ -103,4 +103,13 @@ public class DottoreDTO implements Serializable {
     public void setDescrizione(String descrizione) {
         this.descrizione = descrizione;
     }
+
+    @Override
+    public String toString() {
+        return "DottoreDTO{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", cognome='" + cognome + '\'' +
+                '}';
+    }
 }

@@ -1,17 +1,20 @@
 package it.unical.demacs.inf.asd.ProgettoAgile8.controller;
 
 
+import it.unical.demacs.inf.asd.ProgettoAgile8.core.Filtro;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.DottoreDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PazienteDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PrenotazioneDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Prenotazione;
 import it.unical.demacs.inf.asd.ProgettoAgile8.service.PrenotazioneService;
+import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,14 +33,16 @@ public class PrenotazioneController {
     }
 
     @PostMapping(path = "/prenotazioniByDoctor")
-    public ResponseEntity<List<PrenotazioneDTO>> getPrenotazioniByDoctor(@RequestBody DottoreDTO dottore){
-        List<PrenotazioneDTO> lista = prenotazioneService.getPrenotazioniByDoctor(dottore, true);
+    public ResponseEntity<List<PrenotazioneDTO>> getPrenotazioniByDoctor(@RequestBody Filtro filtro){
+        DottoreDTO dottore = filtro.getDottore();
+        LocalDateTime date = filtro.getData();
+        List<PrenotazioneDTO> lista = prenotazioneService.getPrenotazioniByDoctor(dottore,date, true);
         return ResponseEntity.ok(lista);
     }
 
     @PostMapping(path = "/richiesteByDoctor")
     public ResponseEntity<List<PrenotazioneDTO>> getRichiesteByDoctor(@RequestBody DottoreDTO dottore){
-        List<PrenotazioneDTO> lista = prenotazioneService.getPrenotazioniByDoctor(dottore, false);
+        List<PrenotazioneDTO> lista = prenotazioneService.getRichiesteByDoctor(dottore, false);
         return ResponseEntity.ok(lista);
     }
 
@@ -47,6 +52,13 @@ public class PrenotazioneController {
        List<PrenotazioneDTO> lista = prenotazioneService.getUrgentiNonConfermate();
         return ResponseEntity.ok(lista);
     }
+
+    @PostMapping(path = "/urgentiNonAccettatiByDoctor")
+    public ResponseEntity<List<PrenotazioneDTO>> getUrgentiNonConfermateByDoctor(@RequestBody DottoreDTO dottore){
+        List<PrenotazioneDTO> lista = prenotazioneService.getUrgentiNonConfermateByDoctor(dottore);
+        return ResponseEntity.ok(lista);
+    }
+
 
     @GetMapping(path = "/inAttesa")
     public ResponseEntity<List<PrenotazioneDTO>> getInAttesa(){
@@ -62,7 +74,6 @@ public class PrenotazioneController {
 
     @PostMapping(path = "/prenotazione")
     public ResponseEntity<PrenotazioneDTO> add(@RequestBody PrenotazioneDTO prenotazione){
-        System.out.println(prenotazione);
         PrenotazioneDTO p = prenotazioneService.addPrenotazione(prenotazione);
         return ResponseEntity.ok(p);
     }
@@ -74,7 +85,11 @@ public class PrenotazioneController {
         return HttpStatus.OK;
     }
 
-
+    @PutMapping(path =  "/prenotazione")
+    public ResponseEntity<PrenotazioneDTO> update(@RequestBody PrenotazioneDTO prenotazione){
+        PrenotazioneDTO p = prenotazioneService.updatePrenotazione(prenotazione);
+        return ResponseEntity.ok(p);
+    }
 
 
 }

@@ -1,5 +1,7 @@
 package it.unical.demacs.inf.asd.ProgettoAgile8.entities;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -85,5 +87,18 @@ public class Prenotazione {
 
     public void setDottore(Dottore dottore) {
         this.dottore = dottore;
+    }
+
+    @Override
+    public String toString() {
+        return "Prenotazione{" +
+                "id=" + id +
+                ", data_visita=" + data_visita +
+                ", descrizione='" + descrizione + '\'' +
+                ", urgente=" + urgente +
+                ", confermato=" + confermato +
+                ", paziente=" + paziente +
+                ", dottore=" + dottore +
+                '}';
     }
 }
