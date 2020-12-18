@@ -5,6 +5,7 @@ package it.unical.demacs.inf.asd.ProgettoAgile8.controller;
 
 import it.unical.demacs.inf.asd.ProgettoAgile8.core.DatiLogin;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.DottoreDTO;
+import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PazienteDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PrenotazioneDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.service.DottoreService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,12 @@ public class DottoreController {
   public ResponseEntity<Boolean> login(@RequestBody DatiLogin datiLogin) {
     Boolean p = dottoreService.login(datiLogin.getEmail(), datiLogin.getPassword());
     return ResponseEntity.ok(p);
+  }
+
+  @GetMapping("/dottore/{email}")
+  public ResponseEntity<DottoreDTO> get(@PathVariable("email") String email) {
+    System.out.println("Get dottore by Email");
+    return ResponseEntity.ok(dottoreService.getDottoreByEmail(email));
   }
 
 }

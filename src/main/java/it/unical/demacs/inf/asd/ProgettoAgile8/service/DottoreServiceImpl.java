@@ -59,4 +59,10 @@ public class DottoreServiceImpl  implements DottoreService{
     public List<DottoreDTO> getAll() {
         return dottoreDAO.findAll().stream().map(dottore -> modelMapper.map(dottore, DottoreDTO.class)).collect(Collectors.toList());
     }
+
+    @Override
+    public DottoreDTO getDottoreByEmail(String email) {
+        Dottore dottore = dottoreDAO.findAllByEmail(email);
+        return modelMapper.map(dottore, DottoreDTO.class);
+    }
 }
