@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -15,4 +16,6 @@ public interface PazienteDAO extends JpaRepository<Paziente, Long>, JpaSpecifica
     Paziente findAllByEmailAndPassword(String email, String password);
 
     Paziente findAllByEmail(String email);
+
+    List<Paziente> findAll();
 }

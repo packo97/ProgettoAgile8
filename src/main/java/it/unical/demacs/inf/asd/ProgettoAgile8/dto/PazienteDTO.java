@@ -93,4 +93,19 @@ public class PazienteDTO implements Serializable {
     public void setAnimale(String animale) {
         this.animale = animale;
     }
+
+    @Override
+    public String toString() {
+        return "PazienteDTO{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", cognome='" + cognome + '\'' +
+                ", codice_fiscale='" + codice_fiscale + '\'' +
+                ", numero_telefono='" + numero_telefono + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", animale='" + animale + '\'' +
+                ", salt='" + salt + '\'' +
+                '}';
+    }
 }

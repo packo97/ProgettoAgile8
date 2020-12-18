@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/restex")
@@ -38,4 +39,11 @@ public class PazienteController {
     Boolean p = pazienteService.login(datiLogin.getEmail(), datiLogin.getPassword());
     return ResponseEntity.ok(p);
   }
+
+  @GetMapping(path= "/pazienti")
+  public ResponseEntity<List<PazienteDTO>> get(){
+    List<PazienteDTO> lista = pazienteService.getPazienti();
+    return ResponseEntity.ok(lista);
+  }
+
   }

@@ -15,6 +15,8 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PazienteServiceImpl implements PazienteService{
@@ -58,5 +60,11 @@ public class PazienteServiceImpl implements PazienteService{
     public PazienteDTO getPazienteByEmail(String email) {
         Paziente paziente = pazienteDAO.findAllByEmail(email);
         return modelMapper.map(paziente, PazienteDTO.class);
+    }
+
+    @Override
+    public List<PazienteDTO> getPazienti(){
+        return pazienteDAO.findAll().stream().map(paziente -> modelMapper.map(paziente, PazienteDTO.class)).collect(Collectors.toList());
+
     }
 }
