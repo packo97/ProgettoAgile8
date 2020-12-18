@@ -11,5 +11,6 @@ public interface DottoreService {
     DottoreDTO addDottore(DottoreDTO dottore) throws NoSuchAlgorithmException;
     Boolean login(String email, String password);
     List<DottoreDTO> getAll();
+    DottoreDTO getDottoreByEmail(String email);
 
 }
