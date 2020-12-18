@@ -43,7 +43,11 @@ public class DottoreServiceImpl  implements DottoreService{
     }
     @Override
     public Boolean login(String email, String password) {
-        String salt = dottoreDAO.findAllByEmail(email).getSalt();
+        Dottore d1 = dottoreDAO.findAllByEmail(email);
+        if(d1==null)
+            return false;
+        String salt= d1.getSalt();
+
         System.out.println(salt);
         Dottore d = dottoreDAO.findAllByEmailAndPassword(email,Sicurezza.getSecurePassword(password,salt.getBytes(StandardCharsets.UTF_8)));
         if(d==null)

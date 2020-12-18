@@ -2,6 +2,7 @@ package it.unical.demacs.inf.asd.ProgettoAgile8.service;
 
 import it.unical.demacs.inf.asd.ProgettoAgile8.dao.PazienteDAO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PazienteDTO;
+import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Dottore;
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Paziente;
 
 
@@ -43,7 +44,10 @@ public class PazienteServiceImpl implements PazienteService{
 
     @Override
     public Boolean login(String email, String password){
-        String salt = pazienteDAO.findAllByEmail(email).getSalt();
+        Paziente p1 = pazienteDAO.findAllByEmail(email);
+        if(p1==null)
+            return false;
+        String salt= p1.getSalt();
         Paziente p = pazienteDAO.findAllByEmailAndPassword(email,Sicurezza.getSecurePassword(password,salt.getBytes(StandardCharsets.UTF_8)));
         if(p==null)
             return false;

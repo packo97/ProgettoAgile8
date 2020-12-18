@@ -39,7 +39,10 @@ public class SegretariaServiceImpl implements SegretariaService{
 
     @Override
     public Boolean login(String email, String password) {
-        String salt = segretariaDAO.findAllByEmail(email).getSalt();
+        Segretaria s1 = segretariaDAO.findAllByEmail(email);
+        if(s1==null)
+            return false;
+        String salt= s1.getSalt();
         Segretaria d = segretariaDAO.findAllByEmailAndPassword(email,Sicurezza.getSecurePassword(password,salt.getBytes(StandardCharsets.UTF_8)));
         if(d==null)
             return false;
