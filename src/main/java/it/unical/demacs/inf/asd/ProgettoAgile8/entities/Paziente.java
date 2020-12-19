@@ -29,10 +29,10 @@ public class Paziente {
     @Column(name = "password", nullable = true)
     private String password;
 
-    @Column(name = "animale", length = 50, nullable = true)
-    private String animale;
+    @OneToMany(mappedBy = "paziente")
+    private List<Animale> animale;
 
-    @OneToMany(mappedBy = "paziente", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "paziente")
     private List<Prenotazione> prenotazioni;
 
     @Column(name = "salt", nullable = true)
@@ -111,11 +111,11 @@ public class Paziente {
         this.password = password;
     }
 
-    public String getAnimale() {
+    public List<Animale> getAnimale() {
         return animale;
     }
 
-    public void setAnimale(String animale) {
+    public void setAnimale(List<Animale> animale) {
         this.animale = animale;
     }
 

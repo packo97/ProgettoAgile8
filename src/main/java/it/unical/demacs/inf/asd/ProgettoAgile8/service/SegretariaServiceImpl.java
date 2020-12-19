@@ -1,6 +1,7 @@
 package it.unical.demacs.inf.asd.ProgettoAgile8.service;
 
 import it.unical.demacs.inf.asd.ProgettoAgile8.dao.SegretariaDAO;
+import it.unical.demacs.inf.asd.ProgettoAgile8.dto.DottoreDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.SegretariaDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Dottore;
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Paziente;
@@ -47,5 +48,11 @@ public class SegretariaServiceImpl implements SegretariaService{
         if(d==null)
             return false;
         else return true;
+    }
+
+    @Override
+    public SegretariaDTO getSegretariaByEmail(String email) {
+        Segretaria segretaria = segretariaDAO.findAllByEmail(email);
+        return modelMapper.map(segretaria, SegretariaDTO.class);
     }
 }

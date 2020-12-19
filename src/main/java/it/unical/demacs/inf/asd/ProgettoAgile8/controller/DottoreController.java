@@ -47,6 +47,7 @@ public class DottoreController {
   @GetMapping("/dottore/{email}")
   public ResponseEntity<DottoreDTO> get(@PathVariable("email") String email) {
     System.out.println("Get dottore by Email");
+    System.out.println(email);
     return ResponseEntity.ok(dottoreService.getDottoreByEmail(email));
   }
 

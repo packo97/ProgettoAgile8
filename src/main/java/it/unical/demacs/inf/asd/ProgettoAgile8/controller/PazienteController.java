@@ -46,4 +46,10 @@ public class PazienteController {
     return ResponseEntity.ok(lista);
   }
 
+  @GetMapping(path= "/pazienti/{valoreRicerca}")
+  public ResponseEntity<List<PazienteDTO>> ricerca(@PathVariable("valoreRicerca") String valoreRicerca){
+    List<PazienteDTO> lista = pazienteService.ricerca(valoreRicerca);
+    return ResponseEntity.ok(lista);
+  }
+
   }

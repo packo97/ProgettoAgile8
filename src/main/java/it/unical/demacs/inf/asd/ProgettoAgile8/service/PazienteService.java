@@ -13,4 +13,5 @@ public interface PazienteService {
     Boolean login(String email, String password);
     PazienteDTO getPazienteByEmail(String email);
     List<PazienteDTO> getPazienti();
+    List<PazienteDTO> ricerca(String valoreRicerca);
 }

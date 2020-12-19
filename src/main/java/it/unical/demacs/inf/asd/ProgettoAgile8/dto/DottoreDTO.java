@@ -1,6 +1,11 @@
 package it.unical.demacs.inf.asd.ProgettoAgile8.dto;
 
+import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Prescrizione;
+import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Ricevuta;
+
+import javax.persistence.OneToMany;
 import java.io.Serializable;
+import java.util.List;
 
 public class DottoreDTO implements Serializable {
 
@@ -23,6 +28,10 @@ public class DottoreDTO implements Serializable {
     private String descrizione;
 
     private String salt;
+
+    private List<Prescrizione> prescrizioni;
+
+    private List<Ricevuta> ricevute;
 
     public String getSalt() {
         return salt;
@@ -102,6 +111,22 @@ public class DottoreDTO implements Serializable {
 
     public void setDescrizione(String descrizione) {
         this.descrizione = descrizione;
+    }
+
+    public List<Prescrizione> getPrescrizioni() {
+        return prescrizioni;
+    }
+
+    public void setPrescrizioni(List<Prescrizione> prescrizioni) {
+        this.prescrizioni = prescrizioni;
+    }
+
+    public List<Ricevuta> getRicevute() {
+        return ricevute;
+    }
+
+    public void setRicevute(List<Ricevuta> ricevute) {
+        this.ricevute = ricevute;
     }
 
     @Override

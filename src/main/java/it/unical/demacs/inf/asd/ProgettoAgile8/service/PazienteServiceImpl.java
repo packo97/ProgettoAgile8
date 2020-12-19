@@ -2,6 +2,7 @@ package it.unical.demacs.inf.asd.ProgettoAgile8.service;
 
 import it.unical.demacs.inf.asd.ProgettoAgile8.dao.PazienteDAO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PazienteDTO;
+import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PrenotazioneDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Dottore;
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Paziente;
 
@@ -15,6 +16,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -64,7 +66,12 @@ public class PazienteServiceImpl implements PazienteService{
 
     @Override
     public List<PazienteDTO> getPazienti(){
-        return pazienteDAO.findAll().stream().map(paziente -> modelMapper.map(paziente, PazienteDTO.class)).collect(Collectors.toList());
+        List<PazienteDTO> pazienti = pazienteDAO.findAllBy().stream().map(paziente -> modelMapper.map(paziente, PazienteDTO.class)).collect(Collectors.toList());
+        return pazienti;
+    }
 
+    @Override
+    public List<PazienteDTO> ricerca(String valoreRicerca) {
+        return pazienteDAO.findAllByNomeContains(valoreRicerca).stream().map(paziente -> modelMapper.map(paziente, PazienteDTO.class)).collect(Collectors.toList());
     }
 }

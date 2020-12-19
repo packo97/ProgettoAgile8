@@ -1,6 +1,7 @@
 package it.unical.demacs.inf.asd.ProgettoAgile8.controller;
 
 import it.unical.demacs.inf.asd.ProgettoAgile8.core.DatiLogin;
+import it.unical.demacs.inf.asd.ProgettoAgile8.dto.DottoreDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PazienteDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.SegretariaDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.service.PazienteService;
@@ -31,5 +32,11 @@ public class SegretariaController {
     public ResponseEntity<Boolean> login(@RequestBody DatiLogin datiLogin) {
         Boolean p = segretariaService.login(datiLogin.getEmail(), datiLogin.getPassword());
         return ResponseEntity.ok(p);
+    }
+
+    @GetMapping("/segretaria/{email}")
+    public ResponseEntity<SegretariaDTO> get(@PathVariable("email") String email) {
+        System.out.println("Get segretaria by Email");
+        return ResponseEntity.ok(segretariaService.getSegretariaByEmail(email));
     }
 }

@@ -1,6 +1,9 @@
 package it.unical.demacs.inf.asd.ProgettoAgile8.dto;
 
+import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Animale;
+
 import java.io.Serializable;
+import java.util.List;
 
 public class PazienteDTO implements Serializable {
 
@@ -18,7 +21,7 @@ public class PazienteDTO implements Serializable {
 
     private String password;
 
-    private String animale;
+    private List<Animale> animale;
 
     private String salt;
 
@@ -86,11 +89,11 @@ public class PazienteDTO implements Serializable {
         this.password = password;
     }
 
-    public String getAnimale() {
+    public List<Animale> getAnimale() {
         return animale;
     }
 
-    public void setAnimale(String animale) {
+    public void setAnimale(List<Animale> animale) {
         this.animale = animale;
     }
 

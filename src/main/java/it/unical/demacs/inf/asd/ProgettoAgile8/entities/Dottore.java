@@ -36,7 +36,7 @@ public class Dottore {
     @Column(name="descrizione", length=500)
     private String descrizione;
 
-    @OneToMany(mappedBy = "dottore", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "dottore")
     private List<Prenotazione> prenotazioni;
 
     @OneToOne
@@ -45,6 +45,16 @@ public class Dottore {
 
     @Column(name = "salt", nullable = true)
     private String salt;
+
+
+    @OneToMany(mappedBy = "dottore")
+    private List<Prescrizione> prescrizioni;
+
+    @OneToMany(mappedBy = "dottore")
+    private List<Ricevuta> ricevute;
+
+
+
 
     public String getSalt() {
         return salt;
@@ -141,6 +151,22 @@ public class Dottore {
 
     public void setSegretaria(Segretaria segretaria) {
         this.segretaria = segretaria;
+    }
+
+    public List<Prescrizione> getPrescrizioni() {
+        return prescrizioni;
+    }
+
+    public void setPrescrizioni(List<Prescrizione> prescrizioni) {
+        this.prescrizioni = prescrizioni;
+    }
+
+    public List<Ricevuta> getRicevute() {
+        return ricevute;
+    }
+
+    public void setRicevute(List<Ricevuta> ricevute) {
+        this.ricevute = ricevute;
     }
 
     @Override
