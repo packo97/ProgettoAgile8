@@ -1,5 +1,8 @@
 package it.unical.demacs.inf.asd.ProgettoAgile8.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -15,6 +18,7 @@ public class Animale {
     @Column(name = "nome", length = 50, nullable = false)
     private String nome;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name="PAZIENTE_ID",referencedColumnName = "ID")
     private Paziente paziente;
@@ -22,6 +26,7 @@ public class Animale {
     @Column(name = "tipo", length = 16, nullable = true)
     private String tipo;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "data_nascita", length = 16, nullable = true)
     private LocalDate data_nascita;
 
@@ -33,6 +38,7 @@ public class Animale {
 
     @Column(name = "genere", length = 10)
     private String genere;
+
 
     @OneToMany(mappedBy = "animale")
     private List<Prescrizione> prescrizioni;

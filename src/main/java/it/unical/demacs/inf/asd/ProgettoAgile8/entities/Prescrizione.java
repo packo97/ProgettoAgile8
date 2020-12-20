@@ -1,6 +1,7 @@
 package it.unical.demacs.inf.asd.ProgettoAgile8.entities;
 
 import javax.persistence.*;
+import java.sql.Blob;
 
 @Entity
 @Table(name = "PRESCRIZIONE")
@@ -10,6 +11,7 @@ public class Prescrizione {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+
     @ManyToOne
     @JoinColumn(name="animale_id",referencedColumnName = "ID")
     private Animale animale;
@@ -18,9 +20,10 @@ public class Prescrizione {
     @JoinColumn(name="dottore_id",referencedColumnName = "ID")
     private Dottore dottore;
 
+    @Column(name="content")
+    @Lob
+    private byte[] content;
 
-
-    //byte di array per salvare il pdf
 
 
     public Long getId() {
@@ -37,5 +40,21 @@ public class Prescrizione {
 
     public void setAnimale(Animale animale) {
         this.animale = animale;
+    }
+
+    public Dottore getDottore() {
+        return dottore;
+    }
+
+    public void setDottore(Dottore dottore) {
+        this.dottore = dottore;
+    }
+
+    public byte[] getContent() {
+        return content;
+    }
+
+    public void setContent(byte[] content) {
+        this.content = content;
     }
 }

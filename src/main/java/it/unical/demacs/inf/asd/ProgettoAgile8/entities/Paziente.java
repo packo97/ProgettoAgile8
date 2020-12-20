@@ -1,5 +1,7 @@
 package it.unical.demacs.inf.asd.ProgettoAgile8.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -29,7 +31,8 @@ public class Paziente {
     @Column(name = "password", nullable = true)
     private String password;
 
-    @OneToMany(mappedBy = "paziente")
+    @JsonManagedReference
+    @OneToMany(mappedBy = "paziente", fetch = FetchType.EAGER)
     private List<Animale> animale;
 
     @OneToMany(mappedBy = "paziente")
