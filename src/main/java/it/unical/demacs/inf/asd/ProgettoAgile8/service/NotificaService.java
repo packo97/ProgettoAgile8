@@ -8,6 +8,7 @@ import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Notifica;
 import java.util.List;
 
 public interface NotificaService {
-    List<NotificaDTO> findAllByPaziente(NotificaDTO notificaDTO);
+    List<NotificaDTO> findAllByPaziente(PazienteDTO pazienteDTO);
+    List<NotificaDTO> findAllBySegretaria();
     void save(Notifica notifica);
 }

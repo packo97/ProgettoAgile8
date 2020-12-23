@@ -10,5 +10,6 @@ import java.util.List;
 
 @Repository
 public interface NotificaDAO extends JpaRepository<Notifica, Long> {
-    List<Notifica> findAllByPaziente(Paziente paziente);
+    List<Notifica> findAllByPazienteAndSegretariaIsFalse(Paziente paziente);
+    List<Notifica> findAllBySegretariaIsFalse();
 }

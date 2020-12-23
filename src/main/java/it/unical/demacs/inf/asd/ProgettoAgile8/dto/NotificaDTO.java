@@ -15,6 +15,16 @@ public class NotificaDTO {
 
     private Paziente paziente;
 
+    private Boolean segretaria;
+
+    public Boolean getSegretaria() {
+        return segretaria;
+    }
+
+    public void setSegretaria(Boolean segretaria) {
+        this.segretaria = segretaria;
+    }
+
     public Long getId() {
         return id;
     }

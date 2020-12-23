@@ -15,9 +15,20 @@ public class Notifica {
     @Column(name = "vista")
     private Boolean vista;
 
+    @Column(name = "segretaria")
+    private Boolean segretaria;
+
     @ManyToOne
     @JoinColumn(name="PAZIENTE_ID",referencedColumnName = "ID")
     private Paziente paziente;
+
+    public Boolean getSegretaria() {
+        return segretaria;
+    }
+
+    public void setSegretaria(Boolean segretaria) {
+        this.segretaria = segretaria;
+    }
 
     public Long getId() {
         return id;

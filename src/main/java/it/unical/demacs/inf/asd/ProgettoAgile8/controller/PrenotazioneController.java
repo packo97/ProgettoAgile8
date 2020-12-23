@@ -92,6 +92,17 @@ public class PrenotazioneController {
     @DeleteMapping(path = "/prenotazione/{id}")
     public HttpStatus delete(/*@RequestBody PrenotazioneDTO prenotazione*/@PathVariable Long id){
         System.out.println("deleete prenotazione");
+        Prenotazione p = prenotazioneService.getById(id);
+        Notifica notifica = new Notifica();
+        Paziente paziente = new Paziente();
+        paziente.setId(p.getPaziente().getId());
+        notifica.setPaziente(paziente);
+        notifica.setVista(false);
+        String testo="La prenotazione è annullata.";
+        notifica.setTesto(testo);
+        notifica.setSegretaria(true);
+        notificaService.save(notifica);
+
         prenotazioneService.deletePrenotazione(id);
         SendEmail.getInstance().sendMailDelete(/*prenotazione.getPaziente().getEmail()*/ "niko97142@gmail.com");
         return HttpStatus.OK;
@@ -115,6 +126,7 @@ public class PrenotazioneController {
                 notifica.setPaziente(p);
                 notifica.setVista(false);
                 notifica.setTesto(testo);
+                notifica.setSegretaria(false);
                 notificaService.save(notifica);
             }
         }
@@ -130,6 +142,7 @@ public class PrenotazioneController {
             notifica.setPaziente(p);
             notifica.setVista(false);
             notifica.setTesto(testo);
+            notifica.setSegretaria(false);
             notificaService.save(notifica);
         }
         if(prenotazione.isConfermato()==true && prenotazioneVecchia.isConfermato()==false){
@@ -143,6 +156,7 @@ public class PrenotazioneController {
             notifica.setPaziente(p);
             notifica.setVista(false);
             notifica.setTesto(testo);
+            notifica.setSegretaria(false);
             notificaService.save(notifica);
 
         }
