@@ -38,9 +38,19 @@ public class Paziente {
     @OneToMany(mappedBy = "paziente")
     private List<Prenotazione> prenotazioni;
 
+    @OneToMany(mappedBy = "paziente")
+    private List<Notifica> notifiche;
+
     @Column(name = "salt", nullable = true)
     private String salt;
 
+    public List<Notifica> getNotifiche() {
+        return notifiche;
+    }
+
+    public void setNotifiche(List<Notifica> notifiche) {
+        this.notifiche = notifiche;
+    }
     public String getSalt() {
         return salt;
     }

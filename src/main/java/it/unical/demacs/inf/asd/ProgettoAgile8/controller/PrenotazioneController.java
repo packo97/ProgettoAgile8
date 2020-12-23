@@ -2,11 +2,17 @@ package it.unical.demacs.inf.asd.ProgettoAgile8.controller;
 
 
 import it.unical.demacs.inf.asd.ProgettoAgile8.core.Filtro;
+import it.unical.demacs.inf.asd.ProgettoAgile8.dao.NotificaDAO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.DottoreDTO;
+import it.unical.demacs.inf.asd.ProgettoAgile8.dto.NotificaDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PazienteDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PrenotazioneDTO;
+import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Notifica;
+import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Paziente;
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Prenotazione;
+import it.unical.demacs.inf.asd.ProgettoAgile8.service.NotificaService;
 import it.unical.demacs.inf.asd.ProgettoAgile8.service.PrenotazioneService;
+import it.unical.demacs.inf.asd.ProgettoAgile8.utility.SendEmail;
 import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,8 +21,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/restex")
@@ -25,6 +33,9 @@ public class PrenotazioneController {
 
     @Autowired
     private PrenotazioneService prenotazioneService;
+
+    @Autowired
+    private NotificaService notificaService;
 
     @PostMapping(path = "/prenotazioniByPaziente")
     public ResponseEntity<List<PrenotazioneDTO>> getPrenotazioniByPaziente(@RequestBody PazienteDTO paziente){
@@ -82,13 +93,61 @@ public class PrenotazioneController {
     public HttpStatus delete(/*@RequestBody PrenotazioneDTO prenotazione*/@PathVariable Long id){
         System.out.println("deleete prenotazione");
         prenotazioneService.deletePrenotazione(id);
+        SendEmail.getInstance().sendMailDelete(/*prenotazione.getPaziente().getEmail()*/ "niko97142@gmail.com");
         return HttpStatus.OK;
     }
 
     @PutMapping(path =  "/prenotazione")
     public ResponseEntity<PrenotazioneDTO> update(@RequestBody PrenotazioneDTO prenotazione){
-        PrenotazioneDTO p = prenotazioneService.updatePrenotazione(prenotazione);
-        return ResponseEntity.ok(p);
+        Prenotazione prenotazioneVecchia = prenotazioneService.getById(prenotazione.getId());
+        if(prenotazione.isConfermato() == prenotazioneVecchia.isConfermato() && prenotazione.getData_visita()!=null){
+            if(!prenotazione.getData_visita().equals(prenotazioneVecchia.getData_visita())) {
+                System.out.println("entro quiii");
+                String testo="La data della sua prenotazione ha subito una variazione da "
+                        +prenotazioneVecchia.getData_visita().plusHours(1).toString()+" a "+
+                        prenotazione.getData_visita().plusHours(1).toString()+".";
+                String oggetto="Variazione data prenotazione";
+                SendEmail.getInstance().sendMail(oggetto,testo, "niko97142@gmail.com");
+
+                Notifica notifica = new Notifica();
+                Paziente p = new Paziente();
+                p.setId(prenotazione.getPaziente().getId());
+                notifica.setPaziente(p);
+                notifica.setVista(false);
+                notifica.setTesto(testo);
+                notificaService.save(notifica);
+            }
+        }
+        if(prenotazione.isConfermato()==false && prenotazioneVecchia.isConfermato()==true){
+            String testo="La sua prenotazione stabilita in data "+prenotazioneVecchia.getData_visita().plusHours(1)
+                    +" è stata annullata, riceverà un altra email quando verrà riconfermata.";
+
+            String oggetto="Prenotazione annullata";
+            SendEmail.getInstance().sendMail(oggetto,testo, "niko97142@gmail.com");
+            Notifica notifica = new Notifica();
+            Paziente p = new Paziente();
+            p.setId(prenotazione.getPaziente().getId());
+            notifica.setPaziente(p);
+            notifica.setVista(false);
+            notifica.setTesto(testo);
+            notificaService.save(notifica);
+        }
+        if(prenotazione.isConfermato()==true && prenotazioneVecchia.isConfermato()==false){
+            String testo="La sua prenotazione è stata confermata per la data "+prenotazione.getData_visita().plusHours(1);
+
+            String oggetto="Prenotazione Confermata";
+            SendEmail.getInstance().sendMail(oggetto,testo, "niko97142@gmail.com");
+            Notifica notifica = new Notifica();
+            Paziente p = new Paziente();
+            p.setId(prenotazione.getPaziente().getId());
+            notifica.setPaziente(p);
+            notifica.setVista(false);
+            notifica.setTesto(testo);
+            notificaService.save(notifica);
+
+        }
+        PrenotazioneDTO prenotazioneNuova = prenotazioneService.updatePrenotazione(prenotazione);
+        return ResponseEntity.ok(prenotazioneNuova);
     }
 
 
