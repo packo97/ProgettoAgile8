@@ -14,5 +14,7 @@ public interface NotificaService {
     void save(Notifica notifica);
     void setAllVista(PazienteDTO pazienteDTO);
     void setAllVistaBySegretaria();
+    void setAllVistaByDottore(Long dottoreId);
     void deletePrenotazione(Long id);
+    List<NotificaDTO> findAllByDottore(Long pazienteId);
 }

@@ -28,13 +28,13 @@ public class NotificaServiceImpl implements NotificaService{
     public List<NotificaDTO> findAllByPaziente(PazienteDTO pazienteDTO) {
         Paziente paziente= modelMapper.map(pazienteDTO, Paziente.class);
         //System.out.println(notificaDAO.findAllByPazienteAndSegretariaIsFalse(paziente).stream().map(notifica -> modelMapper.map(notifica, NotificaDTO.class)).collect(Collectors.toList()).size());
-        return notificaDAO.findAllByPazienteAndSegretariaIsFalse(paziente.getId()).stream().map(notifica -> modelMapper.map(notifica, NotificaDTO.class)).collect(Collectors.toList());
+        return notificaDAO.findAllByPazienteAndRicevitore(paziente.getId(),"paziente").stream().map(notifica -> modelMapper.map(notifica, NotificaDTO.class)).collect(Collectors.toList());
 
     }
 
     @Override
     public List<NotificaDTO> findAllBySegretaria() {
-        return notificaDAO.findAllBySegretaria(true).stream().map(notifica -> modelMapper.map(notifica, NotificaDTO.class)).collect(Collectors.toList());
+        return notificaDAO.findAllByRicevitore("segretaria").stream().map(notifica -> modelMapper.map(notifica, NotificaDTO.class)).collect(Collectors.toList());
     }
 
     @Override
@@ -59,10 +59,21 @@ public class NotificaServiceImpl implements NotificaService{
         notificaDAO.updateNotificheVisteBySegretaria();
     }
 
+    @Override
+    @Transactional
+    public void setAllVistaByDottore(Long dottoreId) {
+        notificaDAO.updateNotificheVisteByDottoreId(dottoreId);
+    }
+
 
     @Override
     public void deletePrenotazione(Long id) {
         notificaDAO.deleteById(id);
 
+    }
+
+    @Override
+    public List<NotificaDTO> findAllByDottore(Long pazienteId) {
+       return notificaDAO.findAllByDottoreIdAndRicevitore(pazienteId,"dottore").stream().map(notifica -> modelMapper.map(notifica, NotificaDTO.class)).collect(Collectors.toList());
     }
 }

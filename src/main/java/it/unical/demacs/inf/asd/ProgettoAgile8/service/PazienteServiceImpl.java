@@ -77,4 +77,9 @@ public class PazienteServiceImpl implements PazienteService{
     public List<PazienteDTO> ricerca(String valoreRicerca) {
         return pazienteDAO.findAllByNomeContains(valoreRicerca).stream().map(paziente -> modelMapper.map(paziente, PazienteDTO.class)).collect(Collectors.toList());
     }
+
+    @Override
+    public PazienteDTO findAllById(Long id) {
+        return modelMapper.map(pazienteDAO.findAllById(id), PazienteDTO.class);
+    }
 }

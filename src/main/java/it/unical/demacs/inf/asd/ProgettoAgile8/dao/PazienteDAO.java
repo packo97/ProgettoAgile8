@@ -15,6 +15,7 @@ public interface PazienteDAO extends JpaRepository<Paziente, Long>, JpaSpecifica
     Paziente findAllByEmailAndPassword(String email, String password);
 
     Paziente findAllByEmail(String email);
+    Paziente findAllById(Long id);
 
     List<Paziente> findAllBy();
 

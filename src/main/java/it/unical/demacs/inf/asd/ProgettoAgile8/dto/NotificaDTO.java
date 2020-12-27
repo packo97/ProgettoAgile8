@@ -20,11 +20,21 @@ public class NotificaDTO {
 
     private Long paziente;
 
-    private Boolean segretaria;
+    private String ricevitore;
 
     private LocalDateTime data;
 
     private String dottore;
+
+    private Long dottoreId;
+
+    public Long getDottoreId() {
+        return dottoreId;
+    }
+
+    public void setDottoreId(Long dottoreId) {
+        this.dottoreId = dottoreId;
+    }
 
     public String getDottore() {
         return dottore;
@@ -42,15 +52,13 @@ public class NotificaDTO {
         this.data = data;
     }
 
-    public Boolean getSegretaria() {
-        return segretaria;
+    public String getRicevitore() {
+        return ricevitore;
     }
 
-    public void setSegretaria(Boolean segretaria) {
-        this.segretaria = segretaria;
+    public void setRicevitore(String ricevitore) {
+        this.ricevitore = ricevitore;
     }
-
-
 
     public String getOggetto() {
         return oggetto;

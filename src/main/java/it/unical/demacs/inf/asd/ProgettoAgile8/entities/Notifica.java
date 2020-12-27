@@ -23,17 +23,28 @@ public class Notifica {
     @Column(name = "dottore")
     private String dottore;
 
+    @Column(name = "dottoreId")
+    private Long dottoreId;
+
     @Column(name = "vista")
     private Boolean vista;
 
     @Column(name = "data")
     private LocalDateTime data;
 
-    @Column(name = "segretaria")
-    private Boolean segretaria;
+    @Column(name = "ricevitore")
+    private String ricevitore;
 
     @Column(name = "paziente")
     private Long paziente;
+
+    public Long getDottoreId() {
+        return dottoreId;
+    }
+
+    public void setDottoreId(Long dottoreId) {
+        this.dottoreId = dottoreId;
+    }
 
     public String getDottore() {
         return dottore;
@@ -59,12 +70,12 @@ public class Notifica {
         this.oggetto = oggetto;
     }
 
-    public Boolean getSegretaria() {
-        return segretaria;
+    public String getRicevitore() {
+        return ricevitore;
     }
 
-    public void setSegretaria(Boolean segretaria) {
-        this.segretaria = segretaria;
+    public void setRicevitore(String ricevitore) {
+        this.ricevitore = ricevitore;
     }
 
     public Long getId() {

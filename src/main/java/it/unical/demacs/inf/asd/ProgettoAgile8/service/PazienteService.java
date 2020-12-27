@@ -14,4 +14,6 @@ public interface PazienteService {
     PazienteDTO getPazienteByEmail(String email);
     List<PazienteDTO> getPazienti();
     List<PazienteDTO> ricerca(String valoreRicerca);
+    PazienteDTO findAllById(Long id);
+
 }
