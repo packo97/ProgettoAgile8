@@ -1,6 +1,9 @@
 package it.unical.demacs.inf.asd.ProgettoAgile8.dto;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Animale;
+import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Prenotazione;
 
 import java.io.Serializable;
 import java.util.List;
@@ -21,7 +24,7 @@ public class PazienteDTO implements Serializable {
 
     private String password;
 
-    private List<Animale> animale;
+    private List<AnimaleDTO> animale;
 
     private String salt;
 
@@ -89,11 +92,11 @@ public class PazienteDTO implements Serializable {
         this.password = password;
     }
 
-    public List<Animale> getAnimale() {
+    public List<AnimaleDTO> getAnimale() {
         return animale;
     }
 
-    public void setAnimale(List<Animale> animale) {
+    public void setAnimale(List<AnimaleDTO> animale) {
         this.animale = animale;
     }
 

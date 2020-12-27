@@ -16,9 +16,9 @@ public class Prescrizione {
     @JoinColumn(name="animale_id",referencedColumnName = "ID")
     private Animale animale;
 
-    @ManyToOne
+    /*@ManyToOne
     @JoinColumn(name="dottore_id",referencedColumnName = "ID")
-    private Dottore dottore;
+    private Dottore dottore;*/
 
     @Column(name="content")
     @Lob
@@ -41,7 +41,7 @@ public class Prescrizione {
     public void setAnimale(Animale animale) {
         this.animale = animale;
     }
-
+/*
     public Dottore getDottore() {
         return dottore;
     }
@@ -49,7 +49,7 @@ public class Prescrizione {
     public void setDottore(Dottore dottore) {
         this.dottore = dottore;
     }
-
+*/
     public byte[] getContent() {
         return content;
     }

@@ -1,19 +1,17 @@
 package it.unical.demacs.inf.asd.ProgettoAgile8.service;
 
-import it.unical.demacs.inf.asd.ProgettoAgile8.dao.DottoreDAO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dao.NotificaDAO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.NotificaDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PazienteDTO;
-import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PrenotazioneDTO;
-import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Dottore;
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Notifica;
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Paziente;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,9 +27,8 @@ public class NotificaServiceImpl implements NotificaService{
     @Override
     public List<NotificaDTO> findAllByPaziente(PazienteDTO pazienteDTO) {
         Paziente paziente= modelMapper.map(pazienteDTO, Paziente.class);
-        System.out.println(notificaDAO.findAllByPazienteAndSegretariaIsFalse(paziente).stream().map(notifica -> modelMapper.map(notifica, NotificaDTO.class)).collect(Collectors.toList()).size());
-
-        return notificaDAO.findAllByPazienteAndSegretariaIsFalse(paziente).stream().map(notifica -> modelMapper.map(notifica, NotificaDTO.class)).collect(Collectors.toList());
+        //System.out.println(notificaDAO.findAllByPazienteAndSegretariaIsFalse(paziente).stream().map(notifica -> modelMapper.map(notifica, NotificaDTO.class)).collect(Collectors.toList()).size());
+        return notificaDAO.findAllByPazienteAndSegretariaIsFalse(paziente.getId()).stream().map(notifica -> modelMapper.map(notifica, NotificaDTO.class)).collect(Collectors.toList());
 
     }
 
@@ -41,7 +38,24 @@ public class NotificaServiceImpl implements NotificaService{
     }
 
     @Override
+    public Optional<Notifica> findById(Long id) {
+        return notificaDAO.findById(id);
+    }
+
+    @Override
     public void save(Notifica notifica) {
         notificaDAO.save(notifica);
+    }
+
+    @Override
+    @Transactional
+    public void setAllVista(PazienteDTO pazienteDTO) {
+        notificaDAO.updateNotificheViste(true, pazienteDTO.getId());
+    }
+
+    @Override
+    public void deletePrenotazione(Long id) {
+        notificaDAO.deleteById(id);
+
     }
 }

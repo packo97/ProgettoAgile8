@@ -9,7 +9,7 @@ import java.util.*;
 public class SendEmail {
     private static SendEmail i = null;
     final String username = "veterinary_clinic@libero.it";
-    final String password = "Veterinary_clinic8";
+    final String password = "Veterinary_clinic88";
     private SendEmail() {}
 
     public static SendEmail getInstance()

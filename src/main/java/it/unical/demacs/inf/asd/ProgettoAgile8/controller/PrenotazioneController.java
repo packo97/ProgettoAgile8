@@ -12,6 +12,7 @@ import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Paziente;
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Prenotazione;
 import it.unical.demacs.inf.asd.ProgettoAgile8.service.NotificaService;
 import it.unical.demacs.inf.asd.ProgettoAgile8.service.PrenotazioneService;
+import it.unical.demacs.inf.asd.ProgettoAgile8.utility.Data;
 import it.unical.demacs.inf.asd.ProgettoAgile8.utility.SendEmail;
 import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,6 +42,7 @@ public class PrenotazioneController {
     @PostMapping(path = "/prenotazioniByPaziente")
     public ResponseEntity<List<PrenotazioneDTO>> getPrenotazioniByPaziente(@RequestBody PazienteDTO paziente){
         List<PrenotazioneDTO> lista = prenotazioneService.getPrenotazioniByPaziente(paziente);
+        Collections.reverse(lista);
         return ResponseEntity.ok(lista);
     }
 
@@ -93,16 +96,10 @@ public class PrenotazioneController {
     public HttpStatus delete(/*@RequestBody PrenotazioneDTO prenotazione*/@PathVariable Long id){
         System.out.println("deleete prenotazione");
         Prenotazione p = prenotazioneService.getById(id);
-        Notifica notifica = new Notifica();
-        Paziente paziente = new Paziente();
-        paziente.setId(p.getPaziente().getId());
-        notifica.setPaziente(paziente);
-        notifica.setVista(false);
-        String testo="La prenotazione è annullata.";
-        notifica.setTesto(testo);
-        notifica.setSegretaria(true);
+        String testo="La sua prenotazione riguardante "+ p.getDescrizione() +", è stata annullata.";
+        String oggetto="Annullamento prenotazione";
+        Notifica notifica = inserisciNotifica(p.getPaziente().getId(),testo,oggetto, true,p.getDottore().getNome()+" "+p.getDottore().getCognome());
         notificaService.save(notifica);
-
         prenotazioneService.deletePrenotazione(id);
         SendEmail.getInstance().sendMailDelete(/*prenotazione.getPaziente().getEmail()*/ "niko97142@gmail.com");
         return HttpStatus.OK;
@@ -113,56 +110,53 @@ public class PrenotazioneController {
         Prenotazione prenotazioneVecchia = prenotazioneService.getById(prenotazione.getId());
         if(prenotazione.isConfermato() == prenotazioneVecchia.isConfermato() && prenotazione.getData_visita()!=null){
             if(!prenotazione.getData_visita().equals(prenotazioneVecchia.getData_visita())) {
-                System.out.println("entro quiii");
-                String testo="La data della sua prenotazione ha subito una variazione da "
-                        +prenotazioneVecchia.getData_visita().plusHours(1).toString()+" a "+
-                        prenotazione.getData_visita().plusHours(1).toString()+".";
+                String testo="La data della sua prenotazione riguardante "+ prenotazione.getDescrizione() +", ha subito una variazione da "
+                        +Data.convertiData(prenotazioneVecchia.getData_visita().plusHours(1).toString())+" a "+
+                        Data.convertiData(prenotazione.getData_visita().plusHours(1).toString())+".";
                 String oggetto="Variazione data prenotazione";
                 SendEmail.getInstance().sendMail(oggetto,testo, "niko97142@gmail.com");
 
-                Notifica notifica = new Notifica();
-                Paziente p = new Paziente();
-                p.setId(prenotazione.getPaziente().getId());
-                notifica.setPaziente(p);
-                notifica.setVista(false);
-                notifica.setTesto(testo);
-                notifica.setSegretaria(false);
+                Notifica notifica = inserisciNotifica(prenotazione.getPaziente().getId(),testo,oggetto,false, prenotazione.getDottore().getNome()+" "+prenotazione.getDottore().getCognome());
                 notificaService.save(notifica);
             }
         }
         if(prenotazione.isConfermato()==false && prenotazioneVecchia.isConfermato()==true){
-            String testo="La sua prenotazione stabilita in data "+prenotazioneVecchia.getData_visita().plusHours(1)
+            String testo="La sua prenotazione riguardante "+ prenotazione.getDescrizione() +" e stabilita in data "+ Data.convertiData(prenotazioneVecchia.getData_visita().plusHours(1).toString())
                     +" è stata annullata, riceverà un altra email quando verrà riconfermata.";
 
             String oggetto="Prenotazione annullata";
             SendEmail.getInstance().sendMail(oggetto,testo, "niko97142@gmail.com");
-            Notifica notifica = new Notifica();
-            Paziente p = new Paziente();
-            p.setId(prenotazione.getPaziente().getId());
-            notifica.setPaziente(p);
-            notifica.setVista(false);
-            notifica.setTesto(testo);
-            notifica.setSegretaria(false);
+            Notifica notifica = inserisciNotifica(prenotazione.getPaziente().getId(),testo,oggetto,false,prenotazione.getDottore().getNome()+" "+prenotazione.getDottore().getCognome());
+
             notificaService.save(notifica);
         }
         if(prenotazione.isConfermato()==true && prenotazioneVecchia.isConfermato()==false){
-            String testo="La sua prenotazione è stata confermata per la data "+prenotazione.getData_visita().plusHours(1);
+            String testo="La sua prenotazione riguardante "+ prenotazione.getDescrizione() +", è stata confermata per la data "+Data.convertiData(prenotazione.getData_visita().plusHours(1).toString());
 
             String oggetto="Prenotazione Confermata";
             SendEmail.getInstance().sendMail(oggetto,testo, "niko97142@gmail.com");
-            Notifica notifica = new Notifica();
-            Paziente p = new Paziente();
-            p.setId(prenotazione.getPaziente().getId());
-            notifica.setPaziente(p);
-            notifica.setVista(false);
-            notifica.setTesto(testo);
-            notifica.setSegretaria(false);
+
+            Notifica notifica = inserisciNotifica(prenotazione.getPaziente().getId(),testo,oggetto,false,prenotazione.getDottore().getNome()+" "+prenotazione.getDottore().getCognome());
             notificaService.save(notifica);
 
         }
         PrenotazioneDTO prenotazioneNuova = prenotazioneService.updatePrenotazione(prenotazione);
         return ResponseEntity.ok(prenotazioneNuova);
     }
+
+    public static Notifica inserisciNotifica(Long id, String testo, String oggetto,Boolean segretaria, String dottore){
+        Notifica notifica = new Notifica();
+        notifica.setPaziente(id);
+        notifica.setVista(false);
+        notifica.setTesto(testo);
+        notifica.setOggetto(oggetto);
+        notifica.setSegretaria(segretaria);
+        notifica.setData(LocalDateTime.now());
+        System.out.println(dottore);
+        notifica.setDottore(dottore);
+        return notifica;
+    }
+
 
 
 }

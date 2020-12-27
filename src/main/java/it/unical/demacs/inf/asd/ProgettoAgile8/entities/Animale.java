@@ -18,7 +18,7 @@ public class Animale {
     @Column(name = "nome", length = 50, nullable = false)
     private String nome;
 
-    @JsonBackReference
+    //@JsonBackReference
     @ManyToOne
     @JoinColumn(name="PAZIENTE_ID",referencedColumnName = "ID")
     private Paziente paziente;
@@ -40,11 +40,11 @@ public class Animale {
     private String genere;
 
 
-    @OneToMany(mappedBy = "animale")
-    private List<Prescrizione> prescrizioni;
+    //@OneToMany(mappedBy = "animale", fetch = FetchType.LAZY)
+    //private List<Prescrizione> prescrizioni;
 
-    @OneToMany(mappedBy = "animale")
-    private List<Ricevuta> ricevute;
+    //@OneToMany(mappedBy = "animale", fetch = FetchType.LAZY)
+    //private List<Ricevuta> ricevute;
 
     public Long getId() {
         return id;
@@ -110,7 +110,7 @@ public class Animale {
         this.genere = genere;
     }
 
-    public List<Prescrizione> getPrescrizioni() {
+   /* public List<Prescrizione> getPrescrizioni() {
         return prescrizioni;
     }
 
@@ -124,5 +124,5 @@ public class Animale {
 
     public void setRicevute(List<Ricevuta> ricevute) {
         this.ricevute = ricevute;
-    }
+    }*/
 }

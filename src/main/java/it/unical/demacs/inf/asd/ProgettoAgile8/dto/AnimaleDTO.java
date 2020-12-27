@@ -25,9 +25,9 @@ public class AnimaleDTO implements Serializable {
 
     private String genere;
 
-    private List<PrescrizioneDTO> prescrizioni;
+    /*private List<PrescrizioneDTO> prescrizioni;
 
-    private List<RicevutaDTO> ricevute;
+    private List<RicevutaDTO> ricevute;*/
 
     public Long getId() {
         return id;
@@ -84,7 +84,7 @@ public class AnimaleDTO implements Serializable {
     public void setAltezza(int altezza) {
         this.altezza = altezza;
     }
-
+/*
     public List<PrescrizioneDTO> getPrescrizioni() {
         return prescrizioni;
     }
@@ -100,7 +100,7 @@ public class AnimaleDTO implements Serializable {
     public void setRicevute(List<RicevutaDTO> ricevute) {
         this.ricevute = ricevute;
     }
-
+*/
     public String getGenere() {
         return genere;
     }

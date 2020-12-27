@@ -1,6 +1,11 @@
 package it.unical.demacs.inf.asd.ProgettoAgile8.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "NOTIFICA")
@@ -12,15 +17,47 @@ public class Notifica {
     @Column(name = "testo")
     private String testo;
 
+    @Column(name = "oggetto")
+    private String oggetto;
+
+    @Column(name = "dottore")
+    private String dottore;
+
     @Column(name = "vista")
     private Boolean vista;
+
+    @Column(name = "data")
+    private LocalDateTime data;
 
     @Column(name = "segretaria")
     private Boolean segretaria;
 
-    @ManyToOne
-    @JoinColumn(name="PAZIENTE_ID",referencedColumnName = "ID")
-    private Paziente paziente;
+    @Column(name = "paziente")
+    private Long paziente;
+
+    public String getDottore() {
+        return dottore;
+    }
+
+    public void setDottore(String dottore) {
+        this.dottore = dottore;
+    }
+
+    public LocalDateTime getData() {
+        return data;
+    }
+
+    public void setData(LocalDateTime data) {
+        this.data = data;
+    }
+
+    public String getOggetto() {
+        return oggetto;
+    }
+
+    public void setOggetto(String oggetto) {
+        this.oggetto = oggetto;
+    }
 
     public Boolean getSegretaria() {
         return segretaria;
@@ -54,11 +91,11 @@ public class Notifica {
         this.vista = vista;
     }
 
-    public Paziente getPaziente() {
+    public Long getPaziente() {
         return paziente;
     }
 
-    public void setPaziente(Paziente paziente) {
+    public void setPaziente(Long paziente) {
         this.paziente = paziente;
     }
 
@@ -68,7 +105,7 @@ public class Notifica {
                 "id=" + id +
                 ", testo='" + testo + '\'' +
                 ", vista=" + vista +
-                ", paziente=" + paziente +
+               // ", paziente=" + paziente +
                 '}';
     }
 }
