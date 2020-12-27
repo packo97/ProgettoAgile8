@@ -30,6 +30,17 @@ public class NotificaController {
     @Autowired
     private PazienteService pazienteService;
 
+
+
+    @GetMapping(path= "/notificheBySegretaria")
+    public ResponseEntity<List<NotificaDTO>> ricercaNotificheSegretaria(){
+        List<NotificaDTO> lista = notificaService.findAllBySegretaria();
+        notificaService.setAllVistaBySegretaria();
+        Collections.reverse(lista);
+        return ResponseEntity.ok(lista);
+    }
+
+
     @GetMapping(path= "/notificheByPaziente/{email}")
     public ResponseEntity<List<NotificaDTO>> ricercaNotifichePaziente(@PathVariable("email") String email){
         PazienteDTO p = pazienteService.getPazienteByEmail(email);

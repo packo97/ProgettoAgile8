@@ -34,7 +34,7 @@ public class NotificaServiceImpl implements NotificaService{
 
     @Override
     public List<NotificaDTO> findAllBySegretaria() {
-        return notificaDAO.findAllBySegretariaIsFalse().stream().map(notifica -> modelMapper.map(notifica, NotificaDTO.class)).collect(Collectors.toList());
+        return notificaDAO.findAllBySegretaria(true).stream().map(notifica -> modelMapper.map(notifica, NotificaDTO.class)).collect(Collectors.toList());
     }
 
     @Override
@@ -52,6 +52,13 @@ public class NotificaServiceImpl implements NotificaService{
     public void setAllVista(PazienteDTO pazienteDTO) {
         notificaDAO.updateNotificheViste(true, pazienteDTO.getId());
     }
+
+    @Override
+    @Transactional
+    public void setAllVistaBySegretaria() {
+        notificaDAO.updateNotificheVisteBySegretaria();
+    }
+
 
     @Override
     public void deletePrenotazione(Long id) {

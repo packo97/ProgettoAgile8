@@ -13,6 +13,6 @@ public interface NotificaService {
     Optional<Notifica> findById(Long id);
     void save(Notifica notifica);
     void setAllVista(PazienteDTO pazienteDTO);
-
+    void setAllVistaBySegretaria();
     void deletePrenotazione(Long id);
 }

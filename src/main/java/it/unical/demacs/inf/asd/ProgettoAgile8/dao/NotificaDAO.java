@@ -14,9 +14,13 @@ import java.util.List;
 @Repository
 public interface NotificaDAO extends JpaRepository<Notifica, Long> {
     List<Notifica> findAllByPazienteAndSegretariaIsFalse(Long Paziente);
-    List<Notifica> findAllBySegretariaIsFalse();
+    List<Notifica> findAllBySegretaria(boolean isSegretaria);
     Notifica getAllById(Long id);
     @Modifying
     @Query("update Notifica n set n.vista = ?1 where n.paziente = ?2")
     void updateNotificheViste( Boolean value ,Long paziente);
+
+    @Modifying
+    @Query("update Notifica n set n.vista = true where n.segretaria = true")
+    void updateNotificheVisteBySegretaria();
 }

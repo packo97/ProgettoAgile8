@@ -24,8 +24,6 @@ public class PazienteDTO implements Serializable {
 
     private String password;
 
-    private List<AnimaleDTO> animale;
-
     private String salt;
 
     public String getSalt() {
@@ -92,14 +90,6 @@ public class PazienteDTO implements Serializable {
         this.password = password;
     }
 
-    public List<AnimaleDTO> getAnimale() {
-        return animale;
-    }
-
-    public void setAnimale(List<AnimaleDTO> animale) {
-        this.animale = animale;
-    }
-
     @Override
     public String toString() {
         return "PazienteDTO{" +
@@ -110,7 +100,6 @@ public class PazienteDTO implements Serializable {
                 ", numero_telefono='" + numero_telefono + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", animale='" + animale + '\'' +
                 ", salt='" + salt + '\'' +
                 '}';
     }
