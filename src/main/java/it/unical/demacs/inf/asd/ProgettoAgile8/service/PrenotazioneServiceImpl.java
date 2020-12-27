@@ -106,7 +106,7 @@ public class PrenotazioneServiceImpl implements PrenotazioneService{
     }
 
     @Override
-    public List<PrenotazioneDTO> getPrenotazioniByDoctor(DottoreDTO dto, LocalDateTime date, Boolean confermato) {
+    public List<PrenotazioneDTO> getPrenotazioniByDoctorAndDate(DottoreDTO dto, LocalDateTime date, Boolean confermato) {
         Dottore dottore = modelMapper.map(dto, Dottore.class);
         List<PrenotazioneDTO> unsorted = prenotazioneDAO.findAllByDottoreAndConfermato(dottore, confermato).stream().map(prenotazione -> modelMapper.map(prenotazione, PrenotazioneDTO.class)).collect(Collectors.toList());
 
@@ -127,6 +127,12 @@ public class PrenotazioneServiceImpl implements PrenotazioneService{
             }
         });
         return filtered;
+    }
+
+    @Override
+    public List<PrenotazioneDTO> getPrenotazioniByDoctor(DottoreDTO dto, Boolean confermato) {
+        Dottore dottore = modelMapper.map(dto, Dottore.class);
+        return prenotazioneDAO.findAllByDottoreAndConfermato(dottore, confermato).stream().map(prenotazione -> modelMapper.map(prenotazione, PrenotazioneDTO.class)).collect(Collectors.toList());
     }
 
     @Override

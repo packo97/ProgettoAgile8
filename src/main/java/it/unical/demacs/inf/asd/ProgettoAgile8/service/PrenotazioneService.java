@@ -17,7 +17,8 @@ public interface PrenotazioneService {
     List<PrenotazioneDTO> getAccettate();
     List<PrenotazioneDTO> getInAttesa();
     List<PrenotazioneDTO> getPrenotazioniByPaziente(PazienteDTO dto);
-    List<PrenotazioneDTO> getPrenotazioniByDoctor(DottoreDTO dto, LocalDateTime date, Boolean confermato);
+    List<PrenotazioneDTO> getPrenotazioniByDoctorAndDate(DottoreDTO dto, LocalDateTime date, Boolean confermato);
+    List<PrenotazioneDTO> getPrenotazioniByDoctor(DottoreDTO dto, Boolean confermato);
     List<PrenotazioneDTO> getRichiesteByDoctor(DottoreDTO dto, Boolean confermato);
     void deletePrenotazione(/*PrenotazioneDTO prenotazione*/ Long id);
     PrenotazioneDTO updatePrenotazione(PrenotazioneDTO prenotazione);
