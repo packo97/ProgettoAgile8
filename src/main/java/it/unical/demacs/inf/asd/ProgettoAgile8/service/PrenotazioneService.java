@@ -16,6 +16,7 @@ public interface PrenotazioneService {
     List<PrenotazioneDTO> getUrgentiNonConfermateByDoctor(DottoreDTO dto);
     List<PrenotazioneDTO> getAccettate();
     List<PrenotazioneDTO> getInAttesa();
+    Prenotazione getById(Long id);
     List<PrenotazioneDTO> getPrenotazioniByPaziente(PazienteDTO dto);
     List<PrenotazioneDTO> getPrenotazioniByDoctorAndDate(DottoreDTO dto, LocalDateTime date, Boolean confermato);
     List<PrenotazioneDTO> getPrenotazioniByDoctor(DottoreDTO dto, Boolean confermato);

@@ -97,6 +97,11 @@ public class PrenotazioneServiceImpl implements PrenotazioneService{
         return prenotazioneDAO.getNonConfermate(LocalDateTime.now()).stream().map(prenotazione -> modelMapper.map(prenotazione, PrenotazioneDTO.class)).collect(Collectors.toList());
     }
 
+    @Override
+    public Prenotazione getById(Long id) {
+        return prenotazioneDAO.findAllById(id);
+    }
+
     //è corretto utilizzare due volte il model mapper
     @Override
     public List<PrenotazioneDTO> getPrenotazioniByPaziente(PazienteDTO dto) {

@@ -13,11 +13,11 @@ public class Ricevuta {
     @ManyToOne
     @JoinColumn(name="animale_id",referencedColumnName = "ID")
     private Animale animale;
-
+/*
     @ManyToOne
     @JoinColumn(name="dottore_id",referencedColumnName = "ID")
     private Dottore dottore;
-
+*/
     //byte di array per salvare il pdf
 
 

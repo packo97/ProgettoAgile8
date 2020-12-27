@@ -28,11 +28,11 @@ public class DottoreDTO implements Serializable {
     private String descrizione;
 
     private String salt;
-
+/*
     private List<Prescrizione> prescrizioni;
 
     private List<Ricevuta> ricevute;
-
+*/
     public String getSalt() {
         return salt;
     }
@@ -112,7 +112,7 @@ public class DottoreDTO implements Serializable {
     public void setDescrizione(String descrizione) {
         this.descrizione = descrizione;
     }
-
+/*
     public List<Prescrizione> getPrescrizioni() {
         return prescrizioni;
     }
@@ -128,7 +128,7 @@ public class DottoreDTO implements Serializable {
     public void setRicevute(List<Ricevuta> ricevute) {
         this.ricevute = ricevute;
     }
-
+*/
     @Override
     public String toString() {
         return "DottoreDTO{" +

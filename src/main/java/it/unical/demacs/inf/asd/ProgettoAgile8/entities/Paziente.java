@@ -1,5 +1,6 @@
 package it.unical.demacs.inf.asd.ProgettoAgile8.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -31,11 +32,12 @@ public class Paziente {
     @Column(name = "password", nullable = true)
     private String password;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "paziente", fetch = FetchType.EAGER)
+    //@JsonBackReference
+    @OneToMany(mappedBy = "paziente", fetch = FetchType.LAZY)
     private List<Animale> animale;
 
-    @OneToMany(mappedBy = "paziente")
+    //@JsonManagedReference
+    @OneToMany(mappedBy = "paziente", fetch = FetchType.LAZY)
     private List<Prenotazione> prenotazioni;
 
     @Column(name = "salt", nullable = true)

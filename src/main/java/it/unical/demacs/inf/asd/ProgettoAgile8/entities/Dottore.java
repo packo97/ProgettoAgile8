@@ -1,5 +1,8 @@
 package it.unical.demacs.inf.asd.ProgettoAgile8.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -36,23 +39,24 @@ public class Dottore {
     @Column(name="descrizione", length=500)
     private String descrizione;
 
-    @OneToMany(mappedBy = "dottore")
+    //@JsonBackReference
+    @OneToMany(mappedBy = "dottore", fetch = FetchType.LAZY)
     private List<Prenotazione> prenotazioni;
-
+/*
     @OneToOne
     @JoinColumn(name = "segretaria", referencedColumnName = "id")
     private Segretaria segretaria;
-
+*/
     @Column(name = "salt", nullable = true)
     private String salt;
 
-
-    @OneToMany(mappedBy = "dottore")
+/*
+    @OneToMany(mappedBy = "dottore" , fetch = FetchType.LAZY)
     private List<Prescrizione> prescrizioni;
 
-    @OneToMany(mappedBy = "dottore")
+    @OneToMany(mappedBy = "dottore", fetch = FetchType.LAZY)
     private List<Ricevuta> ricevute;
-
+*/
 
 
 
@@ -144,15 +148,15 @@ public class Dottore {
     public void setDescrizione(String descrizione) {
         this.descrizione = descrizione;
     }
-
+/*
     public Segretaria getSegretaria() {
         return segretaria;
     }
 
     public void setSegretaria(Segretaria segretaria) {
         this.segretaria = segretaria;
-    }
-
+    }*/
+/*
     public List<Prescrizione> getPrescrizioni() {
         return prescrizioni;
     }
@@ -168,7 +172,7 @@ public class Dottore {
     public void setRicevute(List<Ricevuta> ricevute) {
         this.ricevute = ricevute;
     }
-
+*/
     @Override
     public String toString() {
         return "Dottore{" +

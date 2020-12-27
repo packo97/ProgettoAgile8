@@ -10,7 +10,7 @@ public class RicevutaDTO implements Serializable {
 
     private AnimaleDTO animale;
 
-    private DottoreDTO dottore;
+  //  private DottoreDTO dottore;
 
     //byte di array per salvare il pdf
 
@@ -30,7 +30,7 @@ public class RicevutaDTO implements Serializable {
     public void setAnimale(AnimaleDTO animale) {
         this.animale = animale;
     }
-
+/*
     public DottoreDTO getDottore() {
         return dottore;
     }
@@ -38,4 +38,6 @@ public class RicevutaDTO implements Serializable {
     public void setDottore(DottoreDTO dottore) {
         this.dottore = dottore;
     }
+
+ */
 }

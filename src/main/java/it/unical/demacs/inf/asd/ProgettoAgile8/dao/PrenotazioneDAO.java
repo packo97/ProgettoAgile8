@@ -30,6 +30,8 @@ public interface PrenotazioneDAO extends JpaRepository<Prenotazione, Long> {
     List<Prenotazione> getNonConfermate(@Param("data") LocalDateTime data);
 
     List<Prenotazione> findAllByPaziente(Paziente paziente);
+
+    Prenotazione findAllById(Long id);
     //List<Prenotazione> findAllByPazienteAndData_visita(Paziente paziente, LocalDateTime date);
 
     //List<Prenotazione> findAllByDottoreAndConfermatoAndData_visita(Dottore dottore, Boolean confermeto, LocalDateTime date);
