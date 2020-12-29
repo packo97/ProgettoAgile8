@@ -25,10 +25,6 @@ public class AnimaleDTO implements Serializable {
 
     private String genere;
 
-    /*private List<PrescrizioneDTO> prescrizioni;
-
-    private List<RicevutaDTO> ricevute;*/
-
     public Long getId() {
         return id;
     }

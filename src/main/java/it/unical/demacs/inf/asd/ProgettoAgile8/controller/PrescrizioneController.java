@@ -7,14 +7,24 @@ import io.swagger.v3.core.util.Json;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.AnimaleDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.DottoreDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PazienteDTO;
+import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PrescrizioneDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.service.PrescrizioneService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
 
 
 @RestController
@@ -44,4 +54,27 @@ public class PrescrizioneController {
         System.out.println("Aggiunta PDF");
         return HttpStatus.OK;
     }
+
+    @PostMapping(value = "/prescrizioniByAnimale")
+    public ResponseEntity<List<PrescrizioneDTO>> getByAnimale(@RequestBody AnimaleDTO dto){
+        System.out.println("by animale");
+        List<PrescrizioneDTO> prescrizioni = prescrizioneService.findAllByAnimale(dto);
+
+        return ResponseEntity.ok(prescrizioni);
+    }
+
+
+
+    @GetMapping(value = "/pdf/{id}")
+    public ResponseEntity<Resource> getPdfById(@PathVariable("id") Long id) {
+        System.out.println("get pdf");
+        // Load file from database
+        PrescrizioneDTO prescrizione = prescrizioneService.findAllById(id);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + "test" + "\"")
+                .body(new ByteArrayResource(prescrizione.getContent()));
+    }
+
 }

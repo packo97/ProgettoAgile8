@@ -88,6 +88,13 @@
 			<version>1.4</version>
 			<scope>provided</scope> <!-- add this only if code will run in a java container (i.e. tomcat, etc)-->
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.itextpdf/itextpdf -->
+		<dependency>
+			<groupId>com.itextpdf</groupId>
+			<artifactId>itextpdf</artifactId>
+			<version>5.5.13.2</version>
+		</dependency>
+
 
 	</dependencies>
 

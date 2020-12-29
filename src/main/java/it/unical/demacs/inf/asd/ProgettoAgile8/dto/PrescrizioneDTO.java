@@ -14,7 +14,7 @@ public class PrescrizioneDTO implements Serializable {
 
     private AnimaleDTO animale;
 
-   // private DottoreDTO dottore;
+    private DottoreDTO dottore;
 
     private byte[] content;
 
@@ -34,7 +34,7 @@ public class PrescrizioneDTO implements Serializable {
     public void setAnimale(AnimaleDTO animale) {
         this.animale = animale;
     }
-/*
+
     public DottoreDTO getDottore() {
         return dottore;
     }
@@ -42,7 +42,7 @@ public class PrescrizioneDTO implements Serializable {
     public void setDottore(DottoreDTO dottore) {
         this.dottore = dottore;
     }
-*/
+
     public byte[] getContent() {
         return content;
     }
@@ -56,7 +56,7 @@ public class PrescrizioneDTO implements Serializable {
         return "PrescrizioneDTO{" +
                 "id=" + id +
                 ", animale=" + animale +
-                //", dottore=" + dottore +
+                ", dottore=" + dottore +
                 ", content=" + Arrays.toString(content) +
                 '}';
     }
