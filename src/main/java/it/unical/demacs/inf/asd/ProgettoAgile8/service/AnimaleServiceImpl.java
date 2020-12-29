@@ -9,6 +9,7 @@ import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Paziente;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,9 +33,17 @@ public class AnimaleServiceImpl implements AnimaleService{
     }
 
     @Override
+    @Transactional
     public AnimaleDTO addAnimale(AnimaleDTO animaleDTO) {
-        Animale animale = modelMapper.map(animaleDTO, Animale.class);
-        Animale saved = animaleDAO.save(animale);
-        return modelMapper.map(saved, AnimaleDTO.class);
+        Paziente paziente = modelMapper.map(animaleDTO.getPaziente(), Paziente.class);
+        if(animaleDAO.findAllByPaziente(paziente)==null) {
+            Animale animale = modelMapper.map(animaleDTO, Animale.class);
+            Animale saved = animaleDAO.save(animale);
+            return modelMapper.map(saved, AnimaleDTO.class);
+        }else{
+            animaleDAO.updateAnimale(animaleDTO.getNome(),animaleDTO.getData_nascita(),animaleDTO.getTipo(),animaleDTO.getGenere(),animaleDTO.getPeso(),animaleDTO.getAltezza(),paziente,animaleDTO.getId());
+            return animaleDTO;
+        }
+
     }
 }

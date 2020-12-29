@@ -26,6 +26,7 @@ public class AnimaleController {
 
     @PostMapping(path = "/animale")
     public ResponseEntity<AnimaleDTO> add(@RequestBody AnimaleDTO animaleDTO){
+        System.out.println((animaleDTO));
         AnimaleDTO p = animaleService.addAnimale(animaleDTO);
         return ResponseEntity.ok(p);
     }

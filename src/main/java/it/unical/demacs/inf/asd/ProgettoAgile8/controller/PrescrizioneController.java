@@ -65,7 +65,7 @@ public class PrescrizioneController {
 
 
 
-    @GetMapping(value = "/pdf/{id}")
+    @GetMapping(value = "/prescrizionePDF/{id}")
     public ResponseEntity<Resource> getPdfById(@PathVariable("id") Long id) {
         System.out.println("get pdf");
         // Load file from database

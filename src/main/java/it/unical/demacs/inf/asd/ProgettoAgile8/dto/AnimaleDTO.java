@@ -80,28 +80,26 @@ public class AnimaleDTO implements Serializable {
     public void setAltezza(int altezza) {
         this.altezza = altezza;
     }
-/*
-    public List<PrescrizioneDTO> getPrescrizioni() {
-        return prescrizioni;
-    }
 
-    public void setPrescrizioni(List<PrescrizioneDTO> prescrizioni) {
-        this.prescrizioni = prescrizioni;
-    }
-
-    public List<RicevutaDTO> getRicevute() {
-        return ricevute;
-    }
-
-    public void setRicevute(List<RicevutaDTO> ricevute) {
-        this.ricevute = ricevute;
-    }
-*/
     public String getGenere() {
         return genere;
     }
 
     public void setGenere(String genere) {
         this.genere = genere;
+    }
+
+    @Override
+    public String toString() {
+        return "AnimaleDTO{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", paziente=" + paziente +
+                ", tipo='" + tipo + '\'' +
+                ", data_nascita=" + data_nascita +
+                ", peso=" + peso +
+                ", altezza=" + altezza +
+                ", genere='" + genere + '\'' +
+                '}';
     }
 }
