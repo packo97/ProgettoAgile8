@@ -21,7 +21,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -122,12 +126,13 @@ public class PrenotazioneController {
 
     @PutMapping(path =  "/prenotazione")
     public ResponseEntity<PrenotazioneDTO> update(@RequestBody PrenotazioneDTO prenotazione){
+        
         Prenotazione prenotazioneVecchia = prenotazioneService.getById(prenotazione.getId());
         if(prenotazione.isConfermato() == prenotazioneVecchia.isConfermato() && prenotazione.getData_visita()!=null){
             if(!prenotazione.getData_visita().equals(prenotazioneVecchia.getData_visita())) {
                 String testo="La data della sua prenotazione riguardante "+ prenotazione.getDescrizione() +", ha subito una variazione da "
-                        + Data.convertiData(prenotazioneVecchia.getData_visita().plusHours(1).toString())+" a "+
-                        Data.convertiData(prenotazione.getData_visita().plusHours(1).toString())+".";
+                        + Data.convertiData(prenotazioneVecchia.getData_visita().toString())+" a "+
+                        Data.convertiData(prenotazione.getData_visita().toString())+".";
                 String oggetto="Variazione data prenotazione";
                 SendEmail.getInstance().sendMail(oggetto,testo, "niko97142@gmail.com");
                 Notifica notifica = inserisciNotifica(prenotazione.getPaziente().getId(),testo,oggetto,"paziente", prenotazione.getDottore().getNome()+" "+prenotazione.getDottore().getCognome(), prenotazione.getDottore().getId());
@@ -135,7 +140,7 @@ public class PrenotazioneController {
             }
         }
         if(prenotazione.isConfermato()==false && prenotazioneVecchia.isConfermato()==true){
-            String testo="La sua prenotazione riguardante "+ prenotazione.getDescrizione() +" e stabilita in data "+ Data.convertiData(prenotazioneVecchia.getData_visita().plusHours(1).toString())
+            String testo="La sua prenotazione riguardante "+ prenotazione.getDescrizione() +" e stabilita in data "+ Data.convertiData(prenotazioneVecchia.getData_visita().toString())
                     +" è stata annullata, riceverà un altra email quando verrà riconfermata.";
             String oggetto="Prenotazione annullata";
             SendEmail.getInstance().sendMail(oggetto,testo, "niko97142@gmail.com");
@@ -143,7 +148,7 @@ public class PrenotazioneController {
             notificaService.save(notifica);
         }
         if(prenotazione.isConfermato()==true && prenotazioneVecchia.isConfermato()==false){
-            String testo="La sua prenotazione riguardante "+ prenotazione.getDescrizione() +", è stata confermata per la data "+Data.convertiData(prenotazione.getData_visita().plusHours(1).toString());
+            String testo="La sua prenotazione riguardante "+ prenotazione.getDescrizione() +", è stata confermata per la data "+Data.convertiData(prenotazione.getData_visita().toString());
             String oggetto="Prenotazione Confermata";
             SendEmail.getInstance().sendMail(oggetto,testo, "niko97142@gmail.com");
             Notifica notifica = inserisciNotifica(prenotazione.getPaziente().getId(),testo,oggetto,"paziente",prenotazione.getDottore().getNome()+" "+prenotazione.getDottore().getCognome(), prenotazione.getDottore().getId());

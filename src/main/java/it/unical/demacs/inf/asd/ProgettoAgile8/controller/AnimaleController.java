@@ -30,6 +30,12 @@ public class AnimaleController {
         AnimaleDTO p = animaleService.addAnimale(animaleDTO);
         return ResponseEntity.ok(p);
     }
+    @PutMapping(path = "/animale")
+    public ResponseEntity<AnimaleDTO> update(@RequestBody AnimaleDTO animaleDTO){
+        System.out.println((animaleDTO));
+        AnimaleDTO p = animaleService.updateAnimale(animaleDTO);
+        return ResponseEntity.ok(p);
+    }
 
     @PostMapping(path = "/animaleByPaziente")
     public ResponseEntity<List<AnimaleDTO>> animaleByPaziente(@RequestBody PazienteDTO paziente){

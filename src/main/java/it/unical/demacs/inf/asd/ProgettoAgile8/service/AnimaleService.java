@@ -10,4 +10,6 @@ public interface AnimaleService {
 
     List<AnimaleDTO> findAllByPaziente(PazienteDTO paziente);
     AnimaleDTO addAnimale(AnimaleDTO animaleDTO);
+    AnimaleDTO updateAnimale(AnimaleDTO animaleDTO);
+
 }

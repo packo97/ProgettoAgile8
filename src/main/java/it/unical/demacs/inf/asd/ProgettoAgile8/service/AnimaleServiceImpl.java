@@ -34,16 +34,18 @@ public class AnimaleServiceImpl implements AnimaleService{
 
     @Override
     @Transactional
+    public AnimaleDTO updateAnimale(AnimaleDTO animaleDTO) {
+        Paziente paziente = modelMapper.map(animaleDTO.getPaziente(), Paziente.class);
+        animaleDAO.updateAnimale(animaleDTO.getNome(),animaleDTO.getData_nascita(),animaleDTO.getTipo(),animaleDTO.getGenere(),animaleDTO.getPeso(),animaleDTO.getAltezza(),paziente,animaleDTO.getId());
+        return animaleDTO;
+
+    }
+    @Override
     public AnimaleDTO addAnimale(AnimaleDTO animaleDTO) {
         Paziente paziente = modelMapper.map(animaleDTO.getPaziente(), Paziente.class);
-        if(animaleDAO.findAllByPaziente(paziente)==null) {
-            Animale animale = modelMapper.map(animaleDTO, Animale.class);
-            Animale saved = animaleDAO.save(animale);
-            return modelMapper.map(saved, AnimaleDTO.class);
-        }else{
-            animaleDAO.updateAnimale(animaleDTO.getNome(),animaleDTO.getData_nascita(),animaleDTO.getTipo(),animaleDTO.getGenere(),animaleDTO.getPeso(),animaleDTO.getAltezza(),paziente,animaleDTO.getId());
-            return animaleDTO;
-        }
+        Animale animale = modelMapper.map(animaleDTO, Animale.class);
+        Animale saved = animaleDAO.save(animale);
+        return modelMapper.map(saved, AnimaleDTO.class);
 
     }
 }
