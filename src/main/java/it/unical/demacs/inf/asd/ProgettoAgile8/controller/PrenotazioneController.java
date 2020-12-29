@@ -7,8 +7,10 @@ import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PazienteDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PrenotazioneDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Dottore;
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Notifica;
+import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Paziente;
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Prenotazione;
 import it.unical.demacs.inf.asd.ProgettoAgile8.service.NotificaService;
+import it.unical.demacs.inf.asd.ProgettoAgile8.service.PazienteService;
 import it.unical.demacs.inf.asd.ProgettoAgile8.service.PrenotazioneService;
 import it.unical.demacs.inf.asd.ProgettoAgile8.utility.Data;
 import it.unical.demacs.inf.asd.ProgettoAgile8.utility.SendEmail;
@@ -34,6 +36,8 @@ public class PrenotazioneController {
 
     @Autowired
     private NotificaService notificaService;
+    @Autowired
+    private PazienteService pazienteService;
 
     @PostMapping(path = "/prenotazioniByPaziente")
     public ResponseEntity<List<PrenotazioneDTO>> getPrenotazioniByPaziente(@RequestBody PazienteDTO paziente){
@@ -100,9 +104,16 @@ public class PrenotazioneController {
     public HttpStatus delete(/*@RequestBody PrenotazioneDTO prenotazione*/@PathVariable Long id){
         System.out.println("deleete prenotazione");
         Prenotazione p = prenotazioneService.getById(id);
-        String testo="La sua prenotazione riguardante "+ p.getDescrizione() +", è stata annullata.";
+        String testo;
+        if(p.getData_visita()==null)
+            testo="La prenotazione del paziente "+p.getPaziente().getNome()+" "+ p.getPaziente().getCognome()+" riguardante "+ p.getDescrizione() +", è stata annullata.";
+        else
+            testo="La prenotazione del paziente "+p.getPaziente().getNome()+" "+ p.getPaziente().getCognome()+" riguardante "+ p.getDescrizione() +" e stabilita per la data "+Data.convertiData(p.getData_visita().toString())+" è stata annullata.";
+
         String oggetto="Annullamento prenotazione";
-        Notifica notifica = inserisciNotifica(p.getPaziente().getId(),testo,oggetto, true,p.getDottore().getNome()+" "+p.getDottore().getCognome());
+        Notifica notifica = inserisciNotifica(p.getPaziente().getId(),testo,oggetto, "segretaria",p.getDottore().getNome()+" "+p.getDottore().getCognome(), p.getDottore().getId());
+        notificaService.save(notifica);
+        notifica = inserisciNotifica(p.getPaziente().getId(),testo,oggetto, "dottore",p.getDottore().getNome()+" "+p.getDottore().getCognome(), p.getDottore().getId());
         notificaService.save(notifica);
         prenotazioneService.deletePrenotazione(id);
         SendEmail.getInstance().sendMailDelete(/*prenotazione.getPaziente().getEmail()*/ "niko97142@gmail.com");
@@ -119,7 +130,7 @@ public class PrenotazioneController {
                         Data.convertiData(prenotazione.getData_visita().plusHours(1).toString())+".";
                 String oggetto="Variazione data prenotazione";
                 SendEmail.getInstance().sendMail(oggetto,testo, "niko97142@gmail.com");
-                Notifica notifica = inserisciNotifica(prenotazione.getPaziente().getId(),testo,oggetto,false, prenotazione.getDottore().getNome()+" "+prenotazione.getDottore().getCognome());
+                Notifica notifica = inserisciNotifica(prenotazione.getPaziente().getId(),testo,oggetto,"paziente", prenotazione.getDottore().getNome()+" "+prenotazione.getDottore().getCognome(), prenotazione.getDottore().getId());
                 notificaService.save(notifica);
             }
         }
@@ -128,28 +139,29 @@ public class PrenotazioneController {
                     +" è stata annullata, riceverà un altra email quando verrà riconfermata.";
             String oggetto="Prenotazione annullata";
             SendEmail.getInstance().sendMail(oggetto,testo, "niko97142@gmail.com");
-            Notifica notifica = inserisciNotifica(prenotazione.getPaziente().getId(),testo,oggetto,false,prenotazione.getDottore().getNome()+" "+prenotazione.getDottore().getCognome());
+            Notifica notifica = inserisciNotifica(prenotazione.getPaziente().getId(),testo,oggetto,"paziente",prenotazione.getDottore().getNome()+" "+prenotazione.getDottore().getCognome(), prenotazione.getDottore().getId());
             notificaService.save(notifica);
         }
         if(prenotazione.isConfermato()==true && prenotazioneVecchia.isConfermato()==false){
             String testo="La sua prenotazione riguardante "+ prenotazione.getDescrizione() +", è stata confermata per la data "+Data.convertiData(prenotazione.getData_visita().plusHours(1).toString());
             String oggetto="Prenotazione Confermata";
             SendEmail.getInstance().sendMail(oggetto,testo, "niko97142@gmail.com");
-            Notifica notifica = inserisciNotifica(prenotazione.getPaziente().getId(),testo,oggetto,false,prenotazione.getDottore().getNome()+" "+prenotazione.getDottore().getCognome());
+            Notifica notifica = inserisciNotifica(prenotazione.getPaziente().getId(),testo,oggetto,"paziente",prenotazione.getDottore().getNome()+" "+prenotazione.getDottore().getCognome(), prenotazione.getDottore().getId());
             notificaService.save(notifica);
         }
         PrenotazioneDTO prenotazioneNuova = prenotazioneService.updatePrenotazione(prenotazione);
         return ResponseEntity.ok(prenotazioneNuova);
     }
 
-    public static Notifica inserisciNotifica(Long id, String testo, String oggetto,Boolean segretaria, String dottore){
+    public static Notifica inserisciNotifica(Long id, String testo, String oggetto,String ricevitore, String dottore, Long dottoreId){
         Notifica notifica = new Notifica();
         notifica.setPaziente(id);
         notifica.setVista(false);
         notifica.setTesto(testo);
         notifica.setOggetto(oggetto);
-        notifica.setSegretaria(segretaria);
+        notifica.setRicevitore(ricevitore);
         notifica.setData(LocalDateTime.now());
+        notifica.setDottoreId(dottoreId);
         System.out.println(dottore);
         notifica.setDottore(dottore);
         return notifica;
