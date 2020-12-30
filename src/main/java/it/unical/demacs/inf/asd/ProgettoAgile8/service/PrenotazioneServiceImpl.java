@@ -51,6 +51,7 @@ public class PrenotazioneServiceImpl implements PrenotazioneService{
         return prenotazioneDAO.findById(prenotazioneToSave.getId()).map(
                 prenotazione -> {
                                 prenotazione.setConfermato(prenotazioneToSave.isConfermato());
+                                prenotazione.setUrgente(prenotazioneToSave.isUrgente());
                                 prenotazione.setData_visita(prenotazioneToSave.getData_visita());
                                 return modelMapper.map(prenotazioneDAO.save(prenotazione), PrenotazioneDTO.class);
                 }

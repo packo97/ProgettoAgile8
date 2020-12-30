@@ -140,12 +140,40 @@ public class PrenotazioneController {
             }
         }
         if(prenotazione.isConfermato()==false && prenotazioneVecchia.isConfermato()==true){
-            String testo="La sua prenotazione riguardante "+ prenotazione.getDescrizione() +" e stabilita in data "+ Data.convertiData(prenotazioneVecchia.getData_visita().toString())
-                    +" è stata annullata, riceverà un altra email quando verrà riconfermata.";
-            String oggetto="Prenotazione annullata";
-            SendEmail.getInstance().sendMail(oggetto,testo, "niko97142@gmail.com");
-            Notifica notifica = inserisciNotifica(prenotazione.getPaziente().getId(),testo,oggetto,"paziente",prenotazione.getDottore().getNome()+" "+prenotazione.getDottore().getCognome(), prenotazione.getDottore().getId());
-            notificaService.save(notifica);
+            if(prenotazione.isUrgente()==true ){
+                String testo="La sua prenotazione riguardante "+ prenotazione.getDescrizione() +" e stabilita in data "+ Data.convertiData(prenotazioneVecchia.getData_visita().toString())
+                        +" è stata annullata ma comunque inserita fra quelle urgenti, riceverà un altra email quando verrà riconfermata.";
+                String oggetto="Prenotazione annullata";
+                SendEmail.getInstance().sendMail(oggetto,testo, "niko97142@gmail.com");
+                Notifica notifica = inserisciNotifica(prenotazione.getPaziente().getId(),testo,oggetto,"paziente",prenotazione.getDottore().getNome()+" "+prenotazione.getDottore().getCognome(), prenotazione.getDottore().getId());
+                notificaService.save(notifica);
+            }
+            else if(prenotazione.isUrgente()==false ){
+                String testo="La sua prenotazione riguardante "+ prenotazione.getDescrizione() +" e stabilita in data "+ Data.convertiData(prenotazioneVecchia.getData_visita().toString())
+                        +" è stata annullata, riceverà un altra email quando verrà riconfermata.";
+                String oggetto="Prenotazione annullata";
+                SendEmail.getInstance().sendMail(oggetto,testo, "niko97142@gmail.com");
+                Notifica notifica = inserisciNotifica(prenotazione.getPaziente().getId(),testo,oggetto,"paziente",prenotazione.getDottore().getNome()+" "+prenotazione.getDottore().getCognome(), prenotazione.getDottore().getId());
+                notificaService.save(notifica);
+            }
+        }
+        if(prenotazione.isConfermato()==false && prenotazioneVecchia.isConfermato()==false){
+            if(prenotazione.isUrgente()==true && prenotazioneVecchia.isUrgente()==false)
+            {
+                String testo="La sua prenotazione riguardante "+ prenotazione.getDescrizione() +" non ancora programmata in una data è stata spostata tra le prenotazioni urgenti.";
+                String oggetto="Prenotazione spostata in urgenti";
+                SendEmail.getInstance().sendMail(oggetto,testo, "niko97142@gmail.com");
+                Notifica notifica = inserisciNotifica(prenotazione.getPaziente().getId(),testo,oggetto,"paziente",prenotazione.getDottore().getNome()+" "+prenotazione.getDottore().getCognome(), prenotazione.getDottore().getId());
+                notificaService.save(notifica);
+            }
+            else if(prenotazione.isUrgente()==false && prenotazioneVecchia.isUrgente()==true){
+                String testo="La sua prenotazione riguardante "+ prenotazione.getDescrizione() +" non ancora programmata in una data è stata rimossa dalle prenotazioni urgenti.";
+                String oggetto="Prenotazione rimossa dalle urgenti";
+                SendEmail.getInstance().sendMail(oggetto,testo, "niko97142@gmail.com");
+                Notifica notifica = inserisciNotifica(prenotazione.getPaziente().getId(),testo,oggetto,"paziente",prenotazione.getDottore().getNome()+" "+prenotazione.getDottore().getCognome(), prenotazione.getDottore().getId());
+                notificaService.save(notifica);
+            }
+
         }
         if(prenotazione.isConfermato()==true && prenotazioneVecchia.isConfermato()==false){
             String testo="La sua prenotazione riguardante "+ prenotazione.getDescrizione() +", è stata confermata per la data "+Data.convertiData(prenotazione.getData_visita().toString());
