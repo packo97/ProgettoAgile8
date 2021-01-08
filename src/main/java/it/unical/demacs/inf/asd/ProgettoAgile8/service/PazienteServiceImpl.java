@@ -1,5 +1,6 @@
 package it.unical.demacs.inf.asd.ProgettoAgile8.service;
 
+import it.unical.demacs.inf.asd.ProgettoAgile8.core.RecuperaPasswordDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dao.PazienteDAO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PazienteDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PrenotazioneDTO;
@@ -7,10 +8,12 @@ import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Dottore;
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Paziente;
 
 
+import it.unical.demacs.inf.asd.ProgettoAgile8.utility.SendEmail;
 import it.unical.demacs.inf.asd.ProgettoAgile8.utility.Sicurezza;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.modelmapper.ModelMapper;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -52,6 +55,7 @@ public class PazienteServiceImpl implements PazienteService{
         if(p1==null)
             return false;
         String salt= p1.getSalt();
+        System.out.println("salt nel db "+salt);
         Paziente p = pazienteDAO.findAllByEmailAndPassword(email,Sicurezza.getSecurePassword(password,salt.getBytes(StandardCharsets.UTF_8)));
         if(p==null)
             return false;
@@ -81,5 +85,16 @@ public class PazienteServiceImpl implements PazienteService{
     @Override
     public PazienteDTO findAllById(Long id) {
         return modelMapper.map(pazienteDAO.findAllById(id), PazienteDTO.class);
+    }
+
+
+    @Override
+    @Transactional
+    public void modificaPassword(RecuperaPasswordDTO recuperaPasswordDTO) throws NoSuchAlgorithmException {
+        byte[] salt = Sicurezza.getSalt();
+        String saltString = salt.toString();
+        String password = Sicurezza.getSecurePassword(recuperaPasswordDTO.getNuovaPassword(),saltString.getBytes(StandardCharsets.UTF_8));
+        pazienteDAO.updatePassword(password,saltString,recuperaPasswordDTO.getEmail());
+        SendEmail.getInstance().sendMailPasswordCambiata(recuperaPasswordDTO.getEmail());
     }
 }

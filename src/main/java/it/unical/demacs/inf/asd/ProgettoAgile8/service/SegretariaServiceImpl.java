@@ -1,15 +1,18 @@
 package it.unical.demacs.inf.asd.ProgettoAgile8.service;
 
+import it.unical.demacs.inf.asd.ProgettoAgile8.core.RecuperaPasswordDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dao.SegretariaDAO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.DottoreDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.SegretariaDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Dottore;
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Paziente;
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Segretaria;
+import it.unical.demacs.inf.asd.ProgettoAgile8.utility.SendEmail;
 import it.unical.demacs.inf.asd.ProgettoAgile8.utility.Sicurezza;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
@@ -54,5 +57,21 @@ public class SegretariaServiceImpl implements SegretariaService{
     public SegretariaDTO getSegretariaByEmail(String email) {
         Segretaria segretaria = segretariaDAO.findAllByEmail(email);
         return modelMapper.map(segretaria, SegretariaDTO.class);
+    }
+
+
+    @Override
+    @Transactional
+    public void modificaPassword(RecuperaPasswordDTO recuperaPasswordDTO) {
+        byte[] salt = new byte[0];
+        try {
+            salt = Sicurezza.getSalt();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        String saltString = salt.toString();
+        String password = Sicurezza.getSecurePassword(recuperaPasswordDTO.getNuovaPassword(),saltString.getBytes(StandardCharsets.UTF_8));
+        segretariaDAO.updatePassword(password,saltString,recuperaPasswordDTO.getEmail());
+        SendEmail.getInstance().sendMailPasswordCambiata(recuperaPasswordDTO.getEmail());
     }
 }

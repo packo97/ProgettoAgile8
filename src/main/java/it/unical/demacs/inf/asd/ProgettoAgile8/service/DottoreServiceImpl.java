@@ -1,5 +1,6 @@
 package it.unical.demacs.inf.asd.ProgettoAgile8.service;
 
+import it.unical.demacs.inf.asd.ProgettoAgile8.core.RecuperaPasswordDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dao.DottoreDAO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dao.PazienteDAO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.DottoreDTO;
@@ -7,10 +8,12 @@ import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PazienteDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PrenotazioneDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Dottore;
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Paziente;
+import it.unical.demacs.inf.asd.ProgettoAgile8.utility.SendEmail;
 import it.unical.demacs.inf.asd.ProgettoAgile8.utility.Sicurezza;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
@@ -64,5 +67,21 @@ public class DottoreServiceImpl  implements DottoreService{
     public DottoreDTO getDottoreByEmail(String email) {
         Dottore dottore = dottoreDAO.findAllByEmail(email);
         return modelMapper.map(dottore, DottoreDTO.class);
+    }
+    
+
+    @Override
+    @Transactional
+    public void modificaPassword(RecuperaPasswordDTO recuperaPasswordDTO) {
+        byte[] salt = new byte[0];
+        try {
+            salt = Sicurezza.getSalt();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        String saltString = salt.toString();
+        String password = Sicurezza.getSecurePassword(recuperaPasswordDTO.getNuovaPassword(),saltString.getBytes(StandardCharsets.UTF_8));
+        dottoreDAO.updatePassword(password,saltString,recuperaPasswordDTO.getEmail());
+        SendEmail.getInstance().sendMailPasswordCambiata(recuperaPasswordDTO.getEmail());
     }
 }
