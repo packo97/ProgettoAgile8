@@ -1,5 +1,6 @@
 package it.unical.demacs.inf.asd.ProgettoAgile8.service;
 
+import it.unical.demacs.inf.asd.ProgettoAgile8.core.RecuperaPasswordDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dao.PazienteDAO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PazienteDTO;
 
@@ -15,5 +16,5 @@ public interface PazienteService {
     List<PazienteDTO> getPazienti();
     List<PazienteDTO> ricerca(String valoreRicerca);
     PazienteDTO findAllById(Long id);
-
+    void modificaPassword(RecuperaPasswordDTO recuperaPasswordDTO) throws NoSuchAlgorithmException;
 }

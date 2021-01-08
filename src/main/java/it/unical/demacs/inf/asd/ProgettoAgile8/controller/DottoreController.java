@@ -4,15 +4,21 @@ package it.unical.demacs.inf.asd.ProgettoAgile8.controller;
 
 
 import it.unical.demacs.inf.asd.ProgettoAgile8.core.DatiLogin;
+import it.unical.demacs.inf.asd.ProgettoAgile8.core.RecuperaPasswordDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.DottoreDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PazienteDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PrenotazioneDTO;
+import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Notifica;
 import it.unical.demacs.inf.asd.ProgettoAgile8.service.DottoreService;
+import it.unical.demacs.inf.asd.ProgettoAgile8.service.NotificaService;
+import it.unical.demacs.inf.asd.ProgettoAgile8.utility.Data;
+import it.unical.demacs.inf.asd.ProgettoAgile8.utility.SendEmail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -23,6 +29,29 @@ public class DottoreController {
   // CHANGE TO USE DTO
   @Autowired
   private DottoreService dottoreService;
+  @Autowired
+  private NotificaService notificaService;
+
+  @PostMapping( path= "/inviaEmailDottore")
+  public ResponseEntity<RecuperaPasswordDTO> inviaCodice(@RequestBody RecuperaPasswordDTO recuperaPasswordDTO) {
+    String codice = SendEmail.getInstance().sendMailCodice(recuperaPasswordDTO.getEmail());
+    recuperaPasswordDTO.setCodice(codice);
+    return ResponseEntity.ok(recuperaPasswordDTO);
+  }
+
+  @PostMapping( path= "/modificaPasswordDottore")
+  public ResponseEntity<RecuperaPasswordDTO> modificaPassword(@RequestBody RecuperaPasswordDTO recuperaPasswordDTO) {
+
+    String testo="La sua password è stata modificata correttamente!";
+    String oggetto="Modifica Password";
+    Notifica notifica = inserisciNotifica(null,testo,oggetto,"dottore","",dottoreService.getDottoreByEmail(recuperaPasswordDTO.getEmail()).getId());
+    notificaService.save(notifica);
+
+    dottoreService.modificaPassword(recuperaPasswordDTO);
+
+    return ResponseEntity.ok(recuperaPasswordDTO);
+  }
+
 
   // usare dto nel response e anche nel requestbody
   @PostMapping(path = "/dottore")
@@ -50,5 +79,19 @@ public class DottoreController {
     System.out.println(email);
     return ResponseEntity.ok(dottoreService.getDottoreByEmail(email));
   }
+
+
+public static Notifica inserisciNotifica(Long id, String testo, String oggetto,String ricevitore, String dottore, Long dottoreId){
+        Notifica notifica = new Notifica();
+        notifica.setPaziente(id);
+        notifica.setVista(false);
+        notifica.setTesto(testo);
+        notifica.setOggetto(oggetto);
+        notifica.setRicevitore(ricevitore);
+        notifica.setData(LocalDateTime.now());
+        notifica.setDottoreId(dottoreId);
+        notifica.setDottore(dottore);
+        return notifica;
+        }
 
 }

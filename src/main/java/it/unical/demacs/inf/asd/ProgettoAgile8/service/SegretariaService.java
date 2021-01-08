@@ -1,5 +1,6 @@
 package it.unical.demacs.inf.asd.ProgettoAgile8.service;
 
+import it.unical.demacs.inf.asd.ProgettoAgile8.core.RecuperaPasswordDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.SegretariaDTO;
 
 import java.security.NoSuchAlgorithmException;
@@ -10,4 +11,5 @@ public interface SegretariaService {
 
     Boolean login(String email, String password);
     SegretariaDTO getSegretariaByEmail(String email);
+    void modificaPassword(RecuperaPasswordDTO recuperaPasswordDTO);
 }

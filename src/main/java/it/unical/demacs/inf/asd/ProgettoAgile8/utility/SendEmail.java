@@ -49,21 +49,6 @@ public class SendEmail {
         }
     }
 
-    public static String randomString(int length){
-        Random rand = new Random();
-        StringBuffer tempStr = new StringBuffer();
-        tempStr.append("");
-        for (int i = 0; i < length; i++) {
-            int c = rand.nextInt(122 - 48) + 48;
-            if((c >= 58 && c <= 64) || (c >= 91 && c <= 96)){
-                i--;
-                continue;
-            }
-            tempStr.append((char)c);
-        }
-        return tempStr.toString();
-    }
-
     public void sendMailDelete(String destinatario) {
         Properties prop = new Properties();
         prop.put("mail.smtp.host", "smtp.libero.it");
@@ -90,6 +75,83 @@ public class SendEmail {
                     "\n Il team di Veterinary Clinic ");
             Transport.send(message);
         } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+    }
+    public String sendMailCodice(String destinatario) {
+        String codice=randomString(8);
+        Properties prop = new Properties();
+        prop.put("mail.smtp.host", "smtp.libero.it");
+        prop.put("mail.smtp.port", "587");
+        prop.put("mail.smtp.auth", "true");
+        prop.put("mail.smtp.starttls.enable", "true");
+        Session session = Session.getInstance(prop,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(username, password);
+                    }
+                });
+        try {
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("veterinary_clinic@libero.it"));
+            message.setRecipients(
+                    Message.RecipientType.TO,
+                    InternetAddress.parse(destinatario)
+            );
+            message.setSubject("Recupero password Veterinary Clinic");
+            message.setText("Gentile " + "utente" + "," +
+                    "\n\n Il suo codice di verifica è: " + codice +
+                    "\n\n Cordiali saluti," +
+                    "\n Il team di Veterinary Clinic ");
+            Transport.send(message);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+        return codice;
+    }
+
+    public static String randomString(int length){
+        Random rand = new Random();
+        StringBuffer tempStr = new StringBuffer();
+        tempStr.append("");
+        for (int i = 0; i < length; i++) {
+            int c = rand.nextInt(122 - 48) + 48;
+            if((c >= 58 && c <= 64) || (c >= 91 && c <= 96)){
+                i--;
+                continue;
+            }
+            tempStr.append((char)c);
+        }
+        return tempStr.toString();
+    }
+
+    public void sendMailPasswordCambiata(String destinatario) {
+        Properties prop = new Properties();
+        prop.put("mail.smtp.host", "smtp.libero.it");
+        prop.put("mail.smtp.port", "587");
+        prop.put("mail.smtp.auth", "true");
+        prop.put("mail.smtp.starttls.enable", "true");
+        Session session = Session.getInstance(prop,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(username, password);
+                    }
+                });
+        try {
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("veterinary_clinic@libero.it"));
+            message.setRecipients(
+                    Message.RecipientType.TO,
+                    InternetAddress.parse(destinatario)
+            );
+            message.setSubject("Annullamento prenotazione Veterinary Clinic");
+            message.setText("Gentile " + "utente" + "," +
+                    "\n\n La sua password è stata modificata correttamente" +
+                    "\n\n Cordiali saluti," +
+                    "\n Il team di Veterinary Clinic ");
+            Transport.send(message);
+        }
+        catch (MessagingException e) {
             e.printStackTrace();
         }
     }

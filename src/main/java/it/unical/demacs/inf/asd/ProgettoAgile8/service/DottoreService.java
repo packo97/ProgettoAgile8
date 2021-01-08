@@ -1,5 +1,6 @@
 package it.unical.demacs.inf.asd.ProgettoAgile8.service;
 
+import it.unical.demacs.inf.asd.ProgettoAgile8.core.RecuperaPasswordDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.DottoreDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PazienteDTO;
 
@@ -13,4 +14,5 @@ public interface DottoreService {
     List<DottoreDTO> getAll();
     DottoreDTO getDottoreByEmail(String email);
 
+    void modificaPassword(RecuperaPasswordDTO recuperaPasswordDTO);
 }

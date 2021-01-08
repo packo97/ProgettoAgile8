@@ -46,6 +46,7 @@ public class PrenotazioneServiceImpl implements PrenotazioneService{
         //prenotazioneDAO.delete(p);
     }
 
+
     @Override
     public PrenotazioneDTO updatePrenotazione(PrenotazioneDTO prenotazioneToSave) {
         return prenotazioneDAO.findById(prenotazioneToSave.getId()).map(
