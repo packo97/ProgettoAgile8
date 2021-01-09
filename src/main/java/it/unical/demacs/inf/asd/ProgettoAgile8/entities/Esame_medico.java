@@ -23,7 +23,7 @@ public class Esame_medico {
     private Dottore dottore;
 
     @Column(name="content")
-    @Lob
+    @Basic
     private byte[] content;
 
     public Long getId() {

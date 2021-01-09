@@ -2,11 +2,12 @@ package it.unical.demacs.inf.asd.ProgettoAgile8.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import it.unical.demacs.inf.asd.ProgettoAgile8.core.ListaItemRicevuta;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.AnimaleDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.DottoreDTO;
-import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PrescrizioneDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.RicevutaDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.service.RicevutaService;
+import it.unical.demacs.inf.asd.ProgettoAgile8.utility.PdfCreator;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -69,5 +70,19 @@ public class RicevutaController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + "test" + "\"")
                 .body(new ByteArrayResource(ricevuta.getContent()));
     }
+
+
+    @PostMapping(value = "/creaRicevuta")
+    public ResponseEntity<Resource> creaRicevuta(@RequestBody ListaItemRicevuta listaItemRicevuta) {
+        System.out.println("crea ricevuta");
+
+        System.out.println(listaItemRicevuta);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + "test" + "\"")
+                .body(new ByteArrayResource(PdfCreator.creaRicevutaPDF(listaItemRicevuta)));
+    }
+
 
 }

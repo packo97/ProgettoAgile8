@@ -43,6 +43,10 @@ public class Paziente {
     @Column(name = "salt", nullable = true)
     private String salt;
 
+
+    @Column(name = "img", length = 100000)
+    private byte[] img;
+
     public String getSalt() {
         return salt;
     }
@@ -124,6 +128,11 @@ public class Paziente {
         this.animale = animale;
     }
 
+    public byte[] getImg() {
+        return img;
+    }
 
-
+    public void setImg(byte[] img) {
+        this.img = img;
+    }
 }

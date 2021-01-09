@@ -2,6 +2,8 @@ package it.unical.demacs.inf.asd.ProgettoAgile8.dto;
 
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Dottore;
 
+import javax.persistence.Column;
+
 
 public class SegretariaDTO {
 
@@ -22,6 +24,8 @@ public class SegretariaDTO {
     //private Dottore dottore;
 
     private String salt;
+
+    private byte[] img;
 
     public String getSalt() {
         return salt;
@@ -94,4 +98,12 @@ public class SegretariaDTO {
     public void setDottore(Dottore dottore) {
         this.dottore = dottore;
     }*/
+
+    public byte[] getImg() {
+        return img;
+    }
+
+    public void setImg(byte[] img) {
+        this.img = img;
+    }
 }

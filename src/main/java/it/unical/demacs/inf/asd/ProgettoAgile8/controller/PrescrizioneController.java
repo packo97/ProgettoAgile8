@@ -1,18 +1,16 @@
 package it.unical.demacs.inf.asd.ProgettoAgile8.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import io.swagger.v3.core.util.Json;
+import it.unical.demacs.inf.asd.ProgettoAgile8.core.ListaItemPrescrizione;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.AnimaleDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.DottoreDTO;
-import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PazienteDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PrescrizioneDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.service.PrescrizioneService;
+import it.unical.demacs.inf.asd.ProgettoAgile8.utility.PdfCreator;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -21,9 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 
@@ -75,6 +71,20 @@ public class PrescrizioneController {
                 .contentType(MediaType.APPLICATION_PDF)
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + "test" + "\"")
                 .body(new ByteArrayResource(prescrizione.getContent()));
+    }
+
+
+
+    @PostMapping(value = "/creaPrescrizione")
+    public ResponseEntity<Resource> creaPrescrizione(@RequestBody ListaItemPrescrizione listaItemPrescrizione) {
+        System.out.println("crea prescrizione");
+
+        System.out.println(listaItemPrescrizione);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + "test" + "\"")
+                .body(new ByteArrayResource(PdfCreator.creaPrescrizionePDF(listaItemPrescrizione)));
     }
 
 }

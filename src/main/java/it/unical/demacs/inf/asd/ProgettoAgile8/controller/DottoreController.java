@@ -4,6 +4,7 @@ package it.unical.demacs.inf.asd.ProgettoAgile8.controller;
 
 
 import it.unical.demacs.inf.asd.ProgettoAgile8.core.DatiLogin;
+import it.unical.demacs.inf.asd.ProgettoAgile8.core.Filtro;
 import it.unical.demacs.inf.asd.ProgettoAgile8.core.RecuperaPasswordDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.DottoreDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PazienteDTO;
@@ -11,12 +12,14 @@ import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PrenotazioneDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Notifica;
 import it.unical.demacs.inf.asd.ProgettoAgile8.service.DottoreService;
 import it.unical.demacs.inf.asd.ProgettoAgile8.service.NotificaService;
-import it.unical.demacs.inf.asd.ProgettoAgile8.utility.Data;
 import it.unical.demacs.inf.asd.ProgettoAgile8.utility.SendEmail;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -79,6 +82,33 @@ public class DottoreController {
     System.out.println(email);
     return ResponseEntity.ok(dottoreService.getDottoreByEmail(email));
   }
+
+  @PutMapping(path = "/dottore")
+  public ResponseEntity<DottoreDTO> update(@RequestBody DottoreDTO dottoreDTO){
+    DottoreDTO d = dottoreService.updateDottore(dottoreDTO);
+    return ResponseEntity.ok(d);
+  }
+
+  @PutMapping(path = "/updatePasswordDottore")
+  public HttpStatus updatePassword(@RequestBody Filtro filtro){
+    String passwordVecchia = filtro.getPasswordVecchia();
+    String passwordNuova = filtro.getPasswordNuova();
+    DottoreDTO dto = filtro.getDottore();
+    if(dottoreService.controllaPassword(passwordVecchia, dto)){
+      dottoreService.updatePassword(passwordNuova, dto);
+      return HttpStatus.OK;
+    }
+    else
+      return HttpStatus.BAD_REQUEST;
+
+  }
+  @PostMapping("/uploadImageDottore")
+  public HttpStatus uplaodImage(@RequestParam("imageFile") MultipartFile file, @RequestParam("dottoreID") Long dottoreID) throws IOException {
+    byte[] bytes = file.getBytes();
+    dottoreService.updateImg(bytes,dottoreID);
+    return HttpStatus.OK;
+  }
+
 
 
 public static Notifica inserisciNotifica(Long id, String testo, String oggetto,String ricevitore, String dottore, Long dottoreId){

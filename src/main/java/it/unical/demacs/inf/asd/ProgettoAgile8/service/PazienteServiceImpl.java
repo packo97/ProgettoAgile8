@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.modelmapper.ModelMapper;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.awt.*;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -96,5 +97,37 @@ public class PazienteServiceImpl implements PazienteService{
         String password = Sicurezza.getSecurePassword(recuperaPasswordDTO.getNuovaPassword(),saltString.getBytes(StandardCharsets.UTF_8));
         pazienteDAO.updatePassword(password,saltString,recuperaPasswordDTO.getEmail());
         SendEmail.getInstance().sendMailPasswordCambiata(recuperaPasswordDTO.getEmail());
+    }
+
+    @Override
+    @Transactional
+    public PazienteDTO updatePaziente(PazienteDTO dto) {
+        Paziente p = modelMapper.map(dto, Paziente.class);
+        pazienteDAO.updatePaziente(p.getNome(), p.getCognome(), p.getCodice_fiscale(), p.getNumero_telefono(), p.getId());
+        return dto;
+    }
+
+    @Override
+    public boolean controllaPassword(String passwordVecchia, PazienteDTO dto) {
+        Paziente p = pazienteDAO.findAllByEmail(dto.getEmail());
+        String salt = p.getSalt();
+        String hashPasswordDB = p.getPassword();
+        String hashPasswordInserita = Sicurezza.getSecurePassword(passwordVecchia, salt.getBytes(StandardCharsets.UTF_8));
+        return hashPasswordDB.equals(hashPasswordInserita);
+    }
+
+    @Override
+    @Transactional
+    public void updatePassword(String passwordNuova, PazienteDTO dto) {
+        Paziente p = pazienteDAO.findAllByEmail(dto.getEmail());
+        String salt = p.getSalt();
+        String hashPasswordInserita = Sicurezza.getSecurePassword(passwordNuova, salt.getBytes(StandardCharsets.UTF_8));
+        pazienteDAO.updatePassword(hashPasswordInserita, dto.getId());
+    }
+
+    @Override
+    @Transactional
+    public void updateImg(byte[] img, Long pazienteID) {
+        pazienteDAO.updateImg(img,pazienteID);
     }
 }

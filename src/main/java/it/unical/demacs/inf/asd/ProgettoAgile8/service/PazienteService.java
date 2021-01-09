@@ -16,5 +16,10 @@ public interface PazienteService {
     List<PazienteDTO> getPazienti();
     List<PazienteDTO> ricerca(String valoreRicerca);
     PazienteDTO findAllById(Long id);
+
+    PazienteDTO updatePaziente(PazienteDTO dto);
+    boolean controllaPassword(String passwordVecchia, PazienteDTO dto);
+    void updatePassword(String passwordNuova, PazienteDTO dto);
+    void updateImg(byte[] img, Long pazienteID);
     void modificaPassword(RecuperaPasswordDTO recuperaPasswordDTO) throws NoSuchAlgorithmException;
 }

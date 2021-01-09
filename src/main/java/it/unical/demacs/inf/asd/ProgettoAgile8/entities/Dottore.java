@@ -68,6 +68,8 @@ public class Dottore {
         this.salt = salt;
     }
 
+    @Column(name = "img", length = 10000)
+    private byte[] img;
 
     public List<Prenotazione> getPrenotazioni() {
         return prenotazioni;
@@ -173,6 +175,15 @@ public class Dottore {
         this.ricevute = ricevute;
     }
 */
+
+    public byte[] getImg() {
+        return img;
+    }
+
+    public void setImg(byte[] img) {
+        this.img = img;
+    }
+
     @Override
     public String toString() {
         return "Dottore{" +

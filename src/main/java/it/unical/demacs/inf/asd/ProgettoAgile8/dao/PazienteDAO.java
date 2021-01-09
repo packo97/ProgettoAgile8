@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
 import java.util.List;
 
 
@@ -23,6 +22,18 @@ public interface PazienteDAO extends JpaRepository<Paziente, Long>, JpaSpecifica
     List<Paziente> findAllBy();
 
     List<Paziente> findAllByNomeContains(String valoreRicerca);
+
+    @Modifying
+    @Query("update Paziente p set p.nome = ?1, p.cognome = ?2, p.codice_fiscale= ?3, p.numero_telefono= ?4 where p.id = ?5")
+    void updatePaziente(String nome, String cognome, String codice_fiscale, String numero_telefono, Long id);
+
+    @Modifying
+    @Query("update Paziente p set p.password = ?1 where p.id = ?2")
+    void updatePassword(String passwordNuova, Long id);
+
+    @Modifying
+    @Query("update Paziente p set p.img = ?1 where p.id = ?2")
+    void updateImg(byte[] img, Long id);
 
     @Modifying
     @Query("update Paziente p set p.password = ?1, p.salt = ?2 where p.email = ?3")

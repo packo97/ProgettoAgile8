@@ -20,7 +20,6 @@ public class Ricevuta {
     private Dottore dottore;
 
     @Column(name="content")
-    @Lob
     private byte[] content;
 
 

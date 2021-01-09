@@ -34,6 +34,9 @@ public class Segretaria {
     @Column(name = "salt", nullable = true)
     private String salt;
 
+    @Column(name = "img", length = 1000)
+    private byte[] img;
+
     public String getSalt() {
         return salt;
     }
@@ -105,4 +108,12 @@ public class Segretaria {
     public void setDottore(Dottore dottore) {
         this.dottore = dottore;
     }*/
+
+    public byte[] getImg() {
+        return img;
+    }
+
+    public void setImg(byte[] img) {
+        this.img = img;
+    }
 }

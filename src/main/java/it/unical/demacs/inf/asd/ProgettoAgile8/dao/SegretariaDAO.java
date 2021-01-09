@@ -16,7 +16,19 @@ public interface SegretariaDAO extends JpaRepository<Segretaria, Long> {
     Segretaria findAllByEmail(String email);
 
     @Modifying
+    @Query("update Segretaria s set s.nome = ?1, s.cognome = ?2, s.codice_fiscale= ?3, s.numero_telefono= ?4 where s.id = ?5")
+    void updateSegretaria(String nome, String cognome, String codice_fiscale, String numero_telefono, Long id);
+
+    @Modifying
+    @Query("update Segretaria s set s.password = ?1 where s.id = ?2")
+    void updatePassword1(String passwordNuova, Long id);
+
+    @Modifying
+    @Query("update Segretaria s set s.img = ?1 where s.id = ?2")
+    void updateImg(byte[] img, Long id);
+
+    @Modifying
     @Query("update Segretaria p set p.password = ?1, p.salt = ?2 where p.email = ?3")
-    void updatePassword(String password, String salt, String email);
+    void updatePassword2(String password, String salt, String email);
 
 }

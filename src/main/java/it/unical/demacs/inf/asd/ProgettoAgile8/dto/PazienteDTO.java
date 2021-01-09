@@ -26,6 +26,8 @@ public class PazienteDTO implements Serializable {
 
     private String salt;
 
+    private byte[] img;
+
     public String getSalt() {
         return salt;
     }
@@ -88,6 +90,14 @@ public class PazienteDTO implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public byte[] getImg() {
+        return img;
+    }
+
+    public void setImg(byte[] img) {
+        this.img = img;
     }
 
     @Override

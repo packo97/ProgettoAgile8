@@ -22,7 +22,19 @@ public interface DottoreDAO extends JpaRepository<Dottore, Long>, JpaSpecificati
     Dottore findAllByEmail(String email);
 
     @Modifying
+    @Query("update Dottore d set d.nome = ?1, d.cognome = ?2, d.codice_fiscale= ?3, d.numero_telefono= ?4 where d.id = ?5")
+    void updateDottore(String nome, String cognome, String codice_fiscale, String numero_telefono, Long id);
+
+    @Modifying
+    @Query("update Dottore d set d.password = ?1 where d.id = ?2")
+    void updatePassword1(String passwordNuova, Long id);
+
+    @Modifying
+    @Query("update Dottore d set d.img = ?1 where d.id = ?2")
+    void updateImg(byte[] img, Long id);
+
+    @Modifying
     @Query("update Dottore p set p.password = ?1, p.salt = ?2 where p.email = ?3")
-    void updatePassword(String password, String salt, String email);
+    void updatePassword2(String password, String salt, String email);
 
 }

@@ -71,7 +71,39 @@ public class SegretariaServiceImpl implements SegretariaService{
         }
         String saltString = salt.toString();
         String password = Sicurezza.getSecurePassword(recuperaPasswordDTO.getNuovaPassword(),saltString.getBytes(StandardCharsets.UTF_8));
-        segretariaDAO.updatePassword(password,saltString,recuperaPasswordDTO.getEmail());
+        segretariaDAO.updatePassword2(password,saltString,recuperaPasswordDTO.getEmail());
         SendEmail.getInstance().sendMailPasswordCambiata(recuperaPasswordDTO.getEmail());
     }
+
+    @Override
+    @Transactional
+    public SegretariaDTO updateSegretaria(SegretariaDTO dto) {
+        Segretaria s = modelMapper.map(dto, Segretaria.class);
+        segretariaDAO.updateSegretaria(s.getNome(), s.getCognome(), s.getCodice_fiscale(), s.getNumero_telefono(), s.getId());
+        return dto;
+    }
+
+    @Override
+    public boolean controllaPassword(String passwordVecchia, SegretariaDTO dto) {
+        Segretaria d = segretariaDAO.findAllByEmail(dto.getEmail());
+        String salt = d.getSalt();
+        String hashPasswordDB = d.getPassword();
+        String hashPasswordInserita = Sicurezza.getSecurePassword(passwordVecchia, salt.getBytes(StandardCharsets.UTF_8));
+        return hashPasswordDB.equals(hashPasswordInserita);
+    }
+
+    @Override
+    @Transactional
+    public void updatePassword(String passwordNuova, SegretariaDTO dto) {
+        Segretaria d = segretariaDAO.findAllByEmail(dto.getEmail());
+        String salt = d.getSalt();
+        String hashPasswordInserita = Sicurezza.getSecurePassword(passwordNuova, salt.getBytes(StandardCharsets.UTF_8));
+        segretariaDAO.updatePassword1(hashPasswordInserita, dto.getId());
+    }
+    @Override
+    @Transactional
+    public void updateImg(byte[] img, Long segretariaID) {
+        segretariaDAO.updateImg(img,segretariaID);
+    }
+
 }

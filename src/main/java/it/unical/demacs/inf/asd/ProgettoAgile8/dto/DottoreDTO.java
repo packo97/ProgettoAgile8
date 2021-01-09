@@ -3,6 +3,7 @@ package it.unical.demacs.inf.asd.ProgettoAgile8.dto;
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Prescrizione;
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Ricevuta;
 
+import javax.persistence.Column;
 import javax.persistence.OneToMany;
 import java.io.Serializable;
 import java.util.List;
@@ -28,6 +29,8 @@ public class DottoreDTO implements Serializable {
     private String descrizione;
 
     private String salt;
+
+    private byte[] img;
 /*
     private List<Prescrizione> prescrizioni;
 
@@ -129,6 +132,15 @@ public class DottoreDTO implements Serializable {
         this.ricevute = ricevute;
     }
 */
+
+    public byte[] getImg() {
+        return img;
+    }
+
+    public void setImg(byte[] img) {
+        this.img = img;
+    }
+
     @Override
     public String toString() {
         return "DottoreDTO{" +

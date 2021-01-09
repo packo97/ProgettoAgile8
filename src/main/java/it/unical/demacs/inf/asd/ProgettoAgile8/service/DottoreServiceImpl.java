@@ -81,7 +81,39 @@ public class DottoreServiceImpl  implements DottoreService{
         }
         String saltString = salt.toString();
         String password = Sicurezza.getSecurePassword(recuperaPasswordDTO.getNuovaPassword(),saltString.getBytes(StandardCharsets.UTF_8));
-        dottoreDAO.updatePassword(password,saltString,recuperaPasswordDTO.getEmail());
+        dottoreDAO.updatePassword2(password,saltString,recuperaPasswordDTO.getEmail());
         SendEmail.getInstance().sendMailPasswordCambiata(recuperaPasswordDTO.getEmail());
+    }
+
+    @Override
+    @Transactional
+    public DottoreDTO updateDottore(DottoreDTO dto) {
+        Dottore d = modelMapper.map(dto, Dottore.class);
+        dottoreDAO.updateDottore(d.getNome(), d.getCognome(), d.getCodice_fiscale(), d.getNumero_telefono(), d.getId());
+        return dto;
+    }
+
+    @Override
+    public boolean controllaPassword(String passwordVecchia, DottoreDTO dto) {
+        Dottore d = dottoreDAO.findAllByEmail(dto.getEmail());
+        String salt = d.getSalt();
+        String hashPasswordDB = d.getPassword();
+        String hashPasswordInserita = Sicurezza.getSecurePassword(passwordVecchia, salt.getBytes(StandardCharsets.UTF_8));
+        return hashPasswordDB.equals(hashPasswordInserita);
+    }
+
+    @Override
+    @Transactional
+    public void updatePassword(String passwordNuova, DottoreDTO dto) {
+        Dottore d = dottoreDAO.findAllByEmail(dto.getEmail());
+        String salt = d.getSalt();
+        String hashPasswordInserita = Sicurezza.getSecurePassword(passwordNuova, salt.getBytes(StandardCharsets.UTF_8));
+        dottoreDAO.updatePassword1(hashPasswordInserita, dto.getId());
+    }
+
+    @Override
+    @Transactional
+    public void updateImg(byte[] img, Long dottoreID) {
+        dottoreDAO.updateImg(img,dottoreID);
     }
 }

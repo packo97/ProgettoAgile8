@@ -14,5 +14,10 @@ public interface DottoreService {
     List<DottoreDTO> getAll();
     DottoreDTO getDottoreByEmail(String email);
 
+    DottoreDTO updateDottore(DottoreDTO dto);
+    boolean controllaPassword(String passwordVecchia, DottoreDTO dto);
+    void updatePassword(String passwordNuova, DottoreDTO dto);
+    void updateImg(byte[] img, Long dottoreID);
+
     void modificaPassword(RecuperaPasswordDTO recuperaPasswordDTO);
 }
