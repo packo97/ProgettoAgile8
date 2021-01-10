@@ -23,7 +23,6 @@ public class Ricevuta {
     private byte[] content;
 
 
-
     public Long getId() {
         return id;
     }

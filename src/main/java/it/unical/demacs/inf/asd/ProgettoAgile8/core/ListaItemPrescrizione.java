@@ -1,5 +1,6 @@
 package it.unical.demacs.inf.asd.ProgettoAgile8.core;
 
+import it.unical.demacs.inf.asd.ProgettoAgile8.dto.AnimaleDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.DottoreDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PazienteDTO;
 
@@ -9,7 +10,16 @@ public class ListaItemPrescrizione {
 
     private DottoreDTO dottore;
     private PazienteDTO paziente;
+    private AnimaleDTO animale;
     private List<ItemPrescrizione> lista_item_prescrizione;
+
+    public AnimaleDTO getAnimale() {
+        return animale;
+    }
+
+    public void setAnimale(AnimaleDTO animale) {
+        this.animale = animale;
+    }
 
     public DottoreDTO getDottore() {
         return dottore;

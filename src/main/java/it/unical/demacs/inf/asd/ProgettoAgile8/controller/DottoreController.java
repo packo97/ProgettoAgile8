@@ -60,6 +60,7 @@ public class DottoreController {
   @PostMapping(path = "/dottore")
   public ResponseEntity<DottoreDTO> add(@RequestBody DottoreDTO dottore) throws NoSuchAlgorithmException {
     DottoreDTO d = dottoreService.addDottore(dottore);
+    System.out.println("sono qui");
     return ResponseEntity.ok(d);
   }
 
