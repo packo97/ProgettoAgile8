@@ -37,12 +37,12 @@ public class PdfCreator {
         try {
             PdfWriter.getInstance(document, out);
             document.open();
-            Font fontTitolo = FontFactory.getFont(FontFactory.TIMES_ROMAN, 32, BaseColor.BLACK);
+            Font fontTitolo = FontFactory.getFont(FontFactory.TIMES_ROMAN, 28, BaseColor.BLACK);
             Paragraph titolo = new Paragraph("PRESCRIZIONE MEDICO VETERINARIA", fontTitolo);
             titolo.setAlignment(Element.ALIGN_CENTER);
             document.add(titolo);
 
-            Font bold = FontFactory.getFont(FontFactory.TIMES_ROMAN, 18, Font.BOLD, BaseColor.BLACK);
+            Font bold = FontFactory.getFont(FontFactory.TIMES_ROMAN, 12, Font.BOLD, BaseColor.BLACK);
             Paragraph dati = new Paragraph("MEDICO VETERINARIO", bold);
             dati.setAlignment(Element.ALIGN_LEFT);
 
@@ -51,7 +51,7 @@ public class PdfCreator {
                     .forEach(columnTitle -> {
                         PdfPCell header = new PdfPCell();
                         header.setBorderWidth(2);
-                        header.setPhrase(new Phrase(columnTitle));
+                        header.setPhrase(new Phrase(columnTitle,bold));
                         tabellaMedico.addCell(header);
                     });
             tabellaMedico.addCell(dottoreDTO.getNome() + " " + dottoreDTO.getCognome());
@@ -90,15 +90,17 @@ public class PdfCreator {
 
             //document.add(dati);
             document.add(new Paragraph(("\n")));
-            Paragraph secondo = new Paragraph("Prescrizione per acquisto medicinali");
+            Paragraph secondo = new Paragraph("Prescrizione per acquisto medicinali",bold);
+            secondo.setAlignment(Element.ALIGN_CENTER);
             document.add(secondo);
             document.add(new Paragraph(("\n")));
             PdfPTable medicinali = new PdfPTable(5);
+            medicinali.setWidthPercentage(100);
             Stream.of("MEDICINALE", "QUANTITA'", "DOSE DI IMPIEGO", "DURATA DEL TRATTAMENTO (giorni)", "TEMPO DI SOSPENSIONE (giorni)")
                     .forEach(columnTitle -> {
                         PdfPCell header = new PdfPCell();
                         header.setBorderWidth(2);
-                        header.setPhrase(new Phrase(columnTitle));
+                        header.setPhrase(new Phrase(columnTitle,bold));
                         medicinali.addCell(header);
                     });
             for(int i=0; i<listaItemPrescrizione.getLista_item_prescrizione().size(); i++){
@@ -108,17 +110,26 @@ public class PdfCreator {
                 medicinali.addCell(listaItemPrescrizione.getLista_item_prescrizione().get(i).getGiorni_trattamento()+"");
                 medicinali.addCell(listaItemPrescrizione.getLista_item_prescrizione().get(i).getGiorni_sospensione()+"");
             }
+            for(int i=0; i<4-listaItemPrescrizione.getLista_item_prescrizione().size(); i++){
+                medicinali.addCell(" ");
+                medicinali.addCell(" ");
+                medicinali.addCell(" ");
+                medicinali.addCell(" ");
+                medicinali.addCell(" ");
+            }
             document.add(medicinali);
             document.add(new Paragraph(("\n")));
-            Paragraph intestazioneAnimali = new Paragraph("IDENTIFICAZIONE DEGLI ANIMALI");
+            Paragraph intestazioneAnimali = new Paragraph("IDENTIFICAZIONE DEGLI ANIMALI",bold);
+            intestazioneAnimali.setAlignment(Element.ALIGN_CENTER);
             document.add(intestazioneAnimali);
             document.add(new Paragraph(("\n")));
             PdfPTable animali = new PdfPTable(4);
+            animali.setWidthPercentage(100);
             Stream.of("SPECIE", "ALTEZZA", "PESO", "SESSO")
                     .forEach(columnTitle -> {
                         PdfPCell header = new PdfPCell();
                         header.setBorderWidth(2);
-                        header.setPhrase(new Phrase(columnTitle));
+                        header.setPhrase(new Phrase(columnTitle,bold));
                         animali.addCell(header);
                     });
 
@@ -129,46 +140,79 @@ public class PdfCreator {
 
             document.add(animali);
             document.add(new Paragraph(("\n")));
-            PdfPTable firme = new PdfPTable(3);
-            /*
-            Cell cell = new Cell().add("DATA");
-            cell.setBorderTop(new SolidBorder(Color.RED, 1));
+            Font bold_piccolo = FontFactory.getFont(FontFactory.TIMES_ROMAN, 8, Font.BOLD, BaseColor.BLACK);
+            PdfPCell vuoto = new PdfPCell(new Phrase(""));
+            vuoto.setBorder(0);
+            PdfPTable firme = new PdfPTable(5);
+            firme.setWidthPercentage(100);
+            PdfPCell data = new PdfPCell(new Phrase("Data",bold_piccolo));
+            data.setBorder(0);
+            data.setBorderWidthTop(1);
+            data.setHorizontalAlignment(Element.ALIGN_CENTER);
+            firme.addCell(data);
+            firme.addCell(vuoto);
+            PdfPCell località = new PdfPCell(new Phrase("Località",bold_piccolo));
+            località.setBorder(0);
+            località.setBorderWidthTop(1);
+            località.setHorizontalAlignment(Element.ALIGN_CENTER);
+            firme.addCell(località);
+            firme.addCell(vuoto);
+            PdfPCell firma_veterinario = new PdfPCell(new Phrase("Firma e timbro del veterinario",bold_piccolo));
+            firma_veterinario.setBorder(0);
+            firma_veterinario.setBorderWidthTop(1);
+            firma_veterinario.setHorizontalAlignment(Element.ALIGN_CENTER);
+            firme.addCell(firma_veterinario);
+            //firme.addCell(LocalDate.now().format(DateTimeFormatter.ofPattern("d/MM/uuuu")).toString());
 
-             */
-            firme.addCell("DATA");
-            firme.addCell("LOCALITA'");
-            firme.addCell("FIRMA");
-            firme.addCell(LocalDate.now().format(DateTimeFormatter.ofPattern("d/MM/uuuu")).toString());
-            firme.addCell("via Isaac Newton n 2");
-            firme.addCell("");
             document.add(new Paragraph(("\n")));
             document.add(new Paragraph(("\n")));
             document.add(firme);
             document.add(new Paragraph(("\n")));
             document.add(new Paragraph(("\n")));
-            Paragraph forniture = new Paragraph("Parte da compilarsi a cura del titolare dell'impianto solo nel caso di fornitura per scorta ai sensi dell'art. 34");
+
+            Paragraph forniture = new Paragraph("Parte da compilarsi a cura del titolare dell'impianto solo nel caso di fornitura per scorta ai sensi dell'art. 34",bold);
             document.add(forniture);
             document.add(new Paragraph(("\n")));
-            PdfPTable firme2 = new PdfPTable(2);
-            firme2.addCell("Estremi autorizzazione USL");
-            firme2.addCell("FIRMA");
-            firme2.addCell("  ");
-            firme2.addCell("  ");
+            PdfPTable firme2 = new PdfPTable(3);
+            firme2.setWidthPercentage(100);
+            PdfPCell estremi_usl = new PdfPCell(new Phrase("Estremi autorizzazione U.S.L.", bold_piccolo));
+            estremi_usl.setBorder(0);
+            estremi_usl.setBorderWidthTop(1);
+            estremi_usl.setHorizontalAlignment(Element.ALIGN_CENTER);
+            firme2.addCell(estremi_usl);
+            firme2.addCell(vuoto);
+            PdfPCell firma_titolare = new PdfPCell(new Phrase("Firma e timbro del titolare", bold_piccolo));
+            firma_titolare.setBorder(0);
+            firma_titolare.setBorderWidthTop(1);
+            firma_titolare.setHorizontalAlignment(Element.ALIGN_CENTER);
+            firme2.addCell(firma_titolare);
 
             document.add(firme2);
             document.add(new Paragraph(("\n")));
-            Paragraph farmacista = new Paragraph("Parte da compilarsi a cura del farmacista");
+            document.add(new Paragraph(("\n")));
+
+            Paragraph farmacista = new Paragraph("Parte da compilarsi a cura del farmacista",bold);
             document.add(farmacista);
             document.add(new Paragraph(("\n")));
-            PdfPTable firme3 = new PdfPTable(4);
-            firme3.addCell("Timbro venditore");
-            firme3.addCell("Località");
-            firme3.addCell("Data");
-            firme3.addCell("Firma");
-            firme3.addCell("   ");
-            firme3.addCell("   ");
-            firme3.addCell("  ");
-            firme3.addCell("  ");
+            PdfPTable firme3 = new PdfPTable(7);
+            firme3.setWidthPercentage(100);
+            PdfPCell timbro_venditore = new PdfPCell(new Phrase("Timbro venditore", bold_piccolo));
+            timbro_venditore.setBorder(0);
+            timbro_venditore.setBorderWidthTop(1);
+            timbro_venditore.setHorizontalAlignment(Element.ALIGN_CENTER);
+            firme3.addCell(timbro_venditore);
+            firme3.addCell(vuoto);
+
+            firme3.addCell(località);
+            firme3.addCell(vuoto);
+            firme3.addCell(data);
+            firme3.addCell(vuoto);
+            PdfPCell firma_farmacista = new PdfPCell(new Phrase("Firma",bold_piccolo));
+            firma_farmacista.setBorder(0);
+            firma_farmacista.setBorderWidthTop(1);
+            firma_farmacista.setHorizontalAlignment(Element.ALIGN_CENTER);
+            firme3.addCell(firma_farmacista);
+
 
             document.add(firme3);
             document.add(new Paragraph(("\n")));
@@ -194,8 +238,9 @@ public class PdfCreator {
             PdfWriter.getInstance(document, out);
             document.open();
             Font fontTitolo = FontFactory.getFont(FontFactory.TIMES_ROMAN, 32, BaseColor.BLACK);
+            Font bold_piccolo = FontFactory.getFont(FontFactory.TIMES_ROMAN, 8, Font.BOLD, BaseColor.BLACK);
             Paragraph titolo = new Paragraph("Ricevuta medica", fontTitolo);
-            titolo.setAlignment(Element.ALIGN_MIDDLE);
+            titolo.setAlignment(Element.ALIGN_CENTER);
             document.add(titolo);
 
 
@@ -236,6 +281,7 @@ public class PdfCreator {
 
             //tabella
             PdfPTable table = new PdfPTable(5);
+            table.setWidthPercentage(100);
             addTableHeader(table);
             double somma = 0;
             for (int i=0; i<listaItemRicevuta.getLista_item_ricevuta().size(); i++){
@@ -279,12 +325,13 @@ public class PdfCreator {
 
 
     static private void addTableHeader(PdfPTable table) {
+        Font bold = FontFactory.getFont(FontFactory.TIMES_ROMAN, 12, Font.BOLD, BaseColor.BLACK);
         Stream.of("Codice", "Descrizione medicina/servizio", "Qta", "Prezzo", "Totale linea")
                 .forEach(columnTitle -> {
                     PdfPCell header = new PdfPCell();
                     header.setBackgroundColor(BaseColor.LIGHT_GRAY);
                     header.setBorderWidth(2);
-                    header.setPhrase(new Phrase(columnTitle));
+                    header.setPhrase(new Phrase(columnTitle,bold));
                     table.addCell(header);
                 });
     }
