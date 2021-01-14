@@ -28,13 +28,13 @@ public class NotificaServiceImpl implements NotificaService{
     public List<NotificaDTO> findAllByPaziente(PazienteDTO pazienteDTO) {
         Paziente paziente= modelMapper.map(pazienteDTO, Paziente.class);
         //System.out.println(notificaDAO.findAllByPazienteAndSegretariaIsFalse(paziente).stream().map(notifica -> modelMapper.map(notifica, NotificaDTO.class)).collect(Collectors.toList()).size());
-        return notificaDAO.findAllByPazienteAndRicevitore(paziente.getId(),"paziente").stream().map(notifica -> modelMapper.map(notifica, NotificaDTO.class)).collect(Collectors.toList());
+        return notificaDAO.findAllByPazienteAndRicevitoreOrderByDataDesc(paziente.getId(),"paziente").stream().map(notifica -> modelMapper.map(notifica, NotificaDTO.class)).collect(Collectors.toList());
 
     }
 
     @Override
     public List<NotificaDTO> findAllBySegretaria() {
-        return notificaDAO.findAllByRicevitore("segretaria").stream().map(notifica -> modelMapper.map(notifica, NotificaDTO.class)).collect(Collectors.toList());
+        return notificaDAO.findAllByRicevitoreOrderByDataDesc("segretaria").stream().map(notifica -> modelMapper.map(notifica, NotificaDTO.class)).collect(Collectors.toList());
     }
 
     @Override
@@ -43,8 +43,8 @@ public class NotificaServiceImpl implements NotificaService{
     }
 
     @Override
-    public void save(Notifica notifica) {
-        notificaDAO.save(notifica);
+    public void save(NotificaDTO notifica) {
+        notificaDAO.save(modelMapper.map(notifica,Notifica.class));
     }
 
     @Override
@@ -74,6 +74,6 @@ public class NotificaServiceImpl implements NotificaService{
 
     @Override
     public List<NotificaDTO> findAllByDottore(Long pazienteId) {
-       return notificaDAO.findAllByDottoreIdAndRicevitore(pazienteId,"dottore").stream().map(notifica -> modelMapper.map(notifica, NotificaDTO.class)).collect(Collectors.toList());
+       return notificaDAO.findAllByDottoreIdAndRicevitoreOrderByDataDesc(pazienteId,"dottore").stream().map(notifica -> modelMapper.map(notifica, NotificaDTO.class)).collect(Collectors.toList());
     }
 }

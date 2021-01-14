@@ -1,13 +1,10 @@
 package it.unical.demacs.inf.asd.ProgettoAgile8.utility;
 
-import com.itextpdf.layout.borders.SolidBorder;
-import com.itextpdf.layout.element.Cell;
 import com.itextpdf.text.*;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.kernel.colors.Color;
 import it.unical.demacs.inf.asd.ProgettoAgile8.core.ItemRicevuta;
 import it.unical.demacs.inf.asd.ProgettoAgile8.core.ListaItemPrescrizione;
 import it.unical.demacs.inf.asd.ProgettoAgile8.core.ListaItemRicevuta;
@@ -15,7 +12,6 @@ import it.unical.demacs.inf.asd.ProgettoAgile8.dto.AnimaleDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.DottoreDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PazienteDTO;
 
-import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -57,7 +53,7 @@ public class PdfCreator {
             tabellaMedico.addCell(dottoreDTO.getNome() + " " + dottoreDTO.getCognome());
             tabellaMedico.addCell("PROPRIETARIO DEGLI ANIMALI:\n"+
                     pazienteDTO.getNome() + " " + pazienteDTO.getCognome() + "\n" +
-                    "via: \n" + "provicia \n" + "USL \n");
+                    "Codice fiscale: "+pazienteDTO.getCodice_fiscale());
             tabellaMedico.setHorizontalAlignment(Element.ALIGN_CENTER);
             tabellaMedico.setWidthPercentage(100);
 
@@ -244,9 +240,6 @@ public class PdfCreator {
             document.add(titolo);
 
 
-            Paragraph numero_ricevuta = new Paragraph("Numero Ricevuta: " + new Random().nextInt(9999999));
-            numero_ricevuta.setAlignment(Element.ALIGN_RIGHT);
-
             Paragraph data_ricevuta = new Paragraph("Data: " + LocalDate.now().toString());
             data_ricevuta.setAlignment(Element.ALIGN_RIGHT);
 
@@ -255,16 +248,14 @@ public class PdfCreator {
             Paragraph nome_clinica = new Paragraph("Nome clinica: Veterinary Clinic");
             Paragraph medico = new Paragraph("Dottore: " + dottoreDTO.getNome() + " " + dottoreDTO.getCognome());
             Paragraph codice_medico = new Paragraph("Codice medico: " + dottoreDTO.getCodice_identificativo());
-            Paragraph indirizzo_clinica = new Paragraph("Indirizzo: " + "Via Pietro Bucci");
+            Paragraph indirizzo_clinica = new Paragraph("Indirizzo: " + "Via Pietro Bucci, Rende (CS), 87036 ");
 
             Font fontLabel = FontFactory.getFont(FontFactory.TIMES_ROMAN, 18, Font.BOLD, BaseColor.BLACK);
             Paragraph label_paziente = new Paragraph("Informazioni Paziente", fontLabel);
 
             Paragraph paziente = new Paragraph("Paziente: " + pazienteDTO.getNome() + " " + pazienteDTO.getCognome());
-            Paragraph indirizzo_paziente = new Paragraph("Indirizzo: " + "Via Isaac Newton");
 
 
-            document.add(numero_ricevuta);
             document.add(data_ricevuta);
             document.add(new Paragraph("\n"));
 
@@ -276,11 +267,10 @@ public class PdfCreator {
 
             document.add(label_paziente);
             document.add(paziente);
-            document.add(indirizzo_paziente);
             document.add(new Paragraph("\n"));
 
             //tabella
-            PdfPTable table = new PdfPTable(5);
+            PdfPTable table = new PdfPTable(new float[]{20,50,10,10,10});
             table.setWidthPercentage(100);
             addTableHeader(table);
             double somma = 0;
@@ -298,14 +288,14 @@ public class PdfCreator {
             document.add(new Paragraph("\n"));
 
 
-            Paragraph subtotale = new Paragraph("Sub-totale: " + somma);
+            Paragraph subtotale = new Paragraph("Sub-totale: " + somma+"€");
             subtotale.setAlignment(Element.ALIGN_RIGHT);
-            Paragraph iva = new Paragraph("Iva: " + valoreIVA);
+            Paragraph iva = new Paragraph("IVA: " + valoreIVA+"€");
             iva.setAlignment(Element.ALIGN_RIGHT);
             double valoreTotale = somma + valoreIVA;
-            Paragraph totale = new Paragraph("Totale: " + valoreTotale);
+            Paragraph totale = new Paragraph("Totale: " + valoreTotale+"€");
             totale.setAlignment(Element.ALIGN_RIGHT);
-            Paragraph importo_pagato = new Paragraph("Importo pagato: " + listaItemRicevuta.getImporto_pagato()) ;
+            Paragraph importo_pagato = new Paragraph("Importo pagato: " + listaItemRicevuta.getImporto_pagato()+"€") ;
             importo_pagato.setAlignment(Element.ALIGN_RIGHT);
 
             document.add(subtotale);
@@ -331,6 +321,7 @@ public class PdfCreator {
                     PdfPCell header = new PdfPCell();
                     header.setBackgroundColor(BaseColor.LIGHT_GRAY);
                     header.setBorderWidth(2);
+                    header.setHorizontalAlignment(Element.ALIGN_CENTER);
                     header.setPhrase(new Phrase(columnTitle,bold));
                     table.addCell(header);
                 });
@@ -338,12 +329,19 @@ public class PdfCreator {
 
     static private void addRows(PdfPTable table, ItemRicevuta item) {
 
+        PdfPCell cell=new PdfPCell();
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
         if(item!=null){
-            table.addCell(item.getCodice().toString());
-            table.addCell(item.getDescrizione());
-            table.addCell(item.getQuantita() + "");
-            table.addCell(item.getPrezzo() + "€");
-            table.addCell(item.getTotale() + "€");
+            cell.setPhrase(new Phrase(item.getCodice().toString()));
+            table.addCell(cell);
+            cell.setPhrase(new Phrase(item.getDescrizione()));
+            table.addCell(cell);
+            cell.setPhrase(new Phrase((item.getQuantita()+"")));
+            table.addCell(cell);
+            cell.setPhrase(new Phrase(item.getPrezzo()+"€"));
+            table.addCell(cell);
+            cell.setPhrase(new Phrase(item.getTotale()+"€"));
+            table.addCell(cell);
         }
         else{
             table.addCell(" ");

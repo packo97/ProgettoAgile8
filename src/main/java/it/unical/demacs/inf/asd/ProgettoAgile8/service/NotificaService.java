@@ -11,7 +11,7 @@ public interface NotificaService {
     List<NotificaDTO> findAllByPaziente(PazienteDTO pazienteDTO);
     List<NotificaDTO> findAllBySegretaria();
     Optional<Notifica> findById(Long id);
-    void save(Notifica notifica);
+    void save(NotificaDTO notifica);
     void setAllVista(PazienteDTO pazienteDTO);
     void setAllVistaBySegretaria();
     void setAllVistaByDottore(Long dottoreId);

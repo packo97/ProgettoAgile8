@@ -32,7 +32,7 @@ public class PrescrizioneController {
     private PrescrizioneService prescrizioneService;
 
     @PostMapping(path = "/prescrizione")
-    public HttpStatus add(@RequestParam("file") MultipartFile file, @RequestParam("dottore") String dottore, @RequestParam("animale") String animale){
+    public ResponseEntity<PrescrizioneDTO> add(@RequestParam("file") MultipartFile file, @RequestParam("dottore") String dottore, @RequestParam("animale") String animale){
         try {
             System.out.println(dottore);
             System.out.println(animale);
@@ -43,12 +43,13 @@ public class PrescrizioneController {
             DottoreDTO dottoreDTO = objectMapper.readValue(jsonDottore.toString(), DottoreDTO.class);
             AnimaleDTO animaleDTO = objectMapper.readValue(jsonAnimale.toString(), AnimaleDTO.class);
             byte[] bytes =  file.getBytes();
-            prescrizioneService.uploadFile(bytes, dottoreDTO, animaleDTO);
+            PrescrizioneDTO p = prescrizioneService.uploadFile(bytes, dottoreDTO, animaleDTO);
+            return ResponseEntity.ok(p);
         } catch (IOException e) {
             e.printStackTrace();
         }
         System.out.println("Aggiunta PDF");
-        return HttpStatus.OK;
+        return null;
     }
 
     @PostMapping(value = "/prescrizioniByAnimale")

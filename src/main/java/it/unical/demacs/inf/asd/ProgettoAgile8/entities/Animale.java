@@ -40,11 +40,13 @@ public class Animale {
     private String genere;
 
 
-    //@OneToMany(mappedBy = "animale", fetch = FetchType.LAZY)
-    //private List<Prescrizione> prescrizioni;
+    @OneToMany(mappedBy = "animale", cascade = CascadeType.ALL)
+    private List<Prescrizione> prescrizioni;
 
-    //@OneToMany(mappedBy = "animale", fetch = FetchType.LAZY)
-    //private List<Ricevuta> ricevute;
+    @OneToMany(mappedBy = "animale", cascade = CascadeType.ALL)
+    private List<Ricevuta> ricevute;
+    @OneToMany(mappedBy = "animale", cascade = CascadeType.ALL)
+    private List<Esame_medico> esami;
 
     public Long getId() {
         return id;

@@ -35,14 +35,14 @@ public class PrescrizioneServiceImpl implements PrescrizioneService{
 
 
     @Override
-    public boolean uploadFile(byte[] bytes, DottoreDTO dottore, AnimaleDTO animale) {
+    public PrescrizioneDTO uploadFile(byte[] bytes, DottoreDTO dottore, AnimaleDTO animale) {
         PrescrizioneDTO p = new PrescrizioneDTO();
         p.setContent(bytes);
         p.setDottore(dottore);
         p.setAnimale(animale);
         Prescrizione prescrizione = modelMapper.map(p, Prescrizione.class);
-        prescrizioneDAO.save(prescrizione);
-        return true;
+        Prescrizione p1 = prescrizioneDAO.save(prescrizione);
+        return modelMapper.map(p1,PrescrizioneDTO.class);
     }
 
     @Override

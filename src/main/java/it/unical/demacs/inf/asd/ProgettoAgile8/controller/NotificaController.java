@@ -41,7 +41,6 @@ public class NotificaController {
     public ResponseEntity<List<NotificaDTO>> ricercaNotificheSegretaria(){
         List<NotificaDTO> lista = notificaService.findAllBySegretaria();
         notificaService.setAllVistaBySegretaria();
-        Collections.reverse(lista);
         return ResponseEntity.ok(lista);
     }
 
@@ -52,7 +51,6 @@ public class NotificaController {
         System.out.println(p);
         List<NotificaDTO> lista = notificaService.findAllByPaziente(p);
         notificaService.setAllVista(p);
-        Collections.reverse(lista);
         return ResponseEntity.ok(lista);
     }
 
@@ -62,7 +60,6 @@ public class NotificaController {
         System.out.println(dottore);
         List<NotificaDTO> lista = notificaService.findAllByDottore(dottore.getId());
         notificaService.setAllVistaByDottore(dottore.getId());
-        Collections.reverse(lista);
         return ResponseEntity.ok(lista);
     }
 
@@ -70,9 +67,7 @@ public class NotificaController {
     public ResponseEntity<Nuovimessaggi> nuoveNotifiche(@PathVariable("email") String email){
         PazienteDTO p = pazienteService.getPazienteByEmail(email);
         if(p!=null) {
-            System.out.println(p);
             List<NotificaDTO> lista = notificaService.findAllByPaziente(p);
-            Collections.reverse(lista);
             Nuovimessaggi nuovimessaggi = new Nuovimessaggi();
             if (lista.size()>0 && lista.get(0).getVista() == true)
                 nuovimessaggi.setNuoviMessaggi("false");
@@ -90,7 +85,6 @@ public class NotificaController {
     @GetMapping(path= "/newNotificheBySegretaria")
     public ResponseEntity<Nuovimessaggi> nuoveNotificheSegretaria(){
         List<NotificaDTO> lista = notificaService.findAllBySegretaria();
-        Collections.reverse(lista);
         Nuovimessaggi nuovimessaggi = new Nuovimessaggi();
         if (lista.size()>0 && lista.get(0).getVista() == true)
             nuovimessaggi.setNuoviMessaggi("false");
@@ -107,7 +101,6 @@ public class NotificaController {
         if(p!=null) {
             System.out.println(p);
             List<NotificaDTO> lista = notificaService.findAllByDottore(p.getId());
-            Collections.reverse(lista);
             Nuovimessaggi nuovimessaggi = new Nuovimessaggi();
             if (lista.size()>0 && lista.get(0).getVista() == true)
                 nuovimessaggi.setNuoviMessaggi("false");
@@ -124,7 +117,6 @@ public class NotificaController {
 
     @DeleteMapping(path = "/cancellaMessaggio/{id}")
     public HttpStatus delete(@PathVariable Long id){
-        System.out.println("deleete messaggio");
         Optional<Notifica> n = notificaService.findById(id);
         notificaService.deletePrenotazione(id);
         SendEmail.getInstance().sendMailDelete(/*prenotazione.getPaziente().getEmail()*/ "niko97142@gmail.com");

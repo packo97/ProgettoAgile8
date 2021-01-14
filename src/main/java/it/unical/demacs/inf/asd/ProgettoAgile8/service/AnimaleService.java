@@ -12,4 +12,5 @@ public interface AnimaleService {
     AnimaleDTO addAnimale(AnimaleDTO animaleDTO);
     AnimaleDTO updateAnimale(AnimaleDTO animaleDTO);
 
+    void deleteAnimale(Long id);
 }

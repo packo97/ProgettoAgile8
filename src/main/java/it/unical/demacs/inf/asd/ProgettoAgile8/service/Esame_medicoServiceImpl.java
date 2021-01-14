@@ -26,16 +26,14 @@ public class Esame_medicoServiceImpl implements Esame_medicoService{
     private ModelMapper modelMapper;
 
     @Override
-    public boolean uploadFile(byte[] bytes, DottoreDTO dottore, AnimaleDTO animale, String descrizione) {
+    public Esame_medicoDTO uploadFile(byte[] bytes, DottoreDTO dottore, AnimaleDTO animale, String descrizione) {
         Esame_medicoDTO r = new Esame_medicoDTO();
         r.setContent(bytes);
         r.setDottore(dottore);
         r.setAnimale(animale);
         r.setDescrizione(descrizione);
         Esame_medico esame = modelMapper.map(r, Esame_medico.class);
-        esame_medicoDAO.save(esame);
-        System.out.println("sto salvando"+ dottore.getCodice_fiscale());
-        return true;
+        return modelMapper.map(esame_medicoDAO.save(esame),Esame_medicoDTO.class);
     }
 
     @Override

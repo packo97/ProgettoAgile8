@@ -4,6 +4,7 @@ import it.unical.demacs.inf.asd.ProgettoAgile8.core.DatiLogin;
 import it.unical.demacs.inf.asd.ProgettoAgile8.core.Filtro;
 import it.unical.demacs.inf.asd.ProgettoAgile8.core.RecuperaPasswordDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.DottoreDTO;
+import it.unical.demacs.inf.asd.ProgettoAgile8.dto.NotificaDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PazienteDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.SegretariaDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Notifica;
@@ -46,7 +47,7 @@ public class SegretariaController {
 
         String testo="La sua password è stata modificata correttamente!";
         String oggetto="Modifica Password";
-        Notifica notifica = inserisciNotifica(null,testo,oggetto,"segretaria","",null);
+        NotificaDTO notifica = inserisciNotifica(null,testo,oggetto,"segretaria","",null);
         notificaService.save(notifica);
 
         return ResponseEntity.ok(recuperaPasswordDTO);
@@ -97,8 +98,8 @@ public class SegretariaController {
         segretariaService.updateImg(bytes,segretariaID);
         return HttpStatus.OK;
     }
-    public static Notifica inserisciNotifica(Long id, String testo, String oggetto,String ricevitore, String dottore, Long dottoreId){
-        Notifica notifica = new Notifica();
+    public static NotificaDTO inserisciNotifica(Long id, String testo, String oggetto,String ricevitore, String dottore, Long dottoreId){
+        NotificaDTO notifica = new NotificaDTO();
         notifica.setPaziente(id);
         notifica.setVista(false);
         notifica.setTesto(testo);

@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface Esame_medicoService {
 
-    boolean uploadFile(byte[] bytes, DottoreDTO dottore, AnimaleDTO animale, String descrizione);
+    Esame_medicoDTO uploadFile(byte[] bytes, DottoreDTO dottore, AnimaleDTO animale, String descrizione);
     List<Esame_medicoDTO> findAllByAnimale(AnimaleDTO dto);
     Esame_medicoDTO findAllById(Long id);
 }

@@ -29,14 +29,14 @@ public class RicevutaServiceImpl implements RicevutaService{
 
 
     @Override
-    public boolean uploadFile(byte[] bytes, DottoreDTO dottore, AnimaleDTO animale) {
+    public RicevutaDTO uploadFile(byte[] bytes, DottoreDTO dottore, AnimaleDTO animale) {
         RicevutaDTO r = new RicevutaDTO();
         r.setContent(bytes);
         r.setDottore(dottore);
         r.setAnimale(animale);
         Ricevuta ricevuta = modelMapper.map(r, Ricevuta.class);
-        ricevutaDAO.save(ricevuta);
-        return true;
+        return modelMapper.map(ricevutaDAO.save(ricevuta),RicevutaDTO.class);
+
     }
 
     @Override

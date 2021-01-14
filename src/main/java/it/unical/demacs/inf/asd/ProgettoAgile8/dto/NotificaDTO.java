@@ -105,8 +105,13 @@ public class NotificaDTO {
         return "NotificaDTO{" +
                 "id=" + id +
                 ", testo='" + testo + '\'' +
+                ", oggetto='" + oggetto + '\'' +
                 ", vista=" + vista +
                 ", paziente=" + paziente +
+                ", ricevitore='" + ricevitore + '\'' +
+                ", data=" + data +
+                ", dottore='" + dottore + '\'' +
+                ", dottoreId=" + dottoreId +
                 '}';
     }
 }

@@ -2,7 +2,9 @@ package it.unical.demacs.inf.asd.ProgettoAgile8.controller;
 
 
 import it.unical.demacs.inf.asd.ProgettoAgile8.core.DatiLogin;
+import it.unical.demacs.inf.asd.ProgettoAgile8.core.Filtro;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PazienteDTO;
+import it.unical.demacs.inf.asd.ProgettoAgile8.dto.SegretariaDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Notifica;
 import it.unical.demacs.inf.asd.ProgettoAgile8.service.PazienteService;
 
@@ -75,6 +77,23 @@ public class PazienteController {
     pazienteService.updateImg(bytes,pazienteID);
     return HttpStatus.OK;
   }
+  @PutMapping(path = "/paziente")
+  public ResponseEntity<PazienteDTO> update(@RequestBody PazienteDTO pazienteDTO){
+    PazienteDTO p = pazienteService.updatePaziente(pazienteDTO);
+    return ResponseEntity.ok(p);
+  }
 
+  @PutMapping(path = "/updatePasswordPaziente")
+  public HttpStatus updatePassword(@RequestBody Filtro filtro){
+    String passwordVecchia = filtro.getPasswordVecchia();
+    String passwordNuova = filtro.getPasswordNuova();
+    PazienteDTO dto = filtro.getPaziente();
+    if(pazienteService.controllaPassword(passwordVecchia, dto)){
+      pazienteService.updatePassword(passwordNuova, dto);
+      return HttpStatus.OK;
+    }
+    else
+      return HttpStatus.BAD_REQUEST;
+  }
 
   }

@@ -31,7 +31,7 @@ public class Esame_medicoController {
     private Esame_medicoService esame_medicoService;
 
     @PostMapping(path = "/esame")
-    public HttpStatus add(@RequestParam("file") MultipartFile file, @RequestParam("dottore") String dottore, @RequestParam("animale") String animale, @RequestParam("descrizione") String descrizione){
+    public ResponseEntity<Esame_medicoDTO> add(@RequestParam("file") MultipartFile file, @RequestParam("dottore") String dottore, @RequestParam("animale") String animale, @RequestParam("descrizione") String descrizione){
         try {
             System.out.println(dottore);
             System.out.println(animale);
@@ -43,14 +43,13 @@ public class Esame_medicoController {
             DottoreDTO dottoreDTO = objectMapper.readValue(jsonDottore.toString(), DottoreDTO.class);
             AnimaleDTO animaleDTO = objectMapper.readValue(jsonAnimale.toString(), AnimaleDTO.class);
             byte[] bytes =  file.getBytes();
-            esame_medicoService.uploadFile(bytes, dottoreDTO, animaleDTO, descrizione);
-            System.out.println(descrizione);
+            return ResponseEntity.ok(esame_medicoService.uploadFile(bytes, dottoreDTO, animaleDTO, descrizione));
         } catch (IOException e) {
             e.printStackTrace();
         }
         System.out.println("Aggiunta PDF");
 
-        return HttpStatus.OK;
+        return null;
     }
 
     @PostMapping(value = "/esamiByAnimale")

@@ -32,7 +32,7 @@ public class RicevutaController {
     private RicevutaService ricevutaService;
 
     @PostMapping(path = "/ricevuta")
-    public HttpStatus add(@RequestParam("file") MultipartFile file, @RequestParam("dottore") String dottore, @RequestParam("animale") String animale){
+    public ResponseEntity<RicevutaDTO> add(@RequestParam("file") MultipartFile file, @RequestParam("dottore") String dottore, @RequestParam("animale") String animale){
         try {
             System.out.println(dottore);
             System.out.println(animale);
@@ -43,12 +43,12 @@ public class RicevutaController {
             DottoreDTO dottoreDTO = objectMapper.readValue(jsonDottore.toString(), DottoreDTO.class);
             AnimaleDTO animaleDTO = objectMapper.readValue(jsonAnimale.toString(), AnimaleDTO.class);
             byte[] bytes =  file.getBytes();
-            ricevutaService.uploadFile(bytes, dottoreDTO, animaleDTO);
+            return ResponseEntity.ok(ricevutaService.uploadFile(bytes, dottoreDTO, animaleDTO));
         } catch (IOException e) {
             e.printStackTrace();
         }
         System.out.println("Aggiunta PDF");
-        return HttpStatus.OK;
+        return null;
     }
 
     @PostMapping(value = "/ricevuteByAnimale")

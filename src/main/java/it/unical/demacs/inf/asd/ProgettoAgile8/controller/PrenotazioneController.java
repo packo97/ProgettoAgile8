@@ -3,6 +3,7 @@ package it.unical.demacs.inf.asd.ProgettoAgile8.controller;
 
 import it.unical.demacs.inf.asd.ProgettoAgile8.core.Filtro;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.DottoreDTO;
+import it.unical.demacs.inf.asd.ProgettoAgile8.dto.NotificaDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PazienteDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PrenotazioneDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Dottore;
@@ -100,33 +101,30 @@ public class PrenotazioneController {
 
     @PostMapping(path = "/prenotazione")
     public ResponseEntity<PrenotazioneDTO> add(@RequestBody PrenotazioneDTO prenotazione){
+        System.out.println("aggiungo prenotazione");
         PrenotazioneDTO p = prenotazioneService.addPrenotazione(prenotazione);
         return ResponseEntity.ok(p);
     }
 
     @DeleteMapping(path = "/prenotazione/{id}")
-    public HttpStatus delete(/*@RequestBody PrenotazioneDTO prenotazione*/@PathVariable Long id){
+    public HttpStatus delete(@PathVariable Long id){
         System.out.println("deleete prenotazione");
         Prenotazione p = prenotazioneService.getById(id);
-        String testo;
-        if(p.getData_visita()==null)
-            testo="La prenotazione del paziente "+p.getPaziente().getNome()+" "+ p.getPaziente().getCognome()+" riguardante "+ p.getDescrizione() +", è stata annullata.";
-        else
-            testo="La prenotazione del paziente "+p.getPaziente().getNome()+" "+ p.getPaziente().getCognome()+" riguardante "+ p.getDescrizione() +" e stabilita per la data "+Data.convertiData(p.getData_visita().toString())+" è stata annullata.";
-
-        String oggetto="Annullamento prenotazione";
-        Notifica notifica = inserisciNotifica(p.getPaziente().getId(),testo,oggetto, "segretaria",p.getDottore().getNome()+" "+p.getDottore().getCognome(), p.getDottore().getId());
-        notificaService.save(notifica);
-        notifica = inserisciNotifica(p.getPaziente().getId(),testo,oggetto, "dottore",p.getDottore().getNome()+" "+p.getDottore().getCognome(), p.getDottore().getId());
-        notificaService.save(notifica);
+        if(p.isConfermato()==true && p.getData_visita()!=null) {
+            String testo = "La prenotazione del paziente " + p.getPaziente().getNome() + " " + p.getPaziente().getCognome() + " riguardante " + p.getDescrizione() + " e stabilita per la data " + Data.convertiData(p.getData_visita().toString()) + " è stata annullata.";
+            String oggetto = "Annullamento prenotazione";
+            NotificaDTO notifica = inserisciNotifica(p.getPaziente().getId(), testo, oggetto, "segretaria", p.getDottore().getNome() + " " + p.getDottore().getCognome(), p.getDottore().getId());
+            notificaService.save(notifica);
+            notifica = inserisciNotifica(p.getPaziente().getId(), testo, oggetto, "dottore", p.getDottore().getNome() + " " + p.getDottore().getCognome(), p.getDottore().getId());
+            notificaService.save(notifica);
+        }
         prenotazioneService.deletePrenotazione(id);
-        SendEmail.getInstance().sendMailDelete(/*prenotazione.getPaziente().getEmail()*/ "niko97142@gmail.com");
         return HttpStatus.OK;
     }
 
     @PutMapping(path =  "/prenotazione")
     public ResponseEntity<PrenotazioneDTO> update(@RequestBody PrenotazioneDTO prenotazione){
-        
+
         Prenotazione prenotazioneVecchia = prenotazioneService.getById(prenotazione.getId());
         if(prenotazione.isConfermato() == prenotazioneVecchia.isConfermato() && prenotazione.getData_visita()!=null){
             if(!prenotazione.getData_visita().equals(prenotazioneVecchia.getData_visita())) {
@@ -134,8 +132,8 @@ public class PrenotazioneController {
                         + Data.convertiData(prenotazioneVecchia.getData_visita().toString())+" a "+
                         Data.convertiData(prenotazione.getData_visita().toString())+".";
                 String oggetto="Variazione data prenotazione";
-                SendEmail.getInstance().sendMail(oggetto,testo, "niko97142@gmail.com");
-                Notifica notifica = inserisciNotifica(prenotazione.getPaziente().getId(),testo,oggetto,"paziente", prenotazione.getDottore().getNome()+" "+prenotazione.getDottore().getCognome(), prenotazione.getDottore().getId());
+                SendEmail.getInstance().sendMail(oggetto,testo, prenotazione.getPaziente().getEmail());
+                NotificaDTO notifica = inserisciNotifica(prenotazione.getPaziente().getId(),testo,oggetto,"paziente", prenotazione.getDottore().getNome()+" "+prenotazione.getDottore().getCognome(), prenotazione.getDottore().getId());
                 notificaService.save(notifica);
             }
         }
@@ -144,33 +142,44 @@ public class PrenotazioneController {
                 String testo="La sua prenotazione riguardante "+ prenotazione.getDescrizione() +" e stabilita in data "+ Data.convertiData(prenotazioneVecchia.getData_visita().toString())
                         +" è stata annullata ma comunque inserita fra quelle urgenti, riceverà un altra email quando verrà riconfermata.";
                 String oggetto="Prenotazione annullata";
-                SendEmail.getInstance().sendMail(oggetto,testo, "niko97142@gmail.com");
-                Notifica notifica = inserisciNotifica(prenotazione.getPaziente().getId(),testo,oggetto,"paziente",prenotazione.getDottore().getNome()+" "+prenotazione.getDottore().getCognome(), prenotazione.getDottore().getId());
+                SendEmail.getInstance().sendMail(oggetto,testo, prenotazione.getPaziente().getEmail());
+                NotificaDTO notifica = inserisciNotifica(prenotazione.getPaziente().getId(),testo,oggetto,"paziente",prenotazione.getDottore().getNome()+" "+prenotazione.getDottore().getCognome(), prenotazione.getDottore().getId());
+                notificaService.save(notifica);
+                testo="La prenotazione riguardante "+ prenotazione.getDescrizione() +" e stabilita in data "+ Data.convertiData(prenotazioneVecchia.getData_visita().toString())
+                        +" del paziente "+prenotazione.getPaziente().getNome() +" "+prenotazione.getPaziente().getCognome()+" è stata annullata";
+                notifica.setRicevitore("dottore");
+                notifica.setTesto(testo);
                 notificaService.save(notifica);
             }
             else if(prenotazione.isUrgente()==false ){
                 String testo="La sua prenotazione riguardante "+ prenotazione.getDescrizione() +" e stabilita in data "+ Data.convertiData(prenotazioneVecchia.getData_visita().toString())
                         +" è stata annullata, riceverà un altra email quando verrà riconfermata.";
                 String oggetto="Prenotazione annullata";
-                SendEmail.getInstance().sendMail(oggetto,testo, "niko97142@gmail.com");
-                Notifica notifica = inserisciNotifica(prenotazione.getPaziente().getId(),testo,oggetto,"paziente",prenotazione.getDottore().getNome()+" "+prenotazione.getDottore().getCognome(), prenotazione.getDottore().getId());
+                SendEmail.getInstance().sendMail(oggetto,testo, prenotazione.getPaziente().getEmail());
+                NotificaDTO notifica = inserisciNotifica(prenotazione.getPaziente().getId(),testo,oggetto,"paziente",prenotazione.getDottore().getNome()+" "+prenotazione.getDottore().getCognome(), prenotazione.getDottore().getId());
+                notificaService.save(notifica);
+                testo="La prenotazione riguardante "+ prenotazione.getDescrizione() +" e stabilita in data "+ Data.convertiData(prenotazioneVecchia.getData_visita().toString())
+                        +" del paziente "+prenotazione.getPaziente().getNome() +" "+prenotazione.getPaziente().getCognome()+" è stata annullata";
+                notifica.setRicevitore("dottore");
+                notifica.setTesto(testo);
                 notificaService.save(notifica);
             }
+
         }
         if(prenotazione.isConfermato()==false && prenotazioneVecchia.isConfermato()==false){
             if(prenotazione.isUrgente()==true && prenotazioneVecchia.isUrgente()==false)
             {
                 String testo="La sua prenotazione riguardante "+ prenotazione.getDescrizione() +" non ancora programmata in una data è stata spostata tra le prenotazioni urgenti.";
                 String oggetto="Prenotazione spostata in urgenti";
-                SendEmail.getInstance().sendMail(oggetto,testo, "niko97142@gmail.com");
-                Notifica notifica = inserisciNotifica(prenotazione.getPaziente().getId(),testo,oggetto,"paziente",prenotazione.getDottore().getNome()+" "+prenotazione.getDottore().getCognome(), prenotazione.getDottore().getId());
+                SendEmail.getInstance().sendMail(oggetto,testo,prenotazione.getPaziente().getEmail());
+                NotificaDTO notifica = inserisciNotifica(prenotazione.getPaziente().getId(),testo,oggetto,"paziente",prenotazione.getDottore().getNome()+" "+prenotazione.getDottore().getCognome(), prenotazione.getDottore().getId());
                 notificaService.save(notifica);
             }
             else if(prenotazione.isUrgente()==false && prenotazioneVecchia.isUrgente()==true){
                 String testo="La sua prenotazione riguardante "+ prenotazione.getDescrizione() +" non ancora programmata in una data è stata rimossa dalle prenotazioni urgenti.";
                 String oggetto="Prenotazione rimossa dalle urgenti";
-                SendEmail.getInstance().sendMail(oggetto,testo, "niko97142@gmail.com");
-                Notifica notifica = inserisciNotifica(prenotazione.getPaziente().getId(),testo,oggetto,"paziente",prenotazione.getDottore().getNome()+" "+prenotazione.getDottore().getCognome(), prenotazione.getDottore().getId());
+                SendEmail.getInstance().sendMail(oggetto,testo,prenotazione.getPaziente().getEmail());
+                NotificaDTO notifica = inserisciNotifica(prenotazione.getPaziente().getId(),testo,oggetto,"paziente",prenotazione.getDottore().getNome()+" "+prenotazione.getDottore().getCognome(), prenotazione.getDottore().getId());
                 notificaService.save(notifica);
             }
 
@@ -178,16 +187,17 @@ public class PrenotazioneController {
         if(prenotazione.isConfermato()==true && prenotazioneVecchia.isConfermato()==false){
             String testo="La sua prenotazione riguardante "+ prenotazione.getDescrizione() +", è stata confermata per la data "+Data.convertiData(prenotazione.getData_visita().toString());
             String oggetto="Prenotazione Confermata";
-            SendEmail.getInstance().sendMail(oggetto,testo, "niko97142@gmail.com");
-            Notifica notifica = inserisciNotifica(prenotazione.getPaziente().getId(),testo,oggetto,"paziente",prenotazione.getDottore().getNome()+" "+prenotazione.getDottore().getCognome(), prenotazione.getDottore().getId());
+            SendEmail.getInstance().sendMail(oggetto,testo, prenotazione.getPaziente().getEmail());
+            NotificaDTO notifica = inserisciNotifica(prenotazione.getPaziente().getId(),testo,oggetto,"paziente",prenotazione.getDottore().getNome()+" "+prenotazione.getDottore().getCognome(), prenotazione.getDottore().getId());
             notificaService.save(notifica);
         }
+
         PrenotazioneDTO prenotazioneNuova = prenotazioneService.updatePrenotazione(prenotazione);
         return ResponseEntity.ok(prenotazioneNuova);
     }
 
-    public static Notifica inserisciNotifica(Long id, String testo, String oggetto,String ricevitore, String dottore, Long dottoreId){
-        Notifica notifica = new Notifica();
+    public static NotificaDTO inserisciNotifica(Long id, String testo, String oggetto,String ricevitore, String dottore, Long dottoreId){
+        NotificaDTO notifica = new NotificaDTO();
         notifica.setPaziente(id);
         notifica.setVista(false);
         notifica.setTesto(testo);
@@ -195,8 +205,8 @@ public class PrenotazioneController {
         notifica.setRicevitore(ricevitore);
         notifica.setData(LocalDateTime.now());
         notifica.setDottoreId(dottoreId);
-        System.out.println(dottore);
         notifica.setDottore(dottore);
+        System.out.println(notifica);
         return notifica;
     }
 

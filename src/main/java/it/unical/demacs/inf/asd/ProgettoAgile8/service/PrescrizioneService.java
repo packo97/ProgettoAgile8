@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface PrescrizioneService {
 
-    boolean uploadFile(byte[] bytes, DottoreDTO dottore, AnimaleDTO animale);
+    PrescrizioneDTO uploadFile(byte[] bytes, DottoreDTO dottore, AnimaleDTO animale);
     List<PrescrizioneDTO> findAllByAnimale(AnimaleDTO dto);
     PrescrizioneDTO findAllById(Long id);
 

@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface RicevutaService {
 
-    boolean uploadFile(byte[] bytes, DottoreDTO dottore, AnimaleDTO animale);
+    RicevutaDTO uploadFile(byte[] bytes, DottoreDTO dottore, AnimaleDTO animale);
     List<RicevutaDTO> findAllByAnimale(AnimaleDTO dto);
     RicevutaDTO findAllById(Long id);
 }

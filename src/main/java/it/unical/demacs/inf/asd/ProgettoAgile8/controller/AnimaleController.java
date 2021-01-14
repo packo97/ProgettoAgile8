@@ -1,13 +1,17 @@
 package it.unical.demacs.inf.asd.ProgettoAgile8.controller;
 
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.AnimaleDTO;
+import it.unical.demacs.inf.asd.ProgettoAgile8.dto.NotificaDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PazienteDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.SegretariaDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Animale;
+import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Prenotazione;
 import it.unical.demacs.inf.asd.ProgettoAgile8.service.AnimaleService;
 
+import it.unical.demacs.inf.asd.ProgettoAgile8.utility.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,6 +39,11 @@ public class AnimaleController {
         System.out.println((animaleDTO));
         AnimaleDTO p = animaleService.updateAnimale(animaleDTO);
         return ResponseEntity.ok(p);
+    }
+    @DeleteMapping(path = "/animale/{id}")
+    public HttpStatus delete(@PathVariable Long id){
+        animaleService.deleteAnimale(id);
+        return HttpStatus.OK;
     }
 
     @PostMapping(path = "/animaleByPaziente")

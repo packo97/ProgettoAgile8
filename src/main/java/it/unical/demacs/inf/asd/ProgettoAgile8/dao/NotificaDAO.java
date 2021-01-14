@@ -13,9 +13,9 @@ import java.util.List;
 
 @Repository
 public interface NotificaDAO extends JpaRepository<Notifica, Long> {
-    List<Notifica> findAllByPazienteAndRicevitore(Long paziente,String ricevitore);
-    List<Notifica> findAllByRicevitore(String ricevitore);
-    List<Notifica> findAllByDottoreIdAndRicevitore(Long dottoreId,String ricevitore);
+    List<Notifica> findAllByPazienteAndRicevitoreOrderByDataDesc(Long paziente,String ricevitore);
+    List<Notifica> findAllByRicevitoreOrderByDataDesc(String ricevitore);
+    List<Notifica> findAllByDottoreIdAndRicevitoreOrderByDataDesc(Long dottoreId,String ricevitore);
     Notifica getAllById(Long id);
     @Modifying
     @Query("update Notifica n set n.vista = ?1 where n.paziente = ?2")
