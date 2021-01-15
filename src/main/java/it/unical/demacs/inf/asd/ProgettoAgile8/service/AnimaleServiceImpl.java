@@ -32,6 +32,7 @@ public class AnimaleServiceImpl implements AnimaleService{
         return animaleDAO.findAllByPaziente(paziente).stream().map(animale -> modelMapper.map(animale,AnimaleDTO.class)).collect(Collectors.toList());
     }
 
+    @Transactional
     @Override
     public AnimaleDTO updateAnimale(AnimaleDTO animaleDTO) {
         Paziente paziente = modelMapper.map(animaleDTO.getPaziente(), Paziente.class);
