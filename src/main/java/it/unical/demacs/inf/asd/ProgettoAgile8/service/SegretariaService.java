@@ -10,11 +10,16 @@ public interface SegretariaService {
     SegretariaDTO addSegretaria(SegretariaDTO paziente) throws NoSuchAlgorithmException;
 
     Boolean login(String email, String password);
+
     SegretariaDTO getSegretariaByEmail(String email);
 
     SegretariaDTO updateSegretaria(SegretariaDTO dto);
+
     boolean controllaPassword(String passwordVecchia, SegretariaDTO dto);
+
     void updatePassword(String passwordNuova, SegretariaDTO dto);
+
     void updateImg(byte[] img, Long segretariaID);
+
     void modificaPassword(RecuperaPasswordDTO recuperaPasswordDTO);
 }

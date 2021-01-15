@@ -1,9 +1,5 @@
 package it.unical.demacs.inf.asd.ProgettoAgile8.dto;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Dottore;
-import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Paziente;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 

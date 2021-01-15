@@ -2,18 +2,20 @@ package it.unical.demacs.inf.asd.ProgettoAgile8.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 import it.unical.demacs.inf.asd.ProgettoAgile8.core.ListaItemPrescrizione;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.AnimaleDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.DottoreDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PrescrizioneDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.service.PrescrizioneService;
 import it.unical.demacs.inf.asd.ProgettoAgile8.utility.PdfCreator;
+
 import org.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,8 +36,6 @@ public class PrescrizioneController {
     @PostMapping(path = "/prescrizione")
     public ResponseEntity<PrescrizioneDTO> add(@RequestParam("file") MultipartFile file, @RequestParam("dottore") String dottore, @RequestParam("animale") String animale){
         try {
-            System.out.println(dottore);
-            System.out.println(animale);
             JSONObject jsonDottore = new JSONObject(dottore);
             JSONObject jsonAnimale = new JSONObject(animale);
             ObjectMapper objectMapper = new ObjectMapper();
@@ -48,40 +48,26 @@ public class PrescrizioneController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("Aggiunta PDF");
         return null;
     }
 
     @PostMapping(value = "/prescrizioniByAnimale")
     public ResponseEntity<List<PrescrizioneDTO>> getByAnimale(@RequestBody AnimaleDTO dto){
-        System.out.println("by animale");
         List<PrescrizioneDTO> prescrizioni = prescrizioneService.findAllByAnimale(dto);
-
         return ResponseEntity.ok(prescrizioni);
     }
 
-
-
     @GetMapping(value = "/prescrizionePDF/{id}")
     public ResponseEntity<Resource> getPdfById(@PathVariable("id") Long id) {
-        System.out.println("get pdf");
-        // Load file from database
         PrescrizioneDTO prescrizione = prescrizioneService.findAllById(id);
-
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_PDF)
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + "test" + "\"")
                 .body(new ByteArrayResource(prescrizione.getContent()));
     }
 
-
-
     @PostMapping(value = "/creaPrescrizione")
     public ResponseEntity<Resource> creaPrescrizione(@RequestBody ListaItemPrescrizione listaItemPrescrizione) {
-        System.out.println("crea prescrizione");
-
-        System.out.println(listaItemPrescrizione);
-
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_PDF)
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + "test" + "\"")

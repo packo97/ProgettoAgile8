@@ -1,24 +1,16 @@
 package it.unical.demacs.inf.asd.ProgettoAgile8.service;
 
-
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.pdf.PdfWriter;
-import it.unical.demacs.inf.asd.ProgettoAgile8.dao.AnimaleDAO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dao.PrescrizioneDAO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.AnimaleDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.DottoreDTO;
-import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PazienteDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PrescrizioneDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Animale;
-import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Paziente;
+
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Prescrizione;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.stream.Collectors;
 

@@ -1,11 +1,7 @@
 package it.unical.demacs.inf.asd.ProgettoAgile8.dto;
 
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.List;
 
 public class AnimaleDTO implements Serializable {
 

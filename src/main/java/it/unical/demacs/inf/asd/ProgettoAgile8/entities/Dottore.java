@@ -1,11 +1,7 @@
 package it.unical.demacs.inf.asd.ProgettoAgile8.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import javax.persistence.*;
 import java.util.List;
-
 
 @Entity
 @Table(name = "DOTTORE")
@@ -39,26 +35,11 @@ public class Dottore {
     @Column(name="descrizione", length=500)
     private String descrizione;
 
-    //@JsonBackReference
     @OneToMany(mappedBy = "dottore", fetch = FetchType.LAZY)
     private List<Prenotazione> prenotazioni;
-/*
-    @OneToOne
-    @JoinColumn(name = "segretaria", referencedColumnName = "id")
-    private Segretaria segretaria;
-*/
+
     @Column(name = "salt", nullable = true)
     private String salt;
-
-/*
-    @OneToMany(mappedBy = "dottore" , fetch = FetchType.LAZY)
-    private List<Prescrizione> prescrizioni;
-
-    @OneToMany(mappedBy = "dottore", fetch = FetchType.LAZY)
-    private List<Ricevuta> ricevute;
-*/
-
-
 
     public String getSalt() {
         return salt;
@@ -150,31 +131,6 @@ public class Dottore {
     public void setDescrizione(String descrizione) {
         this.descrizione = descrizione;
     }
-/*
-    public Segretaria getSegretaria() {
-        return segretaria;
-    }
-
-    public void setSegretaria(Segretaria segretaria) {
-        this.segretaria = segretaria;
-    }*/
-/*
-    public List<Prescrizione> getPrescrizioni() {
-        return prescrizioni;
-    }
-
-    public void setPrescrizioni(List<Prescrizione> prescrizioni) {
-        this.prescrizioni = prescrizioni;
-    }
-
-    public List<Ricevuta> getRicevute() {
-        return ricevute;
-    }
-
-    public void setRicevute(List<Ricevuta> ricevute) {
-        this.ricevute = ricevute;
-    }
-*/
 
     public byte[] getImg() {
         return img;

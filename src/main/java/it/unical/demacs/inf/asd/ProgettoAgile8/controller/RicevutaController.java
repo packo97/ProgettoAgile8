@@ -8,12 +8,13 @@ import it.unical.demacs.inf.asd.ProgettoAgile8.dto.DottoreDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.RicevutaDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.service.RicevutaService;
 import it.unical.demacs.inf.asd.ProgettoAgile8.utility.PdfCreator;
+
 import org.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,8 +35,6 @@ public class RicevutaController {
     @PostMapping(path = "/ricevuta")
     public ResponseEntity<RicevutaDTO> add(@RequestParam("file") MultipartFile file, @RequestParam("dottore") String dottore, @RequestParam("animale") String animale){
         try {
-            System.out.println(dottore);
-            System.out.println(animale);
             JSONObject jsonDottore = new JSONObject(dottore);
             JSONObject jsonAnimale = new JSONObject(animale);
             ObjectMapper objectMapper = new ObjectMapper();
@@ -47,42 +46,29 @@ public class RicevutaController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("Aggiunta PDF");
         return null;
     }
 
     @PostMapping(value = "/ricevuteByAnimale")
     public ResponseEntity<List<RicevutaDTO>> getByAnimale(@RequestBody AnimaleDTO dto) {
-        System.out.println("by animale");
         List<RicevutaDTO> ricevute = ricevutaService.findAllByAnimale(dto);
-
         return ResponseEntity.ok(ricevute);
     }
 
     @GetMapping(value = "/ricevutaPDF/{id}")
     public ResponseEntity<Resource> getPdfById(@PathVariable("id") Long id) {
-        System.out.println("get pdf");
-        // Load file from database
         RicevutaDTO ricevuta = ricevutaService.findAllById(id);
-
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_PDF)
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + "test" + "\"")
                 .body(new ByteArrayResource(ricevuta.getContent()));
     }
 
-
     @PostMapping(value = "/creaRicevuta")
     public ResponseEntity<Resource> creaRicevuta(@RequestBody ListaItemRicevuta listaItemRicevuta) {
-        System.out.println("crea ricevuta");
-
-        System.out.println(listaItemRicevuta);
-
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_PDF)
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + "test" + "\"")
                 .body(new ByteArrayResource(PdfCreator.creaRicevutaPDF(listaItemRicevuta)));
     }
-
-
 }

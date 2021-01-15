@@ -1,12 +1,5 @@
 package it.unical.demacs.inf.asd.ProgettoAgile8.dto;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Paziente;
-
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
 
 public class NotificaDTO {

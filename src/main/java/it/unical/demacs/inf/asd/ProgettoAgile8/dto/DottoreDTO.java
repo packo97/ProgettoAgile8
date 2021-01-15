@@ -1,12 +1,7 @@
 package it.unical.demacs.inf.asd.ProgettoAgile8.dto;
 
-import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Prescrizione;
-import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Ricevuta;
-
-import javax.persistence.Column;
-import javax.persistence.OneToMany;
 import java.io.Serializable;
-import java.util.List;
+
 
 public class DottoreDTO implements Serializable {
 

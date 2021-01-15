@@ -2,13 +2,11 @@ package it.unical.demacs.inf.asd.ProgettoAgile8.service;
 
 import it.unical.demacs.inf.asd.ProgettoAgile8.core.RecuperaPasswordDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dao.SegretariaDAO;
-import it.unical.demacs.inf.asd.ProgettoAgile8.dto.DottoreDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.SegretariaDTO;
-import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Dottore;
-import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Paziente;
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Segretaria;
 import it.unical.demacs.inf.asd.ProgettoAgile8.utility.SendEmail;
 import it.unical.demacs.inf.asd.ProgettoAgile8.utility.Sicurezza;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,12 +26,10 @@ public class SegretariaServiceImpl implements SegretariaService{
 
     @Override
     public SegretariaDTO addSegretaria(SegretariaDTO dto) throws NoSuchAlgorithmException {
-        System.out.println("Aggiunta Segretaria");
         String password= dto.getPassword();
         byte[] salt = Sicurezza.getSalt();
         String saltString = salt.toString();
         String passwordSicura = Sicurezza.getSecurePassword(password, saltString.getBytes(StandardCharsets.UTF_8));
-        System.out.println(passwordSicura);
         dto.setPassword(passwordSicura);
         dto.setSalt(saltString);
         Segretaria segretaria = modelMapper.map(dto, Segretaria.class);

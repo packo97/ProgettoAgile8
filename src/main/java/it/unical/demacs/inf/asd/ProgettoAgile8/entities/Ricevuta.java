@@ -22,7 +22,6 @@ public class Ricevuta {
     @Column(name="content")
     private byte[] content;
 
-
     public Long getId() {
         return id;
     }

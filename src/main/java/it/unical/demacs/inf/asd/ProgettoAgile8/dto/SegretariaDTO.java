@@ -1,10 +1,5 @@
 package it.unical.demacs.inf.asd.ProgettoAgile8.dto;
 
-import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Dottore;
-
-import javax.persistence.Column;
-
-
 public class SegretariaDTO {
 
     private Long id;
@@ -20,8 +15,6 @@ public class SegretariaDTO {
     private String email;
 
     private String password;
-
-    //private Dottore dottore;
 
     private String salt;
 
@@ -90,14 +83,6 @@ public class SegretariaDTO {
     public void setPassword(String password) {
         this.password = password;
     }
-/*
-    public Dottore getDottore() {
-        return dottore;
-    }
-
-    public void setDottore(Dottore dottore) {
-        this.dottore = dottore;
-    }*/
 
     public byte[] getImg() {
         return img;

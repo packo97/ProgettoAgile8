@@ -1,7 +1,5 @@
 package it.unical.demacs.inf.asd.ProgettoAgile8.dto;
 
-import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Dottore;
-
 import java.io.Serializable;
 
 public class RicevutaDTO implements Serializable {

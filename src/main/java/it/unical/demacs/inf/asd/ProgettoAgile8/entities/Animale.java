@@ -1,6 +1,5 @@
 package it.unical.demacs.inf.asd.ProgettoAgile8.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
@@ -18,7 +17,6 @@ public class Animale {
     @Column(name = "nome", length = 50, nullable = false)
     private String nome;
 
-    //@JsonBackReference
     @ManyToOne
     @JoinColumn(name="PAZIENTE_ID",referencedColumnName = "ID")
     private Paziente paziente;
@@ -39,12 +37,12 @@ public class Animale {
     @Column(name = "genere", length = 10)
     private String genere;
 
-
     @OneToMany(mappedBy = "animale", cascade = CascadeType.ALL)
     private List<Prescrizione> prescrizioni;
 
     @OneToMany(mappedBy = "animale", cascade = CascadeType.ALL)
     private List<Ricevuta> ricevute;
+
     @OneToMany(mappedBy = "animale", cascade = CascadeType.ALL)
     private List<Esame_medico> esami;
 
@@ -112,7 +110,7 @@ public class Animale {
         this.genere = genere;
     }
 
-   /* public List<Prescrizione> getPrescrizioni() {
+    public List<Prescrizione> getPrescrizioni() {
         return prescrizioni;
     }
 
@@ -126,5 +124,5 @@ public class Animale {
 
     public void setRicevute(List<Ricevuta> ricevute) {
         this.ricevute = ricevute;
-    }*/
+    }
 }

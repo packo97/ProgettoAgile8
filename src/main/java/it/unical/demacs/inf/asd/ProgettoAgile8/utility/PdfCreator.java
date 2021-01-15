@@ -14,13 +14,9 @@ import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PazienteDTO;
 
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Random;
 import java.util.stream.Stream;
 
 public class PdfCreator {
-
 
     static public byte[] creaPrescrizionePDF(ListaItemPrescrizione listaItemPrescrizione){
         DottoreDTO dottoreDTO = listaItemPrescrizione.getDottore();
@@ -57,34 +53,12 @@ public class PdfCreator {
             tabellaMedico.setHorizontalAlignment(Element.ALIGN_CENTER);
             tabellaMedico.setWidthPercentage(100);
 
-            /*
-            PdfPTable tabellaPaziente = new PdfPTable(1);
-            Stream.of("DESTINTARIO")
-                    .forEach(columnTitle -> {
-                        PdfPCell header = new PdfPCell();
-                        header.setBorderWidth(2);
-                        header.setPhrase(new Phrase(columnTitle));
-                        tabellaPaziente.addCell(header);
-                    });
-            tabellaPaziente.addCell("PROPRIETARIO DEGLI ANIMALI\n"+
-                                        pazienteDTO.getNome() + " " + pazienteDTO.getCognome() + "\n" +
-                                        "via: \n" + "provicia \n" + "USL \n");
-
-            tabellaPaziente.setHorizontalAlignment(Element.ALIGN_RIGHT);
-            tabellaPaziente.setWidthPercentage(60);
-*/
             Paragraph p = new Paragraph();
             p.add(tabellaMedico);
 
-            //p.addTabStops(new TabStop(1000, TabAlignment.RIGHT));
-            //p.add(tabellaPaziente);
             document.add(new Paragraph(("\n")));
             document.add(p);
 
-            //dati.add(tabellaMedico);
-            //dati.add(tabellaPaziente);
-
-            //document.add(dati);
             document.add(new Paragraph(("\n")));
             Paragraph secondo = new Paragraph("Prescrizione per acquisto medicinali",bold);
             secondo.setAlignment(Element.ALIGN_CENTER);
@@ -158,7 +132,6 @@ public class PdfCreator {
             firma_veterinario.setBorderWidthTop(1);
             firma_veterinario.setHorizontalAlignment(Element.ALIGN_CENTER);
             firme.addCell(firma_veterinario);
-            //firme.addCell(LocalDate.now().format(DateTimeFormatter.ofPattern("d/MM/uuuu")).toString());
 
             document.add(new Paragraph(("\n")));
             document.add(new Paragraph(("\n")));
@@ -269,7 +242,6 @@ public class PdfCreator {
             document.add(paziente);
             document.add(new Paragraph("\n"));
 
-            //tabella
             PdfPTable table = new PdfPTable(new float[]{20,50,10,10,10});
             table.setWidthPercentage(100);
             addTableHeader(table);

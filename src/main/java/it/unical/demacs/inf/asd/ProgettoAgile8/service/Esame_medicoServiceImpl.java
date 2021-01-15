@@ -1,14 +1,12 @@
 package it.unical.demacs.inf.asd.ProgettoAgile8.service;
 
 import it.unical.demacs.inf.asd.ProgettoAgile8.dao.Esame_medicoDAO;
-import it.unical.demacs.inf.asd.ProgettoAgile8.dao.RicevutaDAO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.AnimaleDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.DottoreDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.Esame_medicoDTO;
-import it.unical.demacs.inf.asd.ProgettoAgile8.dto.RicevutaDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Animale;
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Esame_medico;
-import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Ricevuta;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

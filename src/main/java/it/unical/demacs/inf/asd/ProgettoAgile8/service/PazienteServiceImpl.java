@@ -35,19 +35,15 @@ public class PazienteServiceImpl implements PazienteService{
 
     @Override
     public PazienteDTO addPaziente(PazienteDTO dto) throws NoSuchAlgorithmException {
-        System.out.println("Aggiunto Paziente");
         String password= dto.getPassword();
         byte[] salt = Sicurezza.getSalt();
         String saltString = salt.toString();
         String passwordSicura = Sicurezza.getSecurePassword(password, saltString.getBytes(StandardCharsets.UTF_8));
-        System.out.println(passwordSicura);
         dto.setPassword(passwordSicura);
         dto.setSalt(saltString);
-
         Paziente paziente = modelMapper.map(dto, Paziente.class);
         Paziente saved = pazienteDAO.save(paziente);
         return modelMapper.map(saved, PazienteDTO.class);
-
     }
 
     @Override
@@ -56,7 +52,6 @@ public class PazienteServiceImpl implements PazienteService{
         if(p1==null)
             return false;
         String salt= p1.getSalt();
-        System.out.println("salt nel db "+salt);
         Paziente p = pazienteDAO.findAllByEmailAndPassword(email,Sicurezza.getSecurePassword(password,salt.getBytes(StandardCharsets.UTF_8)));
         if(p==null)
             return false;
@@ -68,7 +63,7 @@ public class PazienteServiceImpl implements PazienteService{
         Paziente paziente = pazienteDAO.findAllByEmail(email);
         if(paziente!=null)
             return modelMapper.map(paziente, PazienteDTO.class);
-        //else trovare quelli della segretaria
+
         return null;
     }
 

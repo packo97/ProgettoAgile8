@@ -1,7 +1,6 @@
 package it.unical.demacs.inf.asd.ProgettoAgile8.entities;
 
 import javax.persistence.*;
-import java.sql.Blob;
 
 @Entity
 @Table(name = "PRESCRIZIONE")
@@ -22,8 +21,6 @@ public class Prescrizione {
 
     @Column(name="content")
     private byte[] content;
-
-
 
     public Long getId() {
         return id;

@@ -27,9 +27,7 @@ public class NotificaServiceImpl implements NotificaService{
     @Override
     public List<NotificaDTO> findAllByPaziente(PazienteDTO pazienteDTO) {
         Paziente paziente= modelMapper.map(pazienteDTO, Paziente.class);
-        //System.out.println(notificaDAO.findAllByPazienteAndSegretariaIsFalse(paziente).stream().map(notifica -> modelMapper.map(notifica, NotificaDTO.class)).collect(Collectors.toList()).size());
         return notificaDAO.findAllByPazienteAndRicevitoreOrderByDataDesc(paziente.getId(),"paziente").stream().map(notifica -> modelMapper.map(notifica, NotificaDTO.class)).collect(Collectors.toList());
-
     }
 
     @Override
@@ -64,7 +62,6 @@ public class NotificaServiceImpl implements NotificaService{
     public void setAllVistaByDottore(Long dottoreId) {
         notificaDAO.updateNotificheVisteByDottoreId(dottoreId);
     }
-
 
     @Override
     public void deletePrenotazione(Long id) {

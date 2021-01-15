@@ -31,19 +31,15 @@ public class PrenotazioneServiceImpl implements PrenotazioneService{
 
     @Override
     public PrenotazioneDTO addPrenotazione(PrenotazioneDTO dto) {
-        System.out.println("Aggiunta Prenotazione");
         Prenotazione prenotazione = modelMapper.map(dto, Prenotazione.class);
-        System.out.println(prenotazione);
         Prenotazione saved = prenotazioneDAO.save(prenotazione);
         return modelMapper.map(saved, PrenotazioneDTO.class);
 
     }
 
     @Override
-    public void deletePrenotazione(/*PrenotazioneDTO dto,*/ Long id) {
-        //Prenotazione p = modelMapper.map(dto, Prenotazione.class);
+    public void deletePrenotazione(Long id) {
         prenotazioneDAO.deleteById(id);
-        //prenotazioneDAO.delete(p);
     }
 
 
@@ -85,8 +81,6 @@ public class PrenotazioneServiceImpl implements PrenotazioneService{
             }
         });
         return unsorted;
-
-        //return prenotazioneDAO.getUrgentiNonConfermate(LocalDateTime.now()).stream().map(prenotazione -> modelMapper.map(prenotazione, PrenotazioneDTO.class)).collect(Collectors.toList());
     }
 
     @Override
@@ -104,7 +98,6 @@ public class PrenotazioneServiceImpl implements PrenotazioneService{
         return prenotazioneDAO.findAllById(id);
     }
 
-    //è corretto utilizzare due volte il model mapper
     @Override
     public List<PrenotazioneDTO> getPrenotazioniByPaziente(PazienteDTO dto) {
         Paziente paziente= modelMapper.map(dto, Paziente.class);
@@ -116,8 +109,6 @@ public class PrenotazioneServiceImpl implements PrenotazioneService{
     public List<PrenotazioneDTO> getPrenotazioniByDoctorAndDate(DottoreDTO dto, LocalDateTime date, Boolean confermato) {
         Dottore dottore = modelMapper.map(dto, Dottore.class);
         List<PrenotazioneDTO> unsorted = prenotazioneDAO.findAllByDottoreAndConfermato(dottore, confermato).stream().map(prenotazione -> modelMapper.map(prenotazione, PrenotazioneDTO.class)).collect(Collectors.toList());
-
-
         List<PrenotazioneDTO> filtered = unsorted.stream().filter(p -> p.getData_visita().getDayOfYear() == date.getDayOfYear()).collect(Collectors.toList());
 
         filtered.sort(new Comparator<PrenotazioneDTO>() {
@@ -161,7 +152,5 @@ public class PrenotazioneServiceImpl implements PrenotazioneService{
         });
         return unsorted;
     }
-
-
 
 }

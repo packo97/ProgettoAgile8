@@ -1,6 +1,5 @@
 package it.unical.demacs.inf.asd.ProgettoAgile8.dao;
 
-
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Animale;
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Prescrizione;
 

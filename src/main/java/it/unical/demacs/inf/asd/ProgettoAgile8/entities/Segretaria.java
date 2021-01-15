@@ -27,10 +27,7 @@ public class Segretaria {
 
     @Column(name = "password", nullable = false)
     private String password;
-/*
-    @OneToOne(mappedBy = "segretaria")
-    private Dottore dottore;
-*/
+
     @Column(name = "salt", nullable = true)
     private String salt;
 
@@ -100,14 +97,6 @@ public class Segretaria {
     public void setPassword(String password) {
         this.password = password;
     }
-/*
-    public Dottore getDottore() {
-        return dottore;
-    }
-
-    public void setDottore(Dottore dottore) {
-        this.dottore = dottore;
-    }*/
 
     public byte[] getImg() {
         return img;

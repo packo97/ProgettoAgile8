@@ -6,28 +6,18 @@ import it.unical.demacs.inf.asd.ProgettoAgile8.dto.DottoreDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.NotificaDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PazienteDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PrenotazioneDTO;
-import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Dottore;
-import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Notifica;
-import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Paziente;
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Prenotazione;
 import it.unical.demacs.inf.asd.ProgettoAgile8.service.NotificaService;
-import it.unical.demacs.inf.asd.ProgettoAgile8.service.PazienteService;
 import it.unical.demacs.inf.asd.ProgettoAgile8.service.PrenotazioneService;
 import it.unical.demacs.inf.asd.ProgettoAgile8.utility.Data;
 import it.unical.demacs.inf.asd.ProgettoAgile8.utility.SendEmail;
-import org.apache.tomcat.jni.Local;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.NoSuchAlgorithmException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -41,8 +31,6 @@ public class PrenotazioneController {
 
     @Autowired
     private NotificaService notificaService;
-    @Autowired
-    private PazienteService pazienteService;
 
     @PostMapping(path = "/prenotazioniByPaziente")
     public ResponseEntity<List<PrenotazioneDTO>> getPrenotazioniByPaziente(@RequestBody PazienteDTO paziente){
@@ -53,11 +41,9 @@ public class PrenotazioneController {
 
     @PostMapping(path = "/prenotazioniByDoctor")
     public ResponseEntity<List<PrenotazioneDTO>> getPrenotazioniByDoctor(@RequestBody DottoreDTO dottore){
-
         List<PrenotazioneDTO> lista = prenotazioneService.getPrenotazioniByDoctor(dottore, true);
         return ResponseEntity.ok(lista);
     }
-
 
     @PostMapping(path = "/prenotazioniByDoctorAndDate")
     public ResponseEntity<List<PrenotazioneDTO>> getPrenotazioniByDoctor(@RequestBody Filtro filtro){
@@ -73,7 +59,6 @@ public class PrenotazioneController {
         return ResponseEntity.ok(lista);
     }
 
-
     @GetMapping(path = "/urgentiNonAccettati")
     public ResponseEntity<List<PrenotazioneDTO>> getUrgentiNonConfermate(){
        List<PrenotazioneDTO> lista = prenotazioneService.getUrgentiNonConfermate();
@@ -85,7 +70,6 @@ public class PrenotazioneController {
         List<PrenotazioneDTO> lista = prenotazioneService.getUrgentiNonConfermateByDoctor(dottore);
         return ResponseEntity.ok(lista);
     }
-
 
     @GetMapping(path = "/inAttesa")
     public ResponseEntity<List<PrenotazioneDTO>> getInAttesa(){
@@ -101,14 +85,12 @@ public class PrenotazioneController {
 
     @PostMapping(path = "/prenotazione")
     public ResponseEntity<PrenotazioneDTO> add(@RequestBody PrenotazioneDTO prenotazione){
-        System.out.println("aggiungo prenotazione");
         PrenotazioneDTO p = prenotazioneService.addPrenotazione(prenotazione);
         return ResponseEntity.ok(p);
     }
 
     @DeleteMapping(path = "/prenotazione/{id}")
     public HttpStatus delete(@PathVariable Long id){
-        System.out.println("deleete prenotazione");
         Prenotazione p = prenotazioneService.getById(id);
         if(p.isConfermato()==true && p.getData_visita()!=null) {
             String testo = "La prenotazione del paziente " + p.getPaziente().getNome() + " " + p.getPaziente().getCognome() + " riguardante " + p.getDescrizione() + " e stabilita per la data " + Data.convertiData(p.getData_visita().toString()) + " è stata annullata.";
@@ -117,6 +99,10 @@ public class PrenotazioneController {
             notificaService.save(notifica);
             notifica = inserisciNotifica(p.getPaziente().getId(), testo, oggetto, "dottore", p.getDottore().getNome() + " " + p.getDottore().getCognome(), p.getDottore().getId());
             notificaService.save(notifica);
+            notifica = inserisciNotifica(p.getPaziente().getId(), testo, oggetto, "paziente", p.getDottore().getNome() + " " + p.getDottore().getCognome(), p.getDottore().getId());
+            notifica.setTesto("La prenotazione riguardante " + p.getDescrizione() + " e stabilita per la data " + Data.convertiData(p.getData_visita().toString()) + " è stata annullata.");
+            notificaService.save(notifica);
+            SendEmail.getInstance().sendMail(oggetto,testo, p.getPaziente().getEmail());
         }
         prenotazioneService.deletePrenotazione(id);
         return HttpStatus.OK;
@@ -124,7 +110,6 @@ public class PrenotazioneController {
 
     @PutMapping(path =  "/prenotazione")
     public ResponseEntity<PrenotazioneDTO> update(@RequestBody PrenotazioneDTO prenotazione){
-
         Prenotazione prenotazioneVecchia = prenotazioneService.getById(prenotazione.getId());
         if(prenotazione.isConfermato() == prenotazioneVecchia.isConfermato() && prenotazione.getData_visita()!=null){
             if(!prenotazione.getData_visita().equals(prenotazioneVecchia.getData_visita())) {
@@ -164,7 +149,6 @@ public class PrenotazioneController {
                 notifica.setTesto(testo);
                 notificaService.save(notifica);
             }
-
         }
         if(prenotazione.isConfermato()==false && prenotazioneVecchia.isConfermato()==false){
             if(prenotazione.isUrgente()==true && prenotazioneVecchia.isUrgente()==false)
@@ -191,7 +175,6 @@ public class PrenotazioneController {
             NotificaDTO notifica = inserisciNotifica(prenotazione.getPaziente().getId(),testo,oggetto,"paziente",prenotazione.getDottore().getNome()+" "+prenotazione.getDottore().getCognome(), prenotazione.getDottore().getId());
             notificaService.save(notifica);
         }
-
         PrenotazioneDTO prenotazioneNuova = prenotazioneService.updatePrenotazione(prenotazione);
         return ResponseEntity.ok(prenotazioneNuova);
     }
@@ -206,7 +189,6 @@ public class PrenotazioneController {
         notifica.setData(LocalDateTime.now());
         notifica.setDottoreId(dottoreId);
         notifica.setDottore(dottore);
-        System.out.println(notifica);
         return notifica;
     }
 

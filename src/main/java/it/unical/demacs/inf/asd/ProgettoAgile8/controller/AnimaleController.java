@@ -1,21 +1,14 @@
 package it.unical.demacs.inf.asd.ProgettoAgile8.controller;
 
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.AnimaleDTO;
-import it.unical.demacs.inf.asd.ProgettoAgile8.dto.NotificaDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PazienteDTO;
-import it.unical.demacs.inf.asd.ProgettoAgile8.dto.SegretariaDTO;
-import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Animale;
-import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Prenotazione;
 import it.unical.demacs.inf.asd.ProgettoAgile8.service.AnimaleService;
 
-import it.unical.demacs.inf.asd.ProgettoAgile8.utility.Data;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 
@@ -27,16 +20,13 @@ public class AnimaleController {
     @Autowired
     private AnimaleService animaleService;
 
-
     @PostMapping(path = "/animale")
     public ResponseEntity<AnimaleDTO> add(@RequestBody AnimaleDTO animaleDTO){
-        System.out.println((animaleDTO));
         AnimaleDTO p = animaleService.addAnimale(animaleDTO);
         return ResponseEntity.ok(p);
     }
     @PutMapping(path = "/animale")
     public ResponseEntity<AnimaleDTO> update(@RequestBody AnimaleDTO animaleDTO){
-        System.out.println((animaleDTO));
         AnimaleDTO p = animaleService.updateAnimale(animaleDTO);
         return ResponseEntity.ok(p);
     }
