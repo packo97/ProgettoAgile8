@@ -68,7 +68,7 @@ public class SendEmail {
                     Message.RecipientType.TO,
                     InternetAddress.parse(destinatario)
             );
-            message.setSubject("Annullamento prenotazione Veterinary Clinic");
+            message.setSubject("Annullamento prenotazione - Veterinary Clinic");
             message.setText("Gentile " + "utente" + "," +
                     "\n\n La sua pronatazione è stata annullata." +
                     "\n\n Cordiali saluti," +
@@ -98,7 +98,7 @@ public class SendEmail {
                     Message.RecipientType.TO,
                     InternetAddress.parse(destinatario)
             );
-            message.setSubject("Recupero password Veterinary Clinic");
+            message.setSubject("Recupero password - Veterinary Clinic");
             message.setText("Gentile " + "utente" + "," +
                     "\n\n Il suo codice di verifica è: " + codice +
                     "\n\n Cordiali saluti," +
@@ -144,7 +144,7 @@ public class SendEmail {
                     Message.RecipientType.TO,
                     InternetAddress.parse(destinatario)
             );
-            message.setSubject("Annullamento prenotazione Veterinary Clinic");
+            message.setSubject("Modifica Password - Veterinary Clinic");
             message.setText("Gentile " + "utente" + "," +
                     "\n\n La sua password è stata modificata correttamente" +
                     "\n\n Cordiali saluti," +

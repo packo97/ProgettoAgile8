@@ -29,5 +29,5 @@ public interface PazienteService {
 
     void updateImg(byte[] img, Long pazienteID);
 
-    void modificaPassword(RecuperaPasswordDTO recuperaPasswordDTO) throws NoSuchAlgorithmException;
+    void modificaPassword(RecuperaPasswordDTO recuperaPasswordDTO);
 }

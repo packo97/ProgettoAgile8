@@ -86,8 +86,13 @@ public class PazienteServiceImpl implements PazienteService{
 
     @Override
     @Transactional
-    public void modificaPassword(RecuperaPasswordDTO recuperaPasswordDTO) throws NoSuchAlgorithmException {
-        byte[] salt = Sicurezza.getSalt();
+    public void modificaPassword(RecuperaPasswordDTO recuperaPasswordDTO){
+        byte[] salt = new byte[0];
+        try {
+            salt = Sicurezza.getSalt();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
         String saltString = salt.toString();
         String password = Sicurezza.getSecurePassword(recuperaPasswordDTO.getNuovaPassword(),saltString.getBytes(StandardCharsets.UTF_8));
         pazienteDAO.updatePassword(password,saltString,recuperaPasswordDTO.getEmail());
