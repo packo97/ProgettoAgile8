@@ -42,9 +42,20 @@ public class PrenotazioneServiceImpl implements PrenotazioneService{
         prenotazioneDAO.deleteById(id);
     }
 
+    @Override
+    public boolean controlloStessoOrarioDottoreDiverso(PrenotazioneDTO prenotazioneToSave){
+        if(prenotazioneToSave.getData_visita()!=null){
+            Prenotazione p = prenotazioneDAO.getPrenotazionePazienteStessaData(modelMapper.map(prenotazioneToSave.getPaziente(),Paziente.class),prenotazioneToSave.getData_visita(), true, prenotazioneToSave.getId());
+            if(p!=null)
+                return true;
+        }
+        return false;
+    }
+
 
     @Override
     public PrenotazioneDTO updatePrenotazione(PrenotazioneDTO prenotazioneToSave) {
+
         return prenotazioneDAO.findById(prenotazioneToSave.getId()).map(
                 prenotazione -> {
                                 prenotazione.setConfermato(prenotazioneToSave.isConfermato());

@@ -36,4 +36,7 @@ public interface PrenotazioneDAO extends JpaRepository<Prenotazione, Long> {
 
     List<Prenotazione> findAllByConfermatoAndUrgenteAndDottore(Boolean confermato, Boolean urgente, Dottore dottore);
 
+    @Query("select p from Prenotazione p where p.confermato=?3 and p.data_visita=?2 and p.paziente=?1 and p.id<>?4 ")
+    Prenotazione getPrenotazionePazienteStessaData(@Param("paziente") Paziente p, @Param("data") LocalDateTime data, @Param("confermato") Boolean confermato, @Param("id") Long id);
+
 }

@@ -33,4 +33,6 @@ public interface PrenotazioneService {
     void deletePrenotazione(Long id);
 
     PrenotazioneDTO updatePrenotazione(PrenotazioneDTO prenotazione);
+
+    boolean controlloStessoOrarioDottoreDiverso(PrenotazioneDTO prenotazioneToSave);
 }

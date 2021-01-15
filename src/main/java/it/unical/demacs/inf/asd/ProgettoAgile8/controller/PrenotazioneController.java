@@ -179,6 +179,16 @@ public class PrenotazioneController {
         return ResponseEntity.ok(prenotazioneNuova);
     }
 
+    @PostMapping(path =  "/controlloStessoOrarioDottoreDiverso")
+    public ResponseEntity<PrenotazioneDTO> controlloStessoOrarioDottoreDiverso(@RequestBody PrenotazioneDTO prenotazione){
+        boolean risultato = prenotazioneService.controlloStessoOrarioDottoreDiverso(prenotazione);
+        if(risultato)
+            return ResponseEntity.badRequest().body(prenotazione);
+        else
+            return ResponseEntity.ok().body(prenotazione);
+    }
+
+
     public static NotificaDTO inserisciNotifica(Long id, String testo, String oggetto,String ricevitore, String dottore, Long dottoreId){
         NotificaDTO notifica = new NotificaDTO();
         notifica.setPaziente(id);
