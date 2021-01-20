@@ -122,7 +122,7 @@ public class PazienteServiceImpl implements PazienteService{
         Paziente p = pazienteDAO.findAllByEmail(dto.getEmail());
         String salt = p.getSalt();
         String hashPasswordInserita = Sicurezza.getSecurePassword(passwordNuova, salt.getBytes(StandardCharsets.UTF_8));
-        pazienteDAO.updatePassword(hashPasswordInserita, dto.getId());
+        pazienteDAO.updatePassword(hashPasswordInserita, p.getId());
     }
 
     @Override

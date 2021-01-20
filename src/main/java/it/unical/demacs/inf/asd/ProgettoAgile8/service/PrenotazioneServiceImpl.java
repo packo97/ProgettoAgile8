@@ -12,6 +12,7 @@ import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Prenotazione;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ public class PrenotazioneServiceImpl implements PrenotazioneService{
 
     }
 
+    @Transactional
     @Override
     public void deletePrenotazione(Long id) {
         prenotazioneDAO.deleteById(id);
@@ -52,7 +54,7 @@ public class PrenotazioneServiceImpl implements PrenotazioneService{
         return false;
     }
 
-
+    //@Transactional
     @Override
     public PrenotazioneDTO updatePrenotazione(PrenotazioneDTO prenotazioneToSave) {
 

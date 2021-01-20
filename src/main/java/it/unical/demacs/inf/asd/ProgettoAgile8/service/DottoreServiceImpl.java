@@ -102,7 +102,7 @@ public class DottoreServiceImpl  implements DottoreService{
         Dottore d = dottoreDAO.findAllByEmail(dto.getEmail());
         String salt = d.getSalt();
         String hashPasswordInserita = Sicurezza.getSecurePassword(passwordNuova, salt.getBytes(StandardCharsets.UTF_8));
-        dottoreDAO.updatePassword1(hashPasswordInserita, dto.getId());
+        dottoreDAO.updatePassword1(hashPasswordInserita, d.getId());
     }
 
     @Override

@@ -44,8 +44,10 @@ public class SegretariaServiceImpl implements SegretariaService{
             return false;
         String salt= s1.getSalt();
         Segretaria d = segretariaDAO.findAllByEmailAndPassword(email,Sicurezza.getSecurePassword(password,salt.getBytes(StandardCharsets.UTF_8)));
-        if(d==null)
+        if(d==null) {
+            System.out.println("dio");
             return false;
+        }
         else return true;
     }
 
@@ -94,7 +96,7 @@ public class SegretariaServiceImpl implements SegretariaService{
         Segretaria d = segretariaDAO.findAllByEmail(dto.getEmail());
         String salt = d.getSalt();
         String hashPasswordInserita = Sicurezza.getSecurePassword(passwordNuova, salt.getBytes(StandardCharsets.UTF_8));
-        segretariaDAO.updatePassword1(hashPasswordInserita, dto.getId());
+        segretariaDAO.updatePassword1(hashPasswordInserita, d.getId());
     }
     @Override
     @Transactional
