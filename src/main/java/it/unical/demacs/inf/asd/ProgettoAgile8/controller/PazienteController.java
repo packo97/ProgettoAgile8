@@ -7,6 +7,7 @@ import it.unical.demacs.inf.asd.ProgettoAgile8.core.RecuperaPasswordDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.NotificaDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PazienteDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Notifica;
+import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Paziente;
 import it.unical.demacs.inf.asd.ProgettoAgile8.service.NotificaService;
 import it.unical.demacs.inf.asd.ProgettoAgile8.service.PazienteService;
 
@@ -59,8 +60,14 @@ public class PazienteController {
 
   @PostMapping(path = "/paziente")
   public ResponseEntity<PazienteDTO> add(@RequestBody PazienteDTO paziente) throws NoSuchAlgorithmException {
-    PazienteDTO p = pazienteService.addPaziente(paziente);
-    return ResponseEntity.ok(p);
+    PazienteDTO p = pazienteService.getPazienteByEmail(paziente.getEmail());
+    if(p==null) {
+      PazienteDTO paz = pazienteService.addPaziente(paziente);
+      return ResponseEntity.ok(paz);
+    }
+    else{
+      return ResponseEntity.badRequest().body(null);
+    }
   }
 
   @PostMapping(path = "/loginPaziente")

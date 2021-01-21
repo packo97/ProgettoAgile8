@@ -5,6 +5,8 @@ import it.unical.demacs.inf.asd.ProgettoAgile8.core.Filtro;
 import it.unical.demacs.inf.asd.ProgettoAgile8.core.RecuperaPasswordDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.DottoreDTO;
 import it.unical.demacs.inf.asd.ProgettoAgile8.dto.NotificaDTO;
+import it.unical.demacs.inf.asd.ProgettoAgile8.dto.PazienteDTO;
+import it.unical.demacs.inf.asd.ProgettoAgile8.entities.Dottore;
 import it.unical.demacs.inf.asd.ProgettoAgile8.service.DottoreService;
 import it.unical.demacs.inf.asd.ProgettoAgile8.service.NotificaService;
 import it.unical.demacs.inf.asd.ProgettoAgile8.utility.SendEmail;
@@ -50,8 +52,14 @@ public class DottoreController {
 
   @PostMapping(path = "/dottore")
   public ResponseEntity<DottoreDTO> add(@RequestBody DottoreDTO dottore) throws NoSuchAlgorithmException {
-    DottoreDTO d = dottoreService.addDottore(dottore);
-    return ResponseEntity.ok(d);
+    DottoreDTO d = dottoreService.getDottoreByEmail(dottore.getEmail());
+    if(d==null) {
+      DottoreDTO dot = dottoreService.addDottore(dottore);
+      return ResponseEntity.ok(dot);
+    }
+    else{
+      return ResponseEntity.badRequest().body(null);
+    }
   }
 
   @GetMapping(path = "/dottore")
