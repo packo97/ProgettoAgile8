@@ -17,25 +17,6 @@ public class NotificaDTO {
 
     private LocalDateTime data;
 
-    private String dottore;
-
-    private Long dottoreId;
-
-    public Long getDottoreId() {
-        return dottoreId;
-    }
-
-    public void setDottoreId(Long dottoreId) {
-        this.dottoreId = dottoreId;
-    }
-
-    public String getDottore() {
-        return dottore;
-    }
-
-    public void setDottore(String dottore) {
-        this.dottore = dottore;
-    }
 
     public LocalDateTime getData() {
         return data;
@@ -73,6 +54,25 @@ public class NotificaDTO {
         return testo;
     }
 
+    private String dottore;
+
+    private Long dottoreId;
+
+    public Long getDottoreId() {
+        return dottoreId;
+    }
+
+    public void setDottoreId(Long dottoreId) {
+        this.dottoreId = dottoreId;
+    }
+
+    public String getDottore() {
+        return dottore;
+    }
+
+    public void setDottore(String dottore) {
+        this.dottore = dottore;
+    }
     public void setTesto(String testo) {
         this.testo = testo;
     }

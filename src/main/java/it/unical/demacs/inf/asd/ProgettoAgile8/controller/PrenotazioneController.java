@@ -126,7 +126,7 @@ public class PrenotazioneController {
             if(prenotazione.isUrgente()==true ){
                 String testo="La sua prenotazione riguardante "+ prenotazione.getDescrizione() +" e stabilita in data "+ Data.convertiData(prenotazioneVecchia.getData_visita().toString())
                         +" è stata annullata ma comunque inserita fra quelle urgenti, riceverà un altra email quando verrà riconfermata.";
-                String oggetto="Prenotazione annullata";
+                String oggetto="Annullamento prenotazione";
                 SendEmail.getInstance().sendMail(oggetto,testo, prenotazione.getPaziente().getEmail());
                 NotificaDTO notifica = inserisciNotifica(prenotazione.getPaziente().getId(),testo,oggetto,"paziente",prenotazione.getDottore().getNome()+" "+prenotazione.getDottore().getCognome(), prenotazione.getDottore().getId());
                 notificaService.save(notifica);
@@ -139,7 +139,7 @@ public class PrenotazioneController {
             else if(prenotazione.isUrgente()==false ){
                 String testo="La sua prenotazione riguardante "+ prenotazione.getDescrizione() +" e stabilita in data "+ Data.convertiData(prenotazioneVecchia.getData_visita().toString())
                         +" è stata annullata, riceverà un altra email quando verrà riconfermata.";
-                String oggetto="Prenotazione annullata";
+                String oggetto="Annullamento prenotazione";
                 SendEmail.getInstance().sendMail(oggetto,testo, prenotazione.getPaziente().getEmail());
                 NotificaDTO notifica = inserisciNotifica(prenotazione.getPaziente().getId(),testo,oggetto,"paziente",prenotazione.getDottore().getNome()+" "+prenotazione.getDottore().getCognome(), prenotazione.getDottore().getId());
                 notificaService.save(notifica);

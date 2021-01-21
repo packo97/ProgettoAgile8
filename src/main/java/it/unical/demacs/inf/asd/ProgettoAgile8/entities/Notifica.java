@@ -19,9 +19,6 @@ public class Notifica {
     @Column(name = "dottore")
     private String dottore;
 
-    @Column(name = "dottoreId")
-    private Long dottoreId;
-
     @Column(name = "vista")
     private Boolean vista;
 
@@ -30,6 +27,9 @@ public class Notifica {
 
     @Column(name = "ricevitore")
     private String ricevitore;
+
+    @Column(name = "dottoreId")
+    private Long dottoreId;
 
     @Column(name = "paziente")
     private Long paziente;
